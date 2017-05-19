@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="JobOverview.View.UCButtonsBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				 xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:local="clr-namespace:JobOverview.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="500"
+			 Name="ucButtonsBar">
+	<UserControl.Resources>
+		<Style TargetType="fa:IconBlock">
+			<Setter Property="FontSize" Value="24"/>
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Width" Value="70"/>
+			<Setter Property="Margin" Value="5,0"/>
+		</Style>
+		<Style TargetType="TextBlock">
+			<Setter Property="Visibility" Value="{Binding ElementName=ucButtonsBar, Path=LabelsVisibility}"/>
+		</Style>
+	</UserControl.Resources>
+
+	<StackPanel Height="60" Orientation="Horizontal">
+		<Button ToolTip="Modifier}"
+				  Visibility="{Binding ElementName=ucButtonsBar, Path=ButtonEditVisibility}"
+				  Command="{Binding ElementName=ucButtonsBar, Path=CmdEdit}">
+			<StackPanel>
+				<fa:IconBlock Icon="Pencil"/>
+				<TextBlock Text="Modifier"/>
+			</StackPanel>
+		</Button>
+		<Button ToolTip="Ajouter"
+				  Visibility="{Binding ElementName=UCButtonsBar, Path=ButtonAddVisibility}"
+				  Command="{Binding ElementName=UCButtonsBar, Path=CmdAdd}">
+			<StackPanel>
+				<fa:IconBlock Icon="Plus"/>
+				<TextBlock Text="Ajouter"/>
+			</StackPanel>
+		</Button>
+		<Button ToolTip="Supprimer"
+				  Visibility="{Binding ElementName=ucButtonsBar, Path=ButtonDeleteVisibility}"
+				  Command="{Binding ElementName=ucButtonsBar, Path=CmdDelete}">
+			<StackPanel>
+				<fa:IconBlock Icon="Trash"/>
+				<TextBlock Text="Supprimer"/>
+			</StackPanel>
+		</Button>
+		<Button ToolTip="Enregistrer"
+				  Visibility="{Binding ElementName=ucButtonsBar, Path=ButtonsSaveCancelVisibility}"
+				  Command="{Binding ElementName=ucButtonsBar, Path=CmdSave}">
+			<StackPanel>
+				<fa:IconBlock Icon="FloppyO"/>
+				<TextBlock Text="Enregistrer"/>
+			</StackPanel>
+		</Button>
+		<Button ToolTip="Annuler"
+				  Visibility="{Binding ElementName=ucButtonsBar, Path=ButtonsSaveCancelVisibility}"
+				  Command="{Binding ElementName=ucButtonsBar, Path=CmdCancel}">
+			<StackPanel>
+				<fa:IconBlock Icon="Undo"/>
+				<TextBlock Text="Annuler"/>
+			</StackPanel>
+		</Button>
+	</StackPanel>
+</UserControl>
+

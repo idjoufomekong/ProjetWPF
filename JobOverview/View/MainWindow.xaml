@@ -1,0 +1,57 @@
+﻿<Window x:Class="JobOverview.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		  xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:local="clr-namespace:JobOverview"
+        mc:Ignorable="d"
+       Title="Job Overview" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+	<Window.Resources>
+		<!-- DataTemplates pour les différents types de vues-modèles -->
+		<Style TargetType="Button">
+			<Setter Property="Height" Value="30"/>
+			<Setter Property="Margin" Value="0,5"/>
+			<Setter Property="HorizontalContentAlignment" Value="Left"/>
+			<Setter Property="FontSize" Value="16"/>
+		</Style>
+
+		<Style TargetType="fa:IconBlock">
+			<Setter Property="Margin" Value="5,0"/>
+		</Style>
+	</Window.Resources>
+
+	<Grid Margin="5">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition MaxWidth="200"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+
+		<!-- Boutons de commandes -->
+		<StackPanel>
+			<Button>
+				<StackPanel Orientation="Horizontal">
+					<fa:IconBlock Icon="Tasks"/>
+					<TextBlock Text="Ecran 1"/>
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel Orientation="Horizontal">
+					<fa:IconBlock Icon="Users"/>
+					<TextBlock Text="Ecran 2"/>
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel Orientation="Horizontal">
+					<fa:IconBlock Icon="ClockO"/>
+					<TextBlock Text="...etc"/>
+				</StackPanel>
+			</Button>
+		</StackPanel>
+
+		<!-- zone centrale -->
+		<!-- Les DataTemplates définis en ressources permettent de trouver
+			automatiquement la vue à utiliser pour afficher la vue-modèle courante -->
+		<ContentControl Grid.Column="1" Margin="10,0,0,0" Content="{Binding Path=VMCourante}"/>
+	</Grid>
+</Window>

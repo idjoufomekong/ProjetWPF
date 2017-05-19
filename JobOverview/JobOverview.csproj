@@ -63,6 +63,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Entity\Logiciel.cs" />
+    <Compile Include="Entity\Personne.cs" />
+    <Compile Include="Entity\Tache.cs" />
+    <Compile Include="Model\DALEchange.cs" />
+    <Compile Include="Model\DALTache.cs" />
     <Compile Include="View\UCButtonsBar.xaml.cs">
       <DependentUpon>UCButtonsBar.xaml</DependentUpon>
     </Compile>
@@ -128,9 +133,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entity\" />
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

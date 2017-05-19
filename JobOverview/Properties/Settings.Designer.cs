@@ -46,5 +46,17 @@ namespace JobOverview.Properties {
                 this["Manager"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=IDJOU17-DE\\IP08R2;Initial Catalog=ProjetWPF;Integrated Security=True")]
+        public string JobOverviewConnectionString {
+            get {
+                return ((string)(this["JobOverviewConnectionString"]));
+            }
+            set {
+                this["JobOverviewConnectionString"] = value;
+            }
+        }
     }
 }

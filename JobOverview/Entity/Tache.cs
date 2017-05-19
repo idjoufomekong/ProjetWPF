@@ -11,11 +11,11 @@ namespace JobOverview.Entity
     {
         public Guid IdTache { get; set; }
         [XmlAttribute]
-        public string Libelle { get; set; }
+        public string NomTache { get; set; }
         [XmlAttribute]
         public bool Annexe { get; set; }
         [XmlAttribute]
-        public string Activite { get; set; }
+        public string CodeActivite { get; set; }
         [XmlAttribute]
         public string Description { get; set; }
         [XmlElement]
@@ -40,11 +40,11 @@ namespace JobOverview.Entity
         [XmlAttribute]
         public float DureeRestante { get; set; }
         [XmlAttribute]
-        public string Logiciel { get; set; }
+        public string CodeLogiciel { get; set; }
         [XmlAttribute]
-        public string Module { get; set; }
+        public string CodeModule { get; set; }
         [XmlAttribute]
-        public string Version { get; set; }
+        public string CodeVersion { get; set; }
         [XmlElement]
         public List<Travail> TravauxProd { get; set; }
     }

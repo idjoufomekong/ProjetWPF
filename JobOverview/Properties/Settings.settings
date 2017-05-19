@@ -8,5 +8,8 @@
     <Setting Name="Manager" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="JobOverviewConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=IDJOU17-DE\IP08R2;Initial Catalog=ProjetWPF;Integrated Security=True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

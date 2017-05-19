@@ -44,7 +44,7 @@ namespace JobOverview.Entity
         [XmlAttribute]
         public string CodeModule { get; set; }
         [XmlAttribute]
-        public string CodeVersion { get; set; }
+        public float CodeVersion { get; set; }
         [XmlElement]
         public List<Travail> TravauxProd { get; set; }
     }

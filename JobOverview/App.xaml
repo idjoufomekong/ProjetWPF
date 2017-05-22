@@ -6,8 +6,11 @@
 				xmlns:vm="clr-namespace:JobOverview.ViewModel"
              StartupUri="View/MainWindow.xaml">
 	<Application.Resources>
-		<DataTemplate DataType="{x:Type vm:VMLogin}">
+        <DataTemplate DataType="{x:Type vm:VMLogin}">
 			<vw:UCLogin/>
 		</DataTemplate>
-	</Application.Resources>
+        <DataTemplate DataType="{x:Type vm:VMEchange}">
+            <vw:UCEchange/>
+        </DataTemplate>
+    </Application.Resources>
 </Application>

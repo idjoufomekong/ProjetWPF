@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="DernierUtilisateur" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">BNORMAND</Value>
     </Setting>
     <Setting Name="Manager" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="JobOverviewConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=mgollain17-de\ip08r2.JobOverview.dbo;Initial Catalog=ProjetWPF;Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=localhost\SQLEXPRESS;Initial Catalog=ProjetWPF;Integrated Security=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

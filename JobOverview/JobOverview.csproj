@@ -67,10 +67,18 @@
     <Compile Include="Entity\Personne.cs" />
     <Compile Include="Entity\Tache.cs" />
     <Compile Include="Model\DALEchange.cs" />
+    <Compile Include="Model\DALLogiciel.cs" />
     <Compile Include="Model\DALPersonne.cs" />
     <Compile Include="Model\DALTache.cs" />
+    <Compile Include="ViewModel\VMEchange.cs" />
+    <Compile Include="View\ProgressDialog.xaml.cs">
+      <DependentUpon>ProgressDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UCButtonsBar.xaml.cs">
       <DependentUpon>UCButtonsBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UCEchange.xaml.cs">
+      <DependentUpon>UCEchange.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UCLogin.xaml.cs">
       <DependentUpon>UCLogin.xaml</DependentUpon>
@@ -94,7 +102,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\ProgressDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UCButtonsBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UCEchange.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

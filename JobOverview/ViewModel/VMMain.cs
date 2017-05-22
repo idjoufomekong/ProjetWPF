@@ -28,13 +28,24 @@ namespace JobOverview.ViewModel
 		{
 			get
 			{
-				if (_cmdLogin == null)
-					_cmdLogin = new RelayCommand(() => VMCourante = new VMLogin());
+                if (_cmdLogin == null)
+                    _cmdLogin = new RelayCommand(() => VMCourante = new VMLogin());
 				return _cmdLogin;
 			}
 		}
 
-		#endregion
+        private ICommand _cmdEchange;
+        public ICommand CmdEchange
+        {
+            get
+            {
+                if (_cmdEchange == null)
+                    _cmdEchange = new RelayCommand(() => VMCourante = new VMEchange());
+                return _cmdEchange;
+            }
+        }
 
-	}
+        #endregion
+
+    }
 }

@@ -48,4 +48,23 @@ namespace JobOverview.Entity
         [XmlElement]
         public List<Travail> TravauxProd { get; set; }
     }
+
+    public class TacheBrut
+    {
+        public Guid IdTache { get; set; }
+        public string NomTache { get; set; }
+        public bool Annexe { get; set; }
+        public string CodeActivite { get; set; }
+        public string Description { get; set; }
+        public string Login { get; set; }
+        public int NumTache { get; set; }
+        public float DureePrevue { get; set; }
+        public float DureeRestante { get; set; }
+        public string CodeLogiciel { get; set; }
+        public string CodeModule { get; set; }
+        public float CodeVersion { get; set; }
+        public DateTime Date { get; set; }
+        public float Heures { get; set; }
+        public float TauxProductivite { get; set; }
+    }
 }

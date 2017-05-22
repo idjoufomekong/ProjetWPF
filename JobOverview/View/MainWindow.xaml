@@ -41,10 +41,10 @@
 					<TextBlock Text="Ecran 2"/>
 				</StackPanel>
 			</Button>
-			<Button>
+            <Button Command="{Binding CmdEchange}">
 				<StackPanel Orientation="Horizontal">
 					<fa:IconBlock Icon="ClockO"/>
-					<TextBlock Text="...etc"/>
+					<TextBlock Text="Export"/>
 				</StackPanel>
 			</Button>
 		</StackPanel>

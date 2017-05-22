@@ -22,28 +22,16 @@ namespace JobOverview.Model
             //On récupère les 50 dernières modifications
             //Pour la version et le logiciel sélectionnés
             //Pour le manager connecté
-            string queryString = @"select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,T.Libelle,
-T.CodeActivite,
-T.Description, T.Annexe,
-TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,
-TR.TauxProductivite
-from jo.Personne P
-left outer join jo.Tache T on T.Login=P.Login
-left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
-left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and Manager=@manager
-UNION
-select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,T.Libelle,
-T.CodeActivite,
-T.Description, T.Annexe,
-TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,
-TR.TauxProductivite
-from jo.Personne P
-left outer join jo.Tache T on T.Login=P.Login
-left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
-left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and P.Login=@manager
-order by DateTravail desc,login, Numero"; //TODO: Epurer la requête et retirer les champs inutiles
+            string queryString = @"select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,
+            T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
+            TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
+            from jo.Personne P
+            left outer join jo.Tache T on T.Login=P.Login
+            left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
+            left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
+            where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and ( Manager=@manager OR P.Login=@manager )"; 
+            
+            //TODO: Epurer la requête et retirer les champs inutiles
 
             var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
             var numVersion = new SqlParameter("@numVersion", DbType.Double);

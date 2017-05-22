@@ -17,9 +17,6 @@ namespace JobOverview.ViewModel
 {
     public class VMEchange : ViewModelBase
     {
-        BackgroundWorker worker;
-        ProgressDialog pd;
-
         //Champs privés
         private Logiciel _logicielCourant;
         private Entity.Version _version;
@@ -97,11 +94,6 @@ namespace JobOverview.ViewModel
             {
                 TachesApercu.Add(a);
             }
-            var test = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTachesProd(LogicielCourant.CodeLogiciel,
-                VersionCourante.NumVersion, _userCourant));
-
-            var test1 = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
-                VersionCourante.NumVersion, _userCourant));
         }
 
         private void Exporter()
@@ -122,53 +114,11 @@ namespace JobOverview.ViewModel
             }
             #region TestProgressBar
             
+            var dlg = new ModalWindow(new VMProgressBar());
+            dlg.Title = "Progression de l'export";
+            bool? res = dlg.ShowDialog();
 
-            int maxRecords = 1000;
-
-            pd = new ProgressDialog();
-            pd.Cancel += CancelProcess;
-
-            System.Windows.Threading.Dispatcher pdDispatcher = pd.Dispatcher;
-
-            worker = new BackgroundWorker();
-            worker.WorkerSupportsCancellation = true;
-
-            worker.DoWork += delegate (object s, DoWorkEventArgs args)
-            {
-                for (int x = 1; x < maxRecords; x++)
-                {
-                    if (worker.CancellationPending)
-                    {
-                        args.Cancel = true;
-                        return;
-                    }
-
-                    System.Threading.Thread.Sleep(10);
-
-                    UpdateProgressDelegate update = new UpdateProgressDelegate(UpdateProgressText);
-                    pdDispatcher.BeginInvoke(update, Convert.ToInt32(((decimal)x / (decimal)maxRecords) * 100), maxRecords);
-                }
-            };
-
-            worker.RunWorkerCompleted += delegate (object s, RunWorkerCompletedEventArgs args)
-            {
-                pd.Close();
-            };
-
-            worker.RunWorkerAsync();
-            pd.ShowDialog();
             #endregion
-        }
-        public delegate void UpdateProgressDelegate(int percentage, int recordCount);
-        public void UpdateProgressText(int percentage, int recordCount)
-        {
-            pd.ProgressText = string.Format("{0}% of {1} Records", percentage.ToString(), recordCount);
-            pd.ProgressValue = percentage;
-        }
-
-        void CancelProcess(object sender, EventArgs e)
-        {
-            worker.CancelAsync();
         }
         #endregion
 

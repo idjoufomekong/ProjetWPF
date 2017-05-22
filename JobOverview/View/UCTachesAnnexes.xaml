@@ -17,26 +17,25 @@
         <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"/>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <DockPanel Margin="10">
                 <Label Content="Membres de l'équipe (préciser ?)" DockPanel.Dock="Top"/>
                 <!-- Liste des membres de l'équipe -->
-                <ListBox/>
+                <ListBox ItemsSource="{Binding Path=Personnes}" DisplayMemberPath="NomPrenom" IsSynchronizedWithCurrentItem="True"/>
             </DockPanel>
             <DockPanel Grid.Column="1" Margin="10">
                 <Label Content="Tâches annexes" DockPanel.Dock="Top"/>
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                    <Label Content="Description de la tâche :"/>
-                    <TextBlock/>
-                </StackPanel>
+                <!-- Description de la tâche annexe sélectionnée -->
+                <TextBlock DockPanel.Dock="Bottom" Margin="0,10,0,0"
+                           Text="{Binding Path=Personnes/TachesAnnexes/Description, StringFormat='Description de la tâche : {0}'}"/>
                 <!-- Liste des tâches annexes -->
-                <ListView>
+                <ListView ItemsSource="{Binding Personnes/TachesAnnexes}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
-                            <GridViewColumn Header="Activité annexe"/>
-                            <GridViewColumn Header="Code d'activité"/>
+                            <GridViewColumn Header="Activité annexe" DisplayMemberBinding="{Binding Path=NomTache}"/>
+                            <GridViewColumn Header="Code d'activité" DisplayMemberBinding="{Binding Path=CodeActivite}"/>
                             <GridViewColumn>
                                 <GridViewColumn>
                                     <GridViewColumn.CellTemplate>

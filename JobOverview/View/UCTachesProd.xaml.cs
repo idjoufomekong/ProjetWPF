@@ -18,9 +18,9 @@ namespace JobOverview.View
     /// <summary>
     /// Interaction logic for UCSaisieTachesProd.xaml
     /// </summary>
-    public partial class UCSaisieTachesProd : UserControl
+    public partial class UCTachesProd : UserControl
     {
-        public UCSaisieTachesProd()
+        public UCTachesProd()
         {
             InitializeComponent();
         }

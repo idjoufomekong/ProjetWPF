@@ -65,6 +65,17 @@ namespace JobOverview.ViewModel
             }
         }
 
+        private ICommand _cmdProgressBar;
+        public ICommand CmdProgressBar
+        {
+            get
+            {
+                if (_cmdProgressBar == null)
+                    _cmdProgressBar = new RelayCommand(() => VMCourante = new VMProgressBar());
+                return _cmdProgressBar;
+            }
+        }
+
         private ICommand _cmdSaisieTemps;
         public ICommand CmdSaisieTemps
         {

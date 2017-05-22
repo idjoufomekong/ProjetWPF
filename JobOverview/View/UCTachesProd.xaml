@@ -28,8 +28,10 @@
             <Label Content="Version"/>
             <ComboBox Name="cbVersions" ItemsSource="{Binding Logiciels/Versions}" 
                       DisplayMemberPath="NumVersion" SelectedValuePath="NumVersion"
-                      IsSynchronizedWithCurrentItem="True" MaxWidth="50"
-                      SelectedIndex="0" SelectedValue="{Binding Path=NumVersion}"/>
+                      IsSynchronizedWithCurrentItem="True" MaxWidth="80"
+                      SelectedIndex="0" SelectedValue="{Binding Path=NumVersion}" Width="51"/>
+            <Button Content="Afficher"  
+                Margin="40,0" VerticalAlignment="Center" Command="{Binding CmdAfficher}"/>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -42,8 +44,10 @@
             </Grid.RowDefinitions>
             <Label Content="Personnes"/>
             <DockPanel Grid.Column="1" VerticalAlignment="Center">
-                <CheckBox IsChecked="True" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" />
-                <CheckBox IsChecked="False" Content="Terminées" DockPanel.Dock="Right" Margin="5" VerticalAlignment="Center"/>
+                <CheckBox IsChecked="{Binding EnCours}" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" 
+                          Command="{Binding CmdChecker}" />
+                <CheckBox IsChecked="{Binding Termine}" Content="Terminées" DockPanel.Dock="Right" Margin="5" 
+                          VerticalAlignment="Center" Command="{Binding CmdChecker}"/>
                 <Label Content="Tâches de production" VerticalContentAlignment="Center"/>
             </DockPanel>
             <ListView Grid.Row="1" Margin="10"
@@ -52,6 +56,8 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn Header="Employé" DisplayMemberBinding="{Binding Path=NomPrenom }" />
+                        <GridViewColumn Header="Temps total réalisé" DisplayMemberBinding="{Binding Path=TotalRealise }" />
+                        <GridViewColumn Header="Temps total restant" DisplayMemberBinding="{Binding Path=TotalRestant }" />
                     </GridView>
                 </ListView.View>
             </ListView>

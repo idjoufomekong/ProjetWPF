@@ -12,6 +12,7 @@ namespace JobOverview.ViewModel
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+
         /// <summary>
         /// Evènement de notification de changement de valeur 
         /// </summary>

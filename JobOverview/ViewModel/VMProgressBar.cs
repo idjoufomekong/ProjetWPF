@@ -22,7 +22,7 @@ namespace JobOverview.ViewModel
                 {
                     UpdateText(string.Format("{0}% exporté", i));
                     UpdateProgress(i);
-                    Thread.Sleep(30);
+                    Thread.Sleep(20);
                 }
                 StopLoading();
                 UpdateText("Export terminé");

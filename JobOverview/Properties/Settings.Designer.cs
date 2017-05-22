@@ -26,12 +26,12 @@ namespace JobOverview.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("BNORMAND")]
-        public string DernierUtilisateur {
+        public string CodeDernierUtilisateur {
             get {
-                return ((string)(this["DernierUtilisateur"]));
+                return ((string)(this["CodeDernierUtilisateur"]));
             }
             set {
-                this["DernierUtilisateur"] = value;
+                this["CodeDernierUtilisateur"] = value;
             }
         }
         
@@ -49,13 +49,26 @@ namespace JobOverview.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=IDJOU17-DE\\IP08R2;Initial Catalog=ProjetWPF;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MGOLLAIN17-DE\\IP08R2;Initial Catalog=JobOverview;Integrated Security=" +
+            "True")]
         public string JobOverviewConnectionString {
             get {
                 return ((string)(this["JobOverviewConnectionString"]));
             }
             set {
                 this["JobOverviewConnectionString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NomDernierUtilisateur {
+            get {
+                return ((string)(this["NomDernierUtilisateur"]));
+            }
+            set {
+                this["NomDernierUtilisateur"] = value;
             }
         }
     }

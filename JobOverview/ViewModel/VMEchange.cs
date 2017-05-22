@@ -53,7 +53,7 @@ namespace JobOverview.ViewModel
             // J'instancie juste la liste pour initialiser le DataContext car la liste est chargée au clic du bouton
             TachesApercu = new ObservableCollection<TacheApercu>();
 
-            _userCourant = Properties.Settings.Default.DernierUtilisateur;
+            _userCourant = Properties.Settings.Default.CodeDernierUtilisateur;
         }
 
         #region Commandes

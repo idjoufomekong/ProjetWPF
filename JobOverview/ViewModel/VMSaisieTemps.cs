@@ -9,12 +9,12 @@ using JobOverview.View;
 
 namespace JobOverview.ViewModel
 {
-    public class VMSaisieTemps
+    public class VMSaisieTemps : ViewModelBase
     {
 
         public VMSaisieTemps()
         {
-            if (VMLogin.Personnes == null)
+
         }
     }
 

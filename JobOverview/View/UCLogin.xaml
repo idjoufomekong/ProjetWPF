@@ -3,12 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prop="clr-namespace:JobOverview.Properties"
              xmlns:local="clr-namespace:JobOverview.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal" MinHeight="100" >
 		<Label Content="Utilisateur" VerticalAlignment="Center" Margin="10"/>
-		<ComboBox Height="30" Width="200" 
-					 ItemsSource="{Binding Path=Personnes}" SelectedIndex="0"/>
+        <ComboBox Height="30" Width="200" Name="cb_Login"
+					 ItemsSource="{Binding Path=Personnes}"
+                  DisplayMemberPath="NomPrenom"
+                  SelectedValuePath="CodePersonne"
+                  SelectedValue="{Binding Source={x:Static prop:Settings.Default}, Path=CodeDernierUtilisateur}"/>
 	</StackPanel>
 </UserControl>

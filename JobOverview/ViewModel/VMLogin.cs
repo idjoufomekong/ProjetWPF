@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JobOverview.Entity;
+using JobOverview.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,12 +12,13 @@ namespace JobOverview.ViewModel
 	public class VMLogin : ViewModelBase
 	{
 		// TODO : à remplacer par une vraie liste de personnes
-		public static List<string> Personnes { get; private set; }
+		public static ObservableCollection<Personne> Personnes { get; private set; }
 
 		public VMLogin()
 		{
 			// TODO : à remplacer par un appel à une méthode de DAL
-			Personnes = new List<string>()	{ "Pierre", "Paul", "Jacques" };
+			Personnes = new ObservableCollection<Personne>();
+            Personnes = DALPersonne.RecupererToutesPersonne();
 		}
 	}
 }

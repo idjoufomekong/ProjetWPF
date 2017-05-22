@@ -12,7 +12,7 @@
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
         </Style>
-        <conv:TacheAnnexeToBool x:Key="TacheAnnexeToBool"/>
+        <!--<conv:TacheAnnexeToBool x:Key="TacheAnnexeToBool"/>-->
     </UserControl.Resources>
     <DockPanel>
         <!-- Enregistrer -->
@@ -41,9 +41,9 @@
                             <GridViewColumn Header="Tâche dispo">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Path=CodeActivite, 
+                                        <!--<CheckBox IsChecked="{Binding Path=CodeActivite, 
                                             Converter={StaticResource TacheAnnexeToBool},
-                                            ConverterParameter={DynamicResource ElementName=list, Path=TachesAnnexes }}"/>
+                                            ConverterParameter={DynamicResource ElementName=list, Path=TachesAnnexes }}"/>-->
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

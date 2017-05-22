@@ -408,7 +408,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
             where  ( Manager=@manager OR P.Login=@manager )
-order by Login,Numero";
+            order by Login,Numero";
             //TODO Bien définir les champs afin de peaufiner la requête
             //CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and
 

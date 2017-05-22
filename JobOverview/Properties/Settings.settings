@@ -2,14 +2,17 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="JobOverview.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DernierUtilisateur" Type="System.String" Scope="User">
+    <Setting Name="CodeDernierUtilisateur" Type="System.String" Scope="User">
       <Value Profile="(Default)">BNORMAND</Value>
     </Setting>
     <Setting Name="Manager" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="JobOverviewConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=IDJOU17-DE\IP08R2;Initial Catalog=ProjetWPF;Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=MGOLLAIN17-DE\IP08R2;Initial Catalog=JobOverview;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="NomDernierUtilisateur" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

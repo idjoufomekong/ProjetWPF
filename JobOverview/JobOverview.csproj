@@ -63,7 +63,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Entity\Listes.cs" />
     <Compile Include="Entity\Logiciel.cs" />
     <Compile Include="Entity\Personne.cs" />
     <Compile Include="Entity\Tache.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Model\DALTache.cs" />
     <Compile Include="ViewModel\VMEchange.cs" />
     <Compile Include="ViewModel\VMSaisieTemps.cs" />
+    <Compile Include="ViewModel\VMTachesAnnexes.cs" />
     <Compile Include="View\ModalProgress.xaml.cs">
       <DependentUpon>ModalProgress.xaml</DependentUpon>
     </Compile>
@@ -93,6 +93,9 @@
     </Compile>
     <Compile Include="View\UCSaisieTemps.xaml.cs">
       <DependentUpon>UCSaisieTemps.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UCTachesAnnexes.xaml.cs">
+      <DependentUpon>UCTachesAnnexes.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -135,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UCSaisieTemps.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UCTachesAnnexes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

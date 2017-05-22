@@ -77,6 +77,10 @@ namespace JobOverview.Model
                         foreach (TacheProd a in col.TachesProd)
                         {
                             writer.WriteStartElement("TâcheProd");
+                            writer.WriteAttributeString("Nom", a.NomTache.ToString());
+                            writer.WriteAttributeString("Activité", a.CodeActivite.ToString());
+                            if(!string.IsNullOrEmpty( a.Description))
+                            writer.WriteAttributeString("Description", a.Description.ToString());
                             writer.WriteAttributeString("Numéro", a.NumTache.ToString());
                             writer.WriteAttributeString("DureePrevue", a.DureePrevue.ToString());
                             writer.WriteAttributeString("DureeRestante", a.DureeRestante.ToString());
@@ -137,6 +141,7 @@ namespace JobOverview.Model
                 // Ecriture de la balise fermante de l'élément racine et fin du document
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
+                //TODO: Améliorer les noms des colonnes excel: mettre prod pour les tâches prod et annexes pour les autres
             }
         }
     }

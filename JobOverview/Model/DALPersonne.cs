@@ -196,6 +196,7 @@ order by IdTache";
                     tache.NumTache = (int)reader["Numero"];
                     tache.NomTache = (string)reader["Libelle"];
                     tache.Annexe = false;
+                    tache.CodeActivite = (string)reader["CodeActivite"];
                     if (reader["Description"] != DBNull.Value)
                         tache.Description = (string)reader["Description"];
                     tache.DureeRestante = (float)reader["DureeRestanteEstimee"];

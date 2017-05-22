@@ -39,13 +39,12 @@ namespace JobOverview.ViewModel
         }
         #endregion
 
-        public VMEchange()
+        public VMEchange(ObservableCollection<Logiciel> logicielVMMain)
         {
             //Chargement des ComboBox en observablecollection pour anticiper la MAJ lors de la création de nouvelles versions ou 
             //logiciels
-            //Tester auparavant si la liste est vide ou pas
-            if(Logiciels==null)
-            Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
+            // Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
+            Logiciels = logicielVMMain;
 
             // J'instancie juste la liste pour initialiser le DataContext car la liste est chargée au clic du bouton
             TachesApercu = new ObservableCollection<TacheApercu>();

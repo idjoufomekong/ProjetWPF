@@ -33,6 +33,26 @@ namespace JobOverview.ViewModel
             }
         }
 
+        private ObservableCollection<Logiciel> _persTaches;
+        public ObservableCollection<Logiciel> PersonnesTaches
+        {
+            get { return _persTaches; }
+            set
+            {
+                SetProperty(ref _persTaches, value);
+            }
+        }
+
+        private ObservableCollection<Logiciel> _persTachesApercu;
+        public ObservableCollection<Logiciel> PersonnesTachesApercu
+        {
+            get { return _persTachesApercu; }
+            set
+            {
+                SetProperty(ref _persTachesApercu, value);
+            }
+        }
+
         public Personne Utilisateur { get; set; }
 
 
@@ -65,8 +85,10 @@ namespace JobOverview.ViewModel
         {
             get
             {
+                if (Logiciels == null || Logiciels.Count == 0)
+                    Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
                 if (_cmdEchange == null)
-                    _cmdEchange = new RelayCommand(() => VMCourante = new VMEchange());
+                    _cmdEchange = new RelayCommand(() => VMCourante = new VMEchange(Logiciels));
                 return _cmdEchange;
             }
         }

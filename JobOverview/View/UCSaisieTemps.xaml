@@ -6,7 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:JobOverview.View"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Background="White">
+             d:DesignHeight="300" d:DesignWidth="600" Background="White">
     <UserControl.Resources>
         <Style TargetType="{x:Type DatePickerTextBox}">
             <Setter Property="Control.Template">
@@ -26,10 +26,10 @@
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <DatePicker SelectedDate="{x:Static sys:DateTime.Now}"></DatePicker>
-                <ComboBox></ComboBox>
-                <ComboBox></ComboBox>
-                <TextBlock />
-                <TextBlock />
+                <ComboBox ItemsSource="{Binding Path=Logciels.NomLogiciel}" IsSynchronizedWithCurrentItem="True"></ComboBox>
+                <ComboBox ItemsSource="{Binding Path=Versions.NumVersion}"></ComboBox>
+                <TextBlock Text="Heure(s) déjà enregistrée(s) aujourd'hui: "/>
+                <TextBlock/>
             </StackPanel>
         </StackPanel>
     </DockPanel>

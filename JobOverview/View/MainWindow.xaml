@@ -35,10 +35,10 @@
 					<TextBlock Text="Ecran 1"/>
 				</StackPanel>
 			</Button>
-			<Button>
+			<Button Command="{Binding CmdTachesAnnexes}">
 				<StackPanel Orientation="Horizontal">
 					<fa:IconBlock Icon="Users"/>
-					<TextBlock Text="Ecran 2"/>
+					<TextBlock Text="Tâches annexes"/>
 				</StackPanel>
 			</Button>
             <Button Command="{Binding CmdSaisieTemps}">

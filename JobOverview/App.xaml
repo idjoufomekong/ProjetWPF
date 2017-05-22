@@ -12,5 +12,11 @@
         <DataTemplate DataType="{x:Type vm:VMEchange}">
             <vw:UCEchange/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMTachesAnnexes}">
+            <vw:UCTachesAnnexes/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMSaisieTemps}">
+            <vw:UCSaisieTemps/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

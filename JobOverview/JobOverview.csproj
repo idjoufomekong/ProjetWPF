@@ -73,6 +73,7 @@
     <Compile Include="Model\DALTache.cs" />
     <Compile Include="ViewModel\VMEchange.cs" />
     <Compile Include="ViewModel\VMSaisieTemps.cs" />
+    <Compile Include="ViewModel\VMTachesAnnexes.cs" />
     <Compile Include="View\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>

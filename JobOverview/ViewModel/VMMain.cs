@@ -55,6 +55,19 @@ namespace JobOverview.ViewModel
                 return _cmdSaisieTemps;
             }
         }
+
+        // Commande associée à la gestion des tâches annexes
+        private ICommand _cmdTachesAnnexes;
+        public ICommand CmdTachesAnnexes
+        {
+            get
+            {
+                if (_cmdTachesAnnexes == null)
+                    _cmdTachesAnnexes = new RelayCommand(() => VMCourante = new VMTachesAnnexes());
+                return _cmdTachesAnnexes;
+            }
+        }
+
         #endregion
 
     }

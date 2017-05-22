@@ -12,14 +12,14 @@
         <DataTemplate DataType="{x:Type vm:VMEchange}">
             <vw:UCEchange/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:VMProgressBar}">
-            <vw:UCProgressBar/>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:VMTachesAnnexes}">
             <vw:UCTachesAnnexes/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:VMSaisieTemps}">
             <vw:UCSaisieTemps/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMProgressBar}">
+            <vw:UCProgressBar/>
         </DataTemplate>
     </Application.Resources>
 </Application>

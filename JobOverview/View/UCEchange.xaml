@@ -54,7 +54,7 @@
                 Margin="10" HorizontalAlignment="Right"
                 Command="{Binding CmdExporter}"/>
         <ListView Name="lvApercu"  Grid.Row="2"
-                  ItemsSource="{Binding Path=TachesBrut}">
+                  ItemsSource="{Binding Path=TachesApercu}">
             <ListView.View>
                 <GridView AllowsColumnReorder="True">
                     <GridViewColumn Header="Nom de la tâche" DisplayMemberBinding="{Binding Path=NomTache }" />

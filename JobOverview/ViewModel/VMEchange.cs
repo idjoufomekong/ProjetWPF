@@ -26,7 +26,7 @@ namespace JobOverview.ViewModel
         #region Propriétés
 
         public List<Personne> PersonnesTaches { get; private set; }
-        public ObservableCollection<TacheApercu> TachesBrut { get; private set; }
+        public ObservableCollection<TacheApercu> TachesApercu { get; private set; }
         public ObservableCollection<Logiciel> Logiciels { get; private set; }
         public ObservableCollection<Entity.Version> Versions { get; set; }
         public Logiciel LogicielCourant
@@ -45,10 +45,12 @@ namespace JobOverview.ViewModel
         {
             //Chargement des ComboBox en observablecollection pour anticiper la MAJ lors de la création de nouvelles versions ou 
             //logiciels
+            //Tester auparavant si la liste est vide ou pas
+            if(Logiciels==null)
             Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
 
             // J'instancie juste la liste pour initialiser le DataContext car la liste est chargée au clic du bouton
-            TachesBrut = new ObservableCollection<TacheApercu>();
+            TachesApercu = new ObservableCollection<TacheApercu>();
 
             _userCourant = Properties.Settings.Default.DernierUtilisateur;
         }
@@ -86,13 +88,13 @@ namespace JobOverview.ViewModel
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
-            var t = new ObservableCollection<TacheApercu>(DALTache.RecupererTachesBrut(LogicielCourant.CodeLogiciel,
+            var t = new ObservableCollection<TacheApercu>(DALTache.RecupererTachesApercu(LogicielCourant.CodeLogiciel,
                 VersionCourante.NumVersion, _userCourant));
             //Chargement du DataContext
-            TachesBrut.Clear();
+            TachesApercu.Clear();
             foreach (var a in t)
             {
-                TachesBrut.Add(a);
+                TachesApercu.Add(a);
             }
         }
 
@@ -100,7 +102,7 @@ namespace JobOverview.ViewModel
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
-            PersonnesTaches = DALPersonne.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
+            PersonnesTaches = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
                 VersionCourante.NumVersion, _userCourant);
             //DALEchange.ExporterXML(PersonnesTaches);
 

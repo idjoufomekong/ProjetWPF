@@ -29,10 +29,10 @@
 
 		<!-- Boutons de commandes -->
 		<StackPanel>
-			<Button>
+            <Button Command="{Binding CmdTachesProd}">
 				<StackPanel Orientation="Horizontal">
 					<fa:IconBlock Icon="Tasks"/>
-					<TextBlock Text="Ecran 1"/>
+					<TextBlock Text="Tâches de production"/>
 				</StackPanel>
 			</Button>
 			<Button Command="{Binding CmdTachesAnnexes}">

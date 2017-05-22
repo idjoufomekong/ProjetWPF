@@ -33,26 +33,15 @@ namespace JobOverview.ViewModel
             }
         }
 
-        private ObservableCollection<Logiciel> _persTaches;
-        public ObservableCollection<Logiciel> PersonnesTaches
+        private ObservableCollection<Personne> _personnesTaches;
+        public ObservableCollection<Personne> PersonnesTaches
         {
-            get { return _persTaches; }
+            get { return _personnesTaches; }
             set
             {
-                SetProperty(ref _persTaches, value);
+                SetProperty(ref _personnesTaches, value);
             }
         }
-
-        private ObservableCollection<Logiciel> _persTachesApercu;
-        public ObservableCollection<Logiciel> PersonnesTachesApercu
-        {
-            get { return _persTachesApercu; }
-            set
-            {
-                SetProperty(ref _persTachesApercu, value);
-            }
-        }
-
         public Personne Utilisateur { get; set; }
 
 
@@ -129,6 +118,20 @@ namespace JobOverview.ViewModel
             }
         }
 
+        private ICommand _cmdTachesProd;
+        public ICommand CmdTachesProd
+        {
+            get
+            {
+                if (Logiciels == null || Logiciels.Count == 0)
+                    Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
+                if (PersonnesTaches == null || PersonnesTaches.Count == 0)
+                    PersonnesTaches = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTachesProd(Properties.Settings.Default.CodeDernierUtilisateur));
+                if (_cmdTachesProd == null)
+                    _cmdTachesProd = new RelayCommand(() => VMCourante = new VMTachesProd(Logiciels, PersonnesTaches));
+                return _cmdTachesProd;
+            }
+        }
         #endregion
 
     }

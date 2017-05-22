@@ -132,8 +132,8 @@ order by DateTravail";
             left outer join jo.Tache T on T.Login=P.Login
             left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-            where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and ( Manager=@manager OR P.Login=@manager )
-order by Login,Numero";
+            where  ( Manager=@manager OR P.Login=@manager )
+order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and
             //TODO Bien définir quelles tâches on veut exporter afin de peaufiner la requête
 
             var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
@@ -394,7 +394,7 @@ order by Login,Numero";
         /// <param name="version"></param>
         /// <param name="codeManager"></param>
         /// <returns></returns>
-        public static List<Personne> RecupererPersonnesTachesProd(string codeLogiciel, float version, string codeManager)
+        public static List<Personne> RecupererPersonnesTachesProd(/*string codeLogiciel, float version,*/ string codeManager)
         {
             List<Personne> listPers = new List<Entity.Personne>();
 
@@ -407,22 +407,23 @@ order by Login,Numero";
             left outer join jo.Tache T on T.Login=P.Login
             left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-            where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and ( Manager=@manager OR P.Login=@manager )
+            where  ( Manager=@manager OR P.Login=@manager )
 order by Login,Numero";
             //TODO Bien définir les champs afin de peaufiner la requête
+            //CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and
 
-            var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
-            var numVersion = new SqlParameter("@numVersion", DbType.Double);
+            //var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
+            //var numVersion = new SqlParameter("@numVersion", DbType.Double);
             var codeMng = new SqlParameter("@manager", DbType.Double);
-            codeLog.Value = codeLogiciel;
-            numVersion.Value = version;
+            //codeLog.Value = codeLogiciel;
+            //numVersion.Value = version;
             codeMng.Value = codeManager;
 
             using (var connect = new SqlConnection(connectString))
             {
                 var command = new SqlCommand(queryStringPersonne, connect);
-                command.Parameters.Add(codeLog);
-                command.Parameters.Add(numVersion);
+                //command.Parameters.Add(codeLog);
+                //command.Parameters.Add(numVersion);
                 command.Parameters.Add(codeMng);
                 connect.Open();
 

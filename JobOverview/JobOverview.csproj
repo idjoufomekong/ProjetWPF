@@ -74,6 +74,7 @@
     <Compile Include="ViewModel\VMProgressBar.cs" />
     <Compile Include="ViewModel\VMSaisieTemps.cs" />
     <Compile Include="ViewModel\VMTachesAnnexes.cs" />
+    <Compile Include="ViewModel\VMTachesProd.cs" />
     <Compile Include="View\UCButtonsBar.xaml.cs">
       <DependentUpon>UCButtonsBar.xaml</DependentUpon>
     </Compile>

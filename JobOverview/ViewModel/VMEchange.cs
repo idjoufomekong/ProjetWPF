@@ -87,6 +87,7 @@ namespace JobOverview.ViewModel
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
             var t = new ObservableCollection<TacheApercu>(DALTache.RecupererTachesApercu(LogicielCourant.CodeLogiciel,
                 VersionCourante.NumVersion, _userCourant));
+
             //Chargement du DataContext
             TachesApercu.Clear();
             foreach (var a in t)
@@ -102,6 +103,18 @@ namespace JobOverview.ViewModel
             PersonnesTaches = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
                 VersionCourante.NumVersion, _userCourant);
             //DALEchange.ExporterXML(PersonnesTaches);
+
+            //Récupération de la liste et sélection des tâches en fonction de la version
+            //var listTache = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
+            //    VersionCourante.NumVersion, _userCourant);
+            //var listCourante = new List<Personne>();
+            foreach (var b in PersonnesTaches)
+            {
+
+                var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
+                && (x.CodeLogiciel == LogicielCourant.CodeLogiciel)).ToList();
+                b.TachesProd = p;
+            }
 
             SaveFileDialog dos = new SaveFileDialog();
             dos.Filter = "XML Files (*.xml)|*.xml";

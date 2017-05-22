@@ -16,15 +16,15 @@ namespace JobOverview.ViewModel
         #endregion
 
         #region Propriétés
-        public ObservableCollection<Personne> Personnes { get; set; }
+        public ObservableCollection<Personne> Personnes { get;  private set; }
         #endregion
 
         public VMTachesAnnexes()
         {
-            // Récupération de l'utilisateur courant
+            // Récupération du code de l'utilisateur courant
             _usercourant = Properties.Settings.Default.CodeDernierUtilisateur;
 
-            Personnes = new ObservableCollection<Personne>(DALPersonne.RecupererPersonneConnecte(_usercourant));
+            Personnes = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTachesAnnexes(_usercourant));
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using JobOverview.ViewModel;
+﻿using JobOverview.Entity;
+using JobOverview.Model;
+using JobOverview.ViewModel;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace JobOverview.View
@@ -8,7 +12,9 @@ namespace JobOverview.View
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public MainWindow()
+        public static ObservableCollection<Personne> Personnes { get; private set; }
+        public Personne Utilisateur { get; set; }
+        public MainWindow()
 		{
 			InitializeComponent();
 			DataContext = new VMMain();
@@ -26,6 +32,9 @@ namespace JobOverview.View
 
 			// Si l'utilisateur annule, on ferme l'application
 			if (!res.Value) Close();
+
+            // Si l'utilisateur valide, on recharge la liste de personne
+            //if (res.Value) Personnes = DALPersonne.RecupererPersonneConnecte();
 		}
 	}
 }

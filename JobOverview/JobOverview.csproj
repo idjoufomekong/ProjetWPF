@@ -92,8 +92,8 @@
     <Compile Include="View\UCProgressBar.xaml.cs">
       <DependentUpon>UCProgressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UCSaisieTachesProd.xaml.cs">
-      <DependentUpon>UCSaisieTachesProd.xaml</DependentUpon>
+    <Compile Include="View\UCTachesProd.xaml.cs">
+      <DependentUpon>UCTachesProd.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UCSaisieTemps.xaml.cs">
       <DependentUpon>UCSaisieTemps.xaml</DependentUpon>
@@ -141,7 +141,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UCSaisieTachesProd.xaml">
+    <Page Include="View\UCTachesProd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

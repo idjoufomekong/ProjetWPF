@@ -38,7 +38,7 @@ select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.I
             left outer join jo.Tache T on T.Login=P.Login
             left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-            where Manager=@manager OR P.Login=@manager 
+            where (Manager=@manager OR P.Login=@manager ) and annexe=1
 order by DateTravail"; 
             
             //TODO: Epurer la requête et retirer les champs inutiles
@@ -115,6 +115,7 @@ order by DateTravail";
         /// Sélection des membres de l'équipe du manager connecté avec la liste des tâches et travaux
         /// pour tous les logiciels et toutes les versions
         /// !!!!!!!!!!!!!!!!!!!!!!! Prend les personnes sans tâches 
+        /// tâches prod et tâches annexes incluses
         /// </summary>
         /// <returns></returns>
         public static List<Personne> RecupererPersonnesTaches(string codeLogiciel, float version, string codeManager)
@@ -122,6 +123,8 @@ order by DateTravail";
             List<Personne> listPers = new List<Entity.Personne>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+
+            //On récupère d'abord les tâches de production
             string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,
             T.IdTache,T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
             TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
@@ -129,14 +132,15 @@ order by DateTravail";
             left outer join jo.Tache T on T.Login=P.Login
             left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-            where Manager=@manager OR P.Login=@manager";
+            where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and ( Manager=@manager OR P.Login=@manager )
+order by Login,Numero";
             //TODO Bien définir quelles tâches on veut exporter afin de peaufiner la requête
 
-            //var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
-            //var numVersion = new SqlParameter("@numVersion", DbType.Double);
-            //codeLog.Value = codeLogiciel;
-            //numVersion.Value = version;
+            var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
+            var numVersion = new SqlParameter("@numVersion", DbType.Double);
             var codeMng = new SqlParameter("@manager", DbType.Double);
+            codeLog.Value = codeLogiciel;
+            numVersion.Value = version;
             codeMng.Value = codeManager;
             //TODO: Mettre à jour les paramètres de la méthode
 
@@ -144,8 +148,8 @@ order by DateTravail";
             {
                 //Récupération liste des tâches de production
                 var command = new SqlCommand(queryStringPersonne, connect);
-                //command.Parameters.Add(codeLog);
-                //command.Parameters.Add(numVersion);
+                command.Parameters.Add(codeLog);
+                command.Parameters.Add(numVersion);
                 command.Parameters.Add(codeMng);
                 connect.Open();
 
@@ -246,6 +250,7 @@ order by DateTravail";
                 }
             }
         }
+        //TODO: Dans aperçuliste tâche, retirer les champs version et logiciel de la vue???
 
         /// <summary>
         /// Lecture du retour de la requête SQL de sélection des personnes et de la liste des tâches de production
@@ -265,7 +270,6 @@ order by DateTravail";
                 pers.CodeMetier = (string)reader["CodeMetier"];
 
                 pers.TachesProd = new List<TacheProd>();
-                pers.TachesAnnexes = new List<Tache>();
 
                 listPers.Add(pers);
             }
@@ -314,6 +318,132 @@ order by DateTravail";
                     tache.TravauxProd.Add(tra);
                 }
             }
+        }
+        /// <summary>
+        /// Récupère la liste des tâches annexes des memebres de l'équipe du manager connecté
+        /// </summary>
+        /// <param name="codeManager">Manager connecté</param>
+        /// <returns></returns>
+        public static List<Personne> RecupererPersonnesTachesAnnexes(string codeManager)
+        {
+            List<Personne> listPers = new List<Entity.Personne>();
+
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+
+            //On récupère d'abord les membres de l'équipe du manager connecté
+            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager
+            from jo.Personne P
+            where Manager=@manager OR P.Login=@manager";
+
+            var codeMng = new SqlParameter("@manager", DbType.Double);
+            codeMng.Value = codeManager;
+
+            using (var connect = new SqlConnection(connectString))
+            {
+                //Récupération liste des tâches de production
+                var command = new SqlCommand(queryStringPersonne, connect);
+                command.Parameters.Add(codeMng);
+                connect.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        RecupererPersonneTachesAnnexesFromDataReader(listPers, reader);
+                    }
+                }
+                //Récupération de la liste des tâches annexes pour toutes les personnes de la liste remplie
+                foreach (var p in listPers)
+                {
+                    p.TachesAnnexes = RecupererTachesAnnexes(p.CodePersonne, connect);
+                }
+                //Au lieu de garder les listes vides, je les rends nulles
+                foreach (var m in listPers)
+                {
+                    if (m.TachesAnnexes.Count == 0)
+                        m.TachesAnnexes = null;
+                }
+            }
+
+            return listPers;
+        }
+
+        /// <summary>
+        /// Chargement de l'objet Personnes à partir du reader envoyé par la méthode de sélection des tâches annexes
+        /// </summary>
+        /// <param name="listPers"></param>
+        /// <param name="reader"></param>
+        private static void RecupererPersonneTachesAnnexesFromDataReader(List<Personne> listPers, SqlDataReader reader)
+        {
+            
+                Personne pers = new Personne();
+
+                pers.CodePersonne = (string)reader["Login"];
+                pers.NomPrenom = (string)reader["NomComplet"];
+                pers.CodeMetier = (string)reader["CodeMetier"];
+
+                pers.TachesAnnexes = new List<Tache>();
+
+                listPers.Add(pers);
+        }
+
+        /// <summary>
+        /// Retourne la liste des personnes avec les tâches de production uniquement
+        /// </summary>
+        /// <param name="codeLogiciel"></param>
+        /// <param name="version"></param>
+        /// <param name="codeManager"></param>
+        /// <returns></returns>
+        public static List<Personne> RecupererPersonnesTachesProd(string codeLogiciel, float version, string codeManager)
+        {
+            List<Personne> listPers = new List<Entity.Personne>();
+
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+
+            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,
+            T.IdTache,T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
+            TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
+            from jo.Personne P
+            left outer join jo.Tache T on T.Login=P.Login
+            left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
+            left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
+            where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and ( Manager=@manager OR P.Login=@manager )
+order by Login,Numero";
+            //TODO Bien définir les champs afin de peaufiner la requête
+
+            var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
+            var numVersion = new SqlParameter("@numVersion", DbType.Double);
+            var codeMng = new SqlParameter("@manager", DbType.Double);
+            codeLog.Value = codeLogiciel;
+            numVersion.Value = version;
+            codeMng.Value = codeManager;
+
+            using (var connect = new SqlConnection(connectString))
+            {
+                var command = new SqlCommand(queryStringPersonne, connect);
+                command.Parameters.Add(codeLog);
+                command.Parameters.Add(numVersion);
+                command.Parameters.Add(codeMng);
+                connect.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        RecupererPersonneTachesProdFromDataReader(listPers, reader);
+                    }
+                }
+                
+                foreach (var m in listPers)
+                {
+                    if (m.TachesProd.Count == 0)
+                        m.TachesProd = null;
+                    //if (m.TachesAnnexes!=null && m.TachesAnnexes.Count == 0)
+                    //    m.TachesAnnexes = null;
+                }
+            }
+
+            return listPers;
         }
     }
 }

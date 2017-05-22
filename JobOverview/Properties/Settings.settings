@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="CodeDernierUtilisateur" Type="System.String" Scope="User">
-      <Value Profile="(Default)">BNORMAND</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Manager" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

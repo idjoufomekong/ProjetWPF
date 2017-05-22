@@ -13,7 +13,6 @@ namespace JobOverview.View
 	public partial class MainWindow : Window
 	{
         public static ObservableCollection<Personne> Personnes { get; private set; }
-        public Personne Utilisateur { get; set; }
         public MainWindow()
 		{
 			InitializeComponent();
@@ -32,9 +31,6 @@ namespace JobOverview.View
 
 			// Si l'utilisateur annule, on ferme l'application
 			if (!res.Value) Close();
-
-            // Si l'utilisateur valide, on recharge la liste de personne
-            //if (res.Value) Personnes = DALPersonne.RecupererPersonneConnecte();
 		}
 	}
 }

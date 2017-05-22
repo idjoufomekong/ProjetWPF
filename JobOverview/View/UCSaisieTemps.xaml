@@ -50,12 +50,13 @@
     </UserControl.Resources>
     <DockPanel>
         <!-- DatePicker + Combobox + Compteur -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" DataContext="{Binding Path=Logiciels}">
-            <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" BorderThickness="0"/>
-            <Label Content="Logiciel"/>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" >
+            <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" BorderThickness="0" VerticalAlignment="Center"/>
+            <local:UCLogicielVersion/>
+            <!--<Label Content="Logiciel"/>
             <ComboBox ItemsSource="{Binding}" DisplayMemberPath="NomLogiciel" IsSynchronizedWithCurrentItem="True"/>
             <Label Content="Version"/>
-            <ComboBox ItemsSource="{Binding Path=Versions}" DisplayMemberPath="NumVersion"/>
+            <ComboBox ItemsSource="{Binding Path=Versions}" DisplayMemberPath="NumVersion"/>-->
             <TextBlock Text="Heure(s) restante(s) :" Margin="10,5,0,5"/>
             <TextBlock Text="{Binding Path=HeureRestante}" Margin="5"/>
         </StackPanel>

@@ -6,7 +6,7 @@
 		  xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:JobOverview"
         mc:Ignorable="d"
-       Title="Job Overview" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+       Title="Job Overview" Height="600" Width="900" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<!-- DataTemplates pour les différents types de vues-modèles -->
 		<Style TargetType="Button">

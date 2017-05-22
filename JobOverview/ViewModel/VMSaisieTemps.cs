@@ -46,7 +46,7 @@ namespace JobOverview.ViewModel
             }
         }
 
-        private DateTime _dateSelectionee;
+        private DateTime _dateSelectionee = DateTime.Today;
         public DateTime DateSelectionnee {
             get
             {
@@ -63,39 +63,47 @@ namespace JobOverview.ViewModel
 
         public VMSaisieTemps(ObservableCollection<Logiciel> LogicielsVMMain)
         {
+            Utilisateur = (DALPersonne.RecupererPersonneConnecte(
+               Properties.Settings.Default.CodeDernierUtilisateur)).FirstOrDefault();
             Utilisateur = (DALTache.RecupererPersonnesTachesProd(Utilisateur.CodePersonne)).FirstOrDefault();
+            //Utilisateur.TachesAnnexes = (DALTache.RecupererPersonnesTachesAnnexes(Utilisateur.CodePersonne));
             Logiciels = LogicielsVMMain;
         }
 
         private void AffichTacheProd(float numVersion, DateTime dateSelectionnee, string nomLogiciel)
         {
             TachesProd = new ObservableCollection<TacheProd>();
-            var p = (Utilisateur.TachesProd.Where(tp => tp.CodeLogiciel == nomLogiciel && tp.CodeVersion == numVersion));
-            foreach (var t in p)
+            if (Utilisateur.TachesProd != null)
             {
-                foreach (Travail tr in t.TravauxProd)
+                var p = (Utilisateur.TachesProd.Where(tp => tp.CodeLogiciel == nomLogiciel && tp.CodeVersion == numVersion));
+                foreach (var t in p)
                 {
-                    if (tr.Date == dateSelectionnee)
+                    foreach (Travail tr in t.TravauxProd)
                     {
-                        TachesProd.Add(t);
-                        break;
+                        if (tr.Date == dateSelectionnee)
+                        {
+                            TachesProd.Add(t);
+                            break;
+                        }
                     }
                 }
-            }
-                
+            }   
         }
 
         private void AffichTacheAnnexe(DateTime dateSelectionnee)
         {
             TachesAnnexe = new ObservableCollection<Tache>();
-            foreach (var t in Utilisateur.TachesAnnexes)
+            if (Utilisateur.TachesAnnexes != null)
             {
-                foreach (Travail tr in t.TravauxAnnexes)
+                foreach (var t in Utilisateur.TachesAnnexes)
                 {
-                    if (tr.Date == dateSelectionnee)
+                    foreach (Travail tr in t.TravauxAnnexes)
                     {
-                        TachesAnnexe.Add(t);
-                        break;
+                        if (tr.Date == dateSelectionnee)
+                        {
+                            TachesAnnexe.Add(t);
+                            break;
+                        }
                     }
                 }
             }

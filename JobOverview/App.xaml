@@ -2,13 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:JobOverview"
-			xmlns:vw="clr-namespace:JobOverview.View"
-		    xmlns:vm="clr-namespace:JobOverview.ViewModel"
+			 xmlns:vw="clr-namespace:JobOverview.View"
+		     xmlns:vm="clr-namespace:JobOverview.ViewModel"
              StartupUri="View/MainWindow.xaml">
-	<Application.Resources>
+    <Application.Resources>
         <DataTemplate DataType="{x:Type vm:VMLogin}">
-			<vw:UCLogin/>
-		</DataTemplate>
+            <vw:UCLogin/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:VMEchange}">
             <vw:UCEchange/>
         </DataTemplate>

@@ -50,8 +50,9 @@
     </UserControl.Resources>
     <DockPanel>
         <!-- DatePicker + Combobox + Compteur -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" >
-            <DatePicker SelectedDate="{Binding Path=DateSelectionne}" 
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" 
+                    HorizontalAlignment="Left" Width="600" >
+            <DatePicker SelectedDate="{Binding Path=DateSelectionnee}" 
                         BorderThickness="0" VerticalAlignment="Center"/>
             <Label Content="Logiciel"/>
             <ComboBox ItemsSource="{Binding Path=Logiciels}" DisplayMemberPath="NomLogiciel" 
@@ -62,7 +63,7 @@
                       IsSynchronizedWithCurrentItem="True" Width="40"
                       Name="cb_Ver" SelectedValue="{Binding Path=NumVersion}"/>
             <TextBlock Text="Heure(s) restante(s) :" Margin="10,5,0,5"/>
-            <TextBlock Text="{Binding Path=HeureRestante}" Margin="5"/>
+            <TextBlock Text="{Binding Path=HeureRestante}" Margin="5" HorizontalAlignment="Right"/>
         </StackPanel>
         <!-- Bouton "Enregistrer" -->
         <Button DockPanel.Dock="Bottom" Content="Enregistrer" Grid.Row="2" HorizontalAlignment="Right"/>

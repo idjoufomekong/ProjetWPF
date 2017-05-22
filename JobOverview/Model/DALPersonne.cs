@@ -12,9 +12,9 @@ namespace JobOverview.Model
 {
     public class DALPersonne
     {
-        public static ObservableCollection<Personne> RecupererToutesPersonne()
+        public static List<Personne> RecupererToutesPersonne()
         {
-            ObservableCollection<Personne> listPersonne = new ObservableCollection<Personne>();
+            List<Personne> listPersonne = new List<Personne>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
@@ -41,9 +41,9 @@ namespace JobOverview.Model
             return listPersonne;
         }
 
-        public static ObservableCollection<Personne> RecupererPersonneConnecte(string personneConnecte)
+        public static List<Personne> RecupererPersonneConnecte(string personneConnecte)
         {
-            ObservableCollection<Personne> listPersonne = new ObservableCollection<Personne>();
+            List<Personne> listPersonne = new List<Personne>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 

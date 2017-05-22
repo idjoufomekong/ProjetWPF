@@ -1,4 +1,5 @@
 ﻿using JobOverview.Entity;
+using JobOverview.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,11 +13,12 @@ namespace JobOverview.ViewModel
 {
     public class VMMain : ViewModelBase
     {
+
         private ObservableCollection<Logiciel> _logiciel;
         public ObservableCollection<Logiciel> Logiciels
         {
             get { return _logiciel; }
-            private set
+            set
             {
                 SetProperty(ref _logiciel, value);
             }
@@ -25,11 +27,15 @@ namespace JobOverview.ViewModel
         public ObservableCollection<Personne> Personnes
         {
             get { return _personnes; }
-            private set
+            set
             {
                 SetProperty(ref _personnes, value);
             }
         }
+
+        public Personne Utilisateur { get; set; }
+
+
         // Vue-modèle courante sur laquelle est liées le ContentControl
         // de la zone principale
         private ViewModelBase _VMCourante;
@@ -70,8 +76,10 @@ namespace JobOverview.ViewModel
         {
             get
             {
+                if (Logiciels == null || Logiciels.Count == 0 )
+                    Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
                 if (_cmdSaisieTemps == null)
-                    _cmdSaisieTemps = new RelayCommand(() => VMCourante = new VMSaisieTemps());
+                    _cmdSaisieTemps = new RelayCommand(() => VMCourante = new VMSaisieTemps(Logiciels));
                 return _cmdSaisieTemps;
             }
         }

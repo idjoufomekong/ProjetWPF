@@ -10,14 +10,6 @@ namespace JobOverview.Entity
     class Listes
     {
         private List<Personne> _personnes;
-        public List<Personne> Personnes
-        {
-            get
-            {
-                if ( _personne == null)
-                    Personnes = DALPersonne.
-            }
-            set;
-        }
+      
     }
 }

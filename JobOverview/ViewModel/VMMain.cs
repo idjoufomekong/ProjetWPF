@@ -45,16 +45,7 @@ namespace JobOverview.ViewModel
             }
         }
 
-        private ICommand _cmdSaisieTemps;
-        public ICommand CmdSaisieTemps
-        {
-            get
-            {
-                if (_cmdSaisieTemps == null)
-                    _cmdSaisieTemps = new RelayCommand(() => VMCourante = new VMSaisieTemps());
-                return _cmdSaisieTemps;
-            }
-        }
+       
         #endregion
 
     }

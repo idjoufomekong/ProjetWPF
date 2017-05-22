@@ -73,6 +73,9 @@
     <Compile Include="Model\DALTache.cs" />
     <Compile Include="ViewModel\VMEchange.cs" />
     <Compile Include="ViewModel\VMSaisieTemps.cs" />
+    <Compile Include="View\ModalProgress.xaml.cs">
+      <DependentUpon>ModalProgress.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\ModalProgress.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\ProgressDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -12,10 +12,7 @@ namespace JobOverview.ViewModel
     public class VMSaisieTemps
     {
 
-        public VMSaisieTemps()
-        {
-            if (VMLogin.Personnes == null)
-        }
+       
     }
 
 }

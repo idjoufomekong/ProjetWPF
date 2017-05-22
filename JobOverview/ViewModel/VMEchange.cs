@@ -96,6 +96,11 @@ namespace JobOverview.ViewModel
             {
                 TachesApercu.Add(a);
             }
+            var test = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTachesProd(LogicielCourant.CodeLogiciel,
+                VersionCourante.NumVersion, _userCourant));
+
+            var test1 = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
+                VersionCourante.NumVersion, _userCourant));
         }
 
         private void Exporter()

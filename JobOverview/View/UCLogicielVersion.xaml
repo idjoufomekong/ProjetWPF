@@ -11,12 +11,13 @@
             <Label Content="Logiciel"/>
             <ComboBox Name="cbLogiciels" ItemsSource="{Binding Logiciels}" 
                       DisplayMemberPath="NomLogiciel" SelectedValuePath="CodeLogiciel"
-            IsSynchronizedWithCurrentItem="True" Width="110"
-                      />
+                      IsSynchronizedWithCurrentItem="True" Width="110"
+                      SelectedIndex="0"/>
             <Label Content="Version"/>
             <ComboBox Name="cbVersions" ItemsSource="{Binding Logiciels/Versions}" 
                       DisplayMemberPath="NumVersion" SelectedValuePath="NumVersion"
-                      IsSynchronizedWithCurrentItem="True" MaxWidth="50"/>
+                      IsSynchronizedWithCurrentItem="True" MaxWidth="50"
+                      SelectedIndex="0"/>
         </StackPanel>
     </Grid>
 </UserControl>

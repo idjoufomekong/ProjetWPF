@@ -44,7 +44,16 @@
                 </ListView.View>
             </ListView>
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
-                <ListView ></ListView>
+                <ListView ItemsSource="{Binding PersonnesTachesProd/TachesProd}">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="True">
+                            <GridViewColumn Header="Numéro" DisplayMemberBinding="{Binding Path=NumTache }" />
+                            <GridViewColumn Header="Libellé" DisplayMemberBinding="{Binding Path=NomTache }" />
+                            <GridViewColumn Header="Temps travaillé (en h)"/>
+                            <GridViewColumn Header="Temps restant (en h)" DisplayMemberBinding="{Binding Path=DureeRestante }" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
                 <TextBox Text="Description"/>
                 <TextBox TextWrapping="Wrap" Text="DescriptionTâche"/>
             </StackPanel>

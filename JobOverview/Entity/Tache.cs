@@ -39,6 +39,7 @@ namespace JobOverview.Entity
         public float DureePrevue { get; set; }
         [XmlAttribute]
         public float DureeRestante { get; set; }
+        public float Tempstravaille { get; set; }
         [XmlAttribute]
         public string CodeLogiciel { get; set; }
         [XmlAttribute]

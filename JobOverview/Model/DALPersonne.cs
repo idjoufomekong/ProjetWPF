@@ -23,26 +23,15 @@ namespace JobOverview.Model
             List<Personne> listPers = new List<Entity.Personne>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
-            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,T.Libelle,T.CodeActivite,
-T.Description, T.Annexe,
-TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,
-TR.TauxProductivite
-from jo.Personne P
-left outer join jo.Tache T on T.Login=P.Login
-left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
-left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-where Manager=@manager
-UNION
-select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,T.Libelle,T.CodeActivite,
-T.Description, T.Annexe,
-TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,
-TR.TauxProductivite
-from jo.Personne P
-left outer join jo.Tache T on T.Login=P.Login
-left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
-left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
-where P.Login=@manager
-order by login, Numero";//TODO Bien définir quelles tâches on veut exporter afin de peaufiner la requête
+            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,
+            T.IdTache,T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
+            TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
+            from jo.Personne P
+            left outer join jo.Tache T on T.Login=P.Login
+            left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
+            left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
+            where Manager=@manager OR P.Login=@manager";
+            //TODO Bien définir quelles tâches on veut exporter afin de peaufiner la requête
 
             //var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
             //var numVersion = new SqlParameter("@numVersion", DbType.Double);
@@ -93,11 +82,11 @@ order by login, Numero";//TODO Bien définir quelles tâches on veut exporter af
         {
             List<Tache> listTachesAnnexe = new List<Tache>();
             string queryStringAnnexe = @"select T.IdTache,T.Libelle,T.CodeActivite,T.Description,TR.DateTravail,TR.Heures,
-TR.TauxProductivite, T.Annexe
-from jo.Tache T
-left outer join jo.Travail TR on TR.IdTache=T.IdTache
-where Annexe=1 and login=@codePersonne 
-order by IdTache";
+                                        TR.TauxProductivite, T.Annexe
+                                        from jo.Tache T
+                                        left outer join jo.Travail TR on TR.IdTache=T.IdTache
+                                        where Annexe=1 and login=@codePersonne 
+                                        order by IdTache";
 
             var personne = new SqlParameter("@codePersonne", DbType.String);
             personne.Value = codePersonne;

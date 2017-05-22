@@ -3,9 +3,11 @@ using JobOverview.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace JobOverview.ViewModel
 {
@@ -17,8 +19,21 @@ namespace JobOverview.ViewModel
 		public VMLogin()
 		{
 			// TODO : à remplacer par un appel à une méthode de DAL
-			Personnes = new ObservableCollection<Personne>();
-            Personnes = DALPersonne.RecupererToutesPersonne();
+			Personnes = DALPersonne.RecupererToutesPersonne();
 		}
-	}
+
+        public override ValidationResult Validate()
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(Personnes);
+            try
+            {
+                DALPersonne.SauvegardePropriete((Personne)view.CurrentItem);
+            }
+            catch (Exception)
+            {
+                return new ValidationResult(false, "Erreur lors de la connection à l'application!"); 
+            }
+            return new ValidationResult(true);
+        }
+    }
 }

@@ -25,7 +25,7 @@ namespace JobOverview.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("BNORMAND")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CodeDernierUtilisateur {
             get {
                 return ((string)(this["CodeDernierUtilisateur"]));

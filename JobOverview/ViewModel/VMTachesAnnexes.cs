@@ -17,6 +17,7 @@ namespace JobOverview.ViewModel
 
         #region Propriétés
         public ObservableCollection<Personne> Personnes { get;  private set; }
+        public ObservableCollection<Activite> ActivitesAnnexes { get; private set; }
         #endregion
 
         public VMTachesAnnexes()
@@ -25,6 +26,7 @@ namespace JobOverview.ViewModel
             _usercourant = Properties.Settings.Default.CodeDernierUtilisateur;
 
             Personnes = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTachesAnnexes(_usercourant));
+            ActivitesAnnexes = new ObservableCollection<Activite>(DALTache.RecupererActivitesAnnexes());
         }
     }
 }

@@ -12,7 +12,7 @@ namespace JobOverview.Model
     public class DALTache
     {
         //Liste tâches pour visualiser
-        public static List<TacheApercu> RecupererTachesApercu(string codeLogiciel,float version,string codeManager)
+        public static List<TacheApercu> RecupererTachesApercu(string codeLogiciel, float version, string codeManager)
         {
             List<TacheApercu> listTache = new List<TacheApercu>();
 
@@ -39,8 +39,8 @@ select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.I
             left outer join jo.TacheProd TP on T.IdTache=TP.IdTache
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
             where (Manager=@manager OR P.Login=@manager ) and annexe=1
-order by DateTravail"; 
-            
+order by DateTravail";
+
             //TODO: Epurer la requête et retirer les champs inutiles
 
             var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
@@ -375,16 +375,16 @@ order by Login,Numero";
         /// <param name="reader"></param>
         private static void RecupererPersonneTachesAnnexesFromDataReader(List<Personne> listPers, SqlDataReader reader)
         {
-            
-                Personne pers = new Personne();
 
-                pers.CodePersonne = (string)reader["Login"];
-                pers.NomPrenom = (string)reader["NomComplet"];
-                pers.CodeMetier = (string)reader["CodeMetier"];
+            Personne pers = new Personne();
 
-                pers.TachesAnnexes = new List<Tache>();
+            pers.CodePersonne = (string)reader["Login"];
+            pers.NomPrenom = (string)reader["NomComplet"];
+            pers.CodeMetier = (string)reader["CodeMetier"];
 
-                listPers.Add(pers);
+            pers.TachesAnnexes = new List<Tache>();
+
+            listPers.Add(pers);
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ order by Login,Numero";
                         RecupererPersonneTachesProdFromDataReader(listPers, reader);
                     }
                 }
-                
+
                 foreach (var m in listPers)
                 {
                     if (m.TachesProd.Count == 0)
@@ -444,6 +444,53 @@ order by Login,Numero";
             }
 
             return listPers;
+        }
+
+        /// <summary>
+        /// Retourne la liste des activités annexes
+        /// </summary>
+        /// <returns></returns>
+        public static List<Activite> RecupererActivitesAnnexes()
+        {
+            // Liste à retourner
+            var listActivites = new List<Activite>();
+
+            // Récupération de la chaîne de connexion
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+
+            // Ecriture de la requête
+            string req = @"select CodeActivite, Libelle
+                            from jo.Activite
+                            where Annexe = 1
+                            order by Libelle";
+
+            // Création d'une connexion à partir de la chaîne de connexion
+            using (var cnx = new SqlConnection(connectString))
+            {
+                // Création d'une commande à partir de la requête et de la connexion
+                var command = new SqlCommand(req, cnx);
+
+                // Ouverture de la connexion (elle sera fermée en sortant de l'instruction using)
+                cnx.Open();
+
+                // Exécution de la commande
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    // On parcourt le reader et on remplit la liste.
+                    while (reader.Read())
+                    {
+                        Activite act = new Activite();
+
+                        act.CodeActivite = (string)reader["CodeActivite"];
+                        act.NomActivite = (string)reader["Libelle"];
+
+                        listActivites.Add(act);
+                    }
+                }
+
+                // On retourne la liste obtenue
+                return listActivites;
+            }
         }
     }
 }

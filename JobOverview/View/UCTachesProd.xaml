@@ -18,7 +18,19 @@
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <local:UCLogicielVersion/>
+        <StackPanel Orientation="Horizontal" 
+                    Height="25">
+            <Label Content="Logiciel"/>
+            <ComboBox Name="cbLogiciels" ItemsSource="{Binding Logiciels}" 
+                      DisplayMemberPath="NomLogiciel" SelectedValuePath="CodeLogiciel"
+                      IsSynchronizedWithCurrentItem="True" Width="110"
+                      SelectedIndex="0" SelectedValue="{Binding Path=NomLogiciel}"/>
+            <Label Content="Version"/>
+            <ComboBox Name="cbVersions" ItemsSource="{Binding Logiciels/Versions}" 
+                      DisplayMemberPath="NumVersion" SelectedValuePath="NumVersion"
+                      IsSynchronizedWithCurrentItem="True" MaxWidth="50"
+                      SelectedIndex="0" SelectedValue="{Binding Path=NumVersion}"/>
+        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -44,18 +56,18 @@
                 </ListView.View>
             </ListView>
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
-                <ListView ItemsSource="{Binding PersonnesTachesProd/TachesProd}">
+                <ListView ItemsSource="{Binding PersonnesTachesProd/TachesProd}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
                             <GridViewColumn Header="Numéro" DisplayMemberBinding="{Binding Path=NumTache }" />
                             <GridViewColumn Header="Libellé" DisplayMemberBinding="{Binding Path=NomTache }" />
-                            <GridViewColumn Header="Temps travaillé (en h)"/>
+                            <GridViewColumn Header="Temps travaillé (en h)" DisplayMemberBinding="{Binding Path=Tempstravaille}"/>
                             <GridViewColumn Header="Temps restant (en h)" DisplayMemberBinding="{Binding Path=DureeRestante }" />
                         </GridView>
                     </ListView.View>
                 </ListView>
                 <TextBox Text="Description"/>
-                <TextBox TextWrapping="Wrap" Text="DescriptionTâche"/>
+                <TextBox TextWrapping="Wrap" Text="{Binding Path=TachesProd/Description}"/>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

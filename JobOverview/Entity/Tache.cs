@@ -39,7 +39,12 @@ namespace JobOverview.Entity
         public float DureePrevue { get; set; }
         [XmlAttribute]
         public float DureeRestante { get; set; }
-        public float Tempstravaille { get; set; }
+        public float Tempstravaille { get
+            {
+                if (TravauxProd != null)
+                    return TravauxProd.Sum(x => x.Heures);
+                else return 0;
+            } }
         [XmlAttribute]
         public string CodeLogiciel { get; set; }
         [XmlAttribute]

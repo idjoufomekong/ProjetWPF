@@ -13,8 +13,9 @@ namespace JobOverview.ViewModel
 {
 	public class VMLogin : ViewModelBase
 	{
+
+        public List<Personne> Personnes { get; set; }
 		// TODO : à remplacer par une vraie liste de personnes
-		public static ObservableCollection<Personne> Personnes { get; private set; }
 
 		public VMLogin()
 		{
@@ -27,7 +28,7 @@ namespace JobOverview.ViewModel
             ICollectionView view = CollectionViewSource.GetDefaultView(Personnes);
             try
             {
-                DALPersonne.SauvegardePropriete((Personne)view.CurrentItem);
+                DALPersonne.SauvegardePropriete((Personne)view.CurrentItem);             
             }
             catch (Exception)
             {

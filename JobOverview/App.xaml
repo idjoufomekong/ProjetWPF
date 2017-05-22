@@ -18,5 +18,8 @@
         <DataTemplate DataType="{x:Type vm:VMSaisieTemps}">
             <vw:UCSaisieTemps/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMProgressBar}">
+            <vw:UCProgressBar/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

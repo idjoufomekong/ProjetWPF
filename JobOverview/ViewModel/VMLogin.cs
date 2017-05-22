@@ -10,7 +10,7 @@ namespace JobOverview.ViewModel
 	public class VMLogin : ViewModelBase
 	{
 		// TODO : à remplacer par une vraie liste de personnes
-		public List<string> Personnes { get; private set; }
+		public static List<string> Personnes { get; private set; }
 
 		public VMLogin()
 		{

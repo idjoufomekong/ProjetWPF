@@ -41,6 +41,12 @@
 					<TextBlock Text="Ecran 2"/>
 				</StackPanel>
 			</Button>
+            <Button Command="{Binding CmdSaisieTemps}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:IconBlock Icon="ClockO" />
+                    <TextBlock Text="Saisie temps" />
+                </StackPanel>
+            </Button>
             <Button Command="{Binding CmdEchange}">
 				<StackPanel Orientation="Horizontal">
 					<fa:IconBlock Icon="ClockO"/>

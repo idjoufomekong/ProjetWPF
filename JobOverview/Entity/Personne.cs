@@ -13,6 +13,7 @@ namespace JobOverview.Entity
         public string CodePersonne { get; set; }
         public string NomPrenom { get; set; }
         public string CodeMetier { get; set; }
+
         public bool Manager { get; set; } = false;
         [XmlElement]
         public List<TacheProd> TachesProd { get; set; }

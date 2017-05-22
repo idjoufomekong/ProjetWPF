@@ -51,19 +51,23 @@
     <DockPanel>
         <!-- DatePicker + Combobox + Compteur -->
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" >
-            <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" BorderThickness="0" VerticalAlignment="Center"/>
-            <local:UCLogicielVersion/>
-            <!--<Label Content="Logiciel"/>
-            <ComboBox ItemsSource="{Binding}" DisplayMemberPath="NomLogiciel" IsSynchronizedWithCurrentItem="True"/>
+            <DatePicker SelectedDate="{Binding Path=DateSelectionne}" 
+                        BorderThickness="0" VerticalAlignment="Center"/>
+            <Label Content="Logiciel"/>
+            <ComboBox ItemsSource="{Binding Path=Logiciels}" DisplayMemberPath="NomLogiciel" 
+                      IsSynchronizedWithCurrentItem="True" Width="100"
+                      Name="cb_Log" SelectedValue="{Binding Path=NomLogiciel}"/>
             <Label Content="Version"/>
-            <ComboBox ItemsSource="{Binding Path=Versions}" DisplayMemberPath="NumVersion"/>-->
+            <ComboBox ItemsSource="{Binding Path=Logiciels/Versions}" DisplayMemberPath="NumVersion" 
+                      IsSynchronizedWithCurrentItem="True" Width="40"
+                      Name="cb_Ver" SelectedValue="{Binding Path=NumVersion}"/>
             <TextBlock Text="Heure(s) restante(s) :" Margin="10,5,0,5"/>
             <TextBlock Text="{Binding Path=HeureRestante}" Margin="5"/>
         </StackPanel>
         <!-- Bouton "Enregistrer" -->
         <Button DockPanel.Dock="Bottom" Content="Enregistrer" Grid.Row="2" HorizontalAlignment="Right"/>
         <!-- Listes + filtres -->
-        <Grid DataContext="{Binding Path=Utilisateur}">
+        <Grid>
             <!-- Création de 2 lignes et 2 colonnes-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -103,13 +107,13 @@
             </DockPanel>
             <!-- Colonne 1 : Liste des tâches annexes -->
             <Label Grid.Column="1" Content="Tâches annexes" Foreground="Blue"/>
-            <ListView Grid.Column="1" Grid.Row="1">
+            <ListView Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=TachesAnnexe}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Nom"/>
-                        <GridViewColumn Header="Activité"/>
-                        <GridViewColumn Header="Heure(s)"/>
-                        <GridViewColumn Header="Edition"/>
+                        <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>
+                        <GridViewColumn Header="Activité" DisplayMemberBinding="{Binding Path=CodeActivite}"/>
+                        <GridViewColumn Header="Heure(s)" CellTemplate="{StaticResource TextBoxGridView}"/>
+                        <GridViewColumn Header="Edition" CellTemplate="{StaticResource CheckBoxGridView}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

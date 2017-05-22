@@ -20,9 +20,9 @@ namespace JobOverview.ViewModel
         ProgressDialog pd;
 
         //Champs privés
-        Logiciel _logicielCourant;
-        Entity.Version _version;
-        string _userCourant;
+        private Logiciel _logicielCourant;
+        private Entity.Version _version;
+        private string _userCourant;
         #region Propriétés
 
         public List<Personne> PersonnesTaches { get; private set; }

@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Entity\Listes.cs" />
     <Compile Include="Entity\Logiciel.cs" />
     <Compile Include="Entity\Personne.cs" />
     <Compile Include="Entity\Tache.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Model\DALPersonne.cs" />
     <Compile Include="Model\DALTache.cs" />
     <Compile Include="ViewModel\VMEchange.cs" />
+    <Compile Include="ViewModel\VMSaisieTemps.cs" />
     <Compile Include="View\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>

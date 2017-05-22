@@ -26,7 +26,7 @@ namespace JobOverview.ViewModel
         #region Propriétés
 
         public List<Personne> PersonnesTaches { get; private set; }
-        public ObservableCollection<TacheBrut> TachesBrut { get; private set; }
+        public ObservableCollection<TacheApercu> TachesBrut { get; private set; }
         public ObservableCollection<Logiciel> Logiciels { get; private set; }
         public ObservableCollection<Entity.Version> Versions { get; set; }
         public Logiciel LogicielCourant
@@ -48,7 +48,7 @@ namespace JobOverview.ViewModel
             Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
 
             // J'instancie juste la liste pour initialiser le DataContext car la liste est chargée au clic du bouton
-            TachesBrut = new ObservableCollection<TacheBrut>();
+            TachesBrut = new ObservableCollection<TacheApercu>();
 
             _userCourant = Properties.Settings.Default.DernierUtilisateur;
         }
@@ -86,7 +86,7 @@ namespace JobOverview.ViewModel
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
-            var t = new ObservableCollection<TacheBrut>(DALTache.RecupererTachesBrut(LogicielCourant.CodeLogiciel,
+            var t = new ObservableCollection<TacheApercu>(DALTache.RecupererTachesBrut(LogicielCourant.CodeLogiciel,
                 VersionCourante.NumVersion, _userCourant));
             //Chargement du DataContext
             TachesBrut.Clear();

@@ -49,7 +49,7 @@ namespace JobOverview.Entity
         public List<Travail> TravauxProd { get; set; }
     }
 
-    public class TacheBrut
+    public class TacheApercu
     {
         public Guid IdTache { get; set; }
         public string NomTache { get; set; }

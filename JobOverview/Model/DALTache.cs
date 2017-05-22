@@ -12,9 +12,9 @@ namespace JobOverview.Model
     public class DALTache
     {
         //Liste tâches pour visualiser
-        public static List<TacheBrut> RecupererTachesBrut(string codeLogiciel,float version,string codeManager)
+        public static List<TacheApercu> RecupererTachesBrut(string codeLogiciel,float version,string codeManager)
         {
-            List<TacheBrut> listTache = new List<TacheBrut>();
+            List<TacheApercu> listTache = new List<TacheApercu>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
             //Sélection de toutes les tâches (production et annexes) avec leurs travaux et l'employé affecté
@@ -73,9 +73,9 @@ order by DateTravail desc,login, Numero"; //TODO: Epurer la requête et retirer 
             return listTache;
         }
 
-        private static void RecupererTachesBrutFromDataReader(List<TacheBrut> listTache, SqlDataReader reader)
+        private static void RecupererTachesBrutFromDataReader(List<TacheApercu> listTache, SqlDataReader reader)
         {
-            TacheBrut tache = new TacheBrut();
+            TacheApercu tache = new TacheApercu();
 
             if (reader["IdTache"] != DBNull.Value)
                 tache.IdTache = (Guid)reader["IdTache"];

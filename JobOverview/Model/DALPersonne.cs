@@ -49,7 +49,9 @@ namespace JobOverview.Model
 
             string queryString = @"select Login, Prenom+' '+Nom NomComplet from jo.Personne
                                     where login = @log or Manager=@log";
+
             var log = new SqlParameter("@log", DbType.String);
+            log.Value = personneConnecte;
 
             using (var connect = new SqlConnection(connectString))
             {
@@ -71,15 +73,14 @@ namespace JobOverview.Model
                 if (listPersonne.Count > 1)
                     listPersonne.Where(p => p.CodePersonne == personneConnecte).FirstOrDefault().Manager = true;
             }
-            SauvegardePropriete(listPersonne.Where(c => c.CodePersonne == personneConnecte).FirstOrDefault());
             return listPersonne;
         }
 
-        private static void SauvegardePropriete(Personne connecte)
+        public static void SauvegardePropriete(Personne connecte)
         {
             Properties.Settings.Default.CodeDernierUtilisateur = connecte.CodePersonne;
             Properties.Settings.Default.Manager = connecte.Manager;
-            Properties.Settings.Default.NomDernierUtilisateur = connecte.NomPrenom;
+            Properties.Settings.Default.Save();
         }
 
 

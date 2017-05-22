@@ -50,6 +50,7 @@ namespace JobOverview.Model
             string queryString = @"select Login, Prenom+' '+Nom NomComplet from jo.Personne
                                     where login = @log or Manager=@log";
             var log = new SqlParameter("@log", DbType.String);
+            log.Value = personneConnecte;
 
             using (var connect = new SqlConnection(connectString))
             {

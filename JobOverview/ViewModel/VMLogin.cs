@@ -14,12 +14,11 @@ namespace JobOverview.ViewModel
 	public class VMLogin : ViewModelBase
 	{
 
-        public ObservableCollection<Personne> Personnes { get; set; }
+        public List<Personne> Personnes { get; set; }
 
-		public VMLogin(ObservableCollection<Personne> VMMainToutesPersonnes)
+		public VMLogin()
 		{
-            //Personnes = DALPersonne.RecupererToutesPersonne();
-            Personnes = VMMainToutesPersonnes;
+            Personnes = DALPersonne.RecupererToutesPersonne();
 
         }
 

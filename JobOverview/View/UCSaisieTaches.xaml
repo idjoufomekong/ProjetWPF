@@ -12,6 +12,16 @@
             <Setter Property="Height" Value="20"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -20,50 +30,62 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="1">
                 <DockPanel VerticalAlignment="Center">
-                    <Button Content="Ajout" DockPanel.Dock="Right"/>
-                    <Button Content="Ajout" DockPanel.Dock="Right"/>
-                    <Button Content="Ajout" DockPanel.Dock="Right"/>
-                    <Button Content="Ajout" DockPanel.Dock="Right"/>
+                    <Button Content="Annul" DockPanel.Dock="Right" Command="{Binding CmdAnnuler}"/>
+                    <Button Content="Enr" DockPanel.Dock="Right" Command="{Binding CmdEnregistrer}"/>
+                    <Button Content="Supp" DockPanel.Dock="Right" Command="{Binding CmdSupprimer}"/>
+                    <Button Content="Ajout" DockPanel.Dock="Right" Command="{Binding CmdAjouter}"/>
                     <TextBlock Text="Liste des tâches récemment saisies" VerticalAlignment="Center"/>
                 </DockPanel>
-                <ListView></ListView>
+                <ListView ItemsSource="{Binding TachesProdAjoutees}"
+                      IsSynchronizedWithCurrentItem="True">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="True">
+                            <GridViewColumn Header="Libellé" DisplayMemberBinding="{Binding Path=NomTache }" />
+                            <GridViewColumn Header="Durée prévue" DisplayMemberBinding="{Binding Path=DureePrevue }" />
+                            <GridViewColumn Header="Durée restante estimée" DisplayMemberBinding="{Binding Path=DureeRestante }" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </StackPanel>
             <StackPanel >
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Personnes"/>
-                    <ComboBox/>
+                    <ComboBox ItemsSource="{Binding Personnes}" DisplayMemberPath="NomPrenom" SelectedValuePath="CodePersonne"
+                              IsSynchronizedWithCurrentItem="True"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Activité"/>
-                    <ComboBox/>
+                    <Label Content="Activité" />
+                    <ComboBox ItemsSource="{Binding Personnes/Activites}" DisplayMemberPath="NomActivite" SelectedValuePath="CodeActivite"
+                              IsSynchronizedWithCurrentItem="True"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Module"/>
-                    <ComboBox/>
+                    <ComboBox ItemsSource="{Binding Modules}" DisplayMemberPath="NomModule" SelectedValuePath="CodeModule"
+                              IsSynchronizedWithCurrentItem="True"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Libellé"/>
-                    <TextBox Text="lib"/>
+                    <TextBox Text="{Binding Libelle}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée prévue"/>
-                    <TextBox Text="prev"/>
+                    <TextBox Text="{Binding DureePrevue}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée restante"/>
-                    <TextBox Text="rest"/>
+                    <TextBox Text="{Binding DureeRestante}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1">
             <Label Content="Description"/>
-        <TextBox TextWrapping="Wrap" Text="Desciption"/>
+            <TextBox TextWrapping="Wrap" Text="{Binding Description}"/>
         </StackPanel>
     </Grid>
 </UserControl>

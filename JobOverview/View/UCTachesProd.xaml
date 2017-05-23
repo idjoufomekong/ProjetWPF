@@ -44,15 +44,12 @@
             </Grid.RowDefinitions>
             <Label Content="Personnes"/>
             <DockPanel Grid.Column="1" VerticalAlignment="Center">
-                <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Selection}">
-                    <ComboBoxItem Content="En cours" Tag="En cours" />
-                    <ComboBoxItem Content="Terminées" Tag="Terminées" />
-                    <ComboBoxItem Content="Toutes" Tag="Toutes"/>
-                </ComboBox>
-                <CheckBox IsChecked="{Binding EnCours}" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" 
-                          Command="{Binding CmdChecker}" />
-                <CheckBox IsChecked="{Binding Termine}" Content="Terminées" DockPanel.Dock="Right" Margin="5" 
-                          VerticalAlignment="Center" Command="{Binding CmdChecker}"/>
+                <RadioButton Content="Toutes" Tag="T" Command="{Binding CmdChecker}" 
+                             CommandParameter="{Binding RelativeSource= {RelativeSource Self}, Path=Tag}" DockPanel.Dock="Right"/>
+                <RadioButton Content="Terminées" Tag="F"  Command="{Binding CmdChecker}" 
+                             CommandParameter="{Binding RelativeSource= {RelativeSource Self}, Path=Tag}" DockPanel.Dock="Right"/>
+                <RadioButton Content="En cours" Tag="EC" IsChecked="True" Command="{Binding CmdChecker}" 
+                             CommandParameter="{Binding RelativeSource= {RelativeSource Self}, Path=Tag}" DockPanel.Dock="Right"/>
                 <Label Content="Tâches de production" VerticalContentAlignment="Center"/>
             </DockPanel>
             <ListView Grid.Row="1" Margin="10"

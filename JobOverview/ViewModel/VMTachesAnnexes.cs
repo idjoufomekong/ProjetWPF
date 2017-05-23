@@ -53,7 +53,7 @@ namespace JobOverview.ViewModel
         }
         #endregion
 
-        private void ModifierTachesAnnexes()
+        private void ModifierTachesAnnexes(object obj)
         {
             // On récupère l'employé courant
             var empCourant = (Personne)CollectionViewSource.GetDefaultView(Personnes).CurrentItem;

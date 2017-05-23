@@ -19,12 +19,16 @@ namespace JobOverview.ViewModel
     public class VMSaisieTemps : ViewModelBase
     {
         public ObservableCollection<Logiciel> Logiciels { get; set; }
-        public ObservableCollection<TacheProd> TachesProd { get; set; } =
-        new ObservableCollection<TacheProd>();
-        public ObservableCollection<Tache> TachesAnnexe { get; set; } =
-        new ObservableCollection<Tache>();
+        public ObservableCollection<TacheApercu> TachesProd { get; set; } =
+        new ObservableCollection<TacheApercu>();
+        public ObservableCollection<TacheApercu> TachesAnnexe { get; set; } =
+        new ObservableCollection<TacheApercu>();
         public Personne Utilisateur { get; set; }
-        public int HeuresRestantes { get; set; }
+        private float _heuresRestante;
+        public float HeuresRestantes {
+            get { return _heuresRestante; }
+            set {  SetProperty(ref _heuresRestante, value); }
+        }
 
         private ICommand _cmdValider;
         public ICommand CmdValider
@@ -34,6 +38,17 @@ namespace JobOverview.ViewModel
                 if (_cmdValider == null)
                     _cmdValider = new RelayCommand(AfficherTaches,Activation);
                 return _cmdValider;
+            }
+        }
+
+        private ICommand _cmdTriTachProd;
+        public ICommand CmdTriTachProd
+        {
+            get
+            {
+                if (_cmdTriTachProd == null)
+                    _cmdTriTachProd = new RelayCommand(TrierTaches, Activation);
+                return _cmdTriTachProd;
             }
         }
 
@@ -48,7 +63,6 @@ namespace JobOverview.ViewModel
         {
             var selecLog = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             var selecVer = (Entity.Version)CollectionViewSource.GetDefaultView(selecLog.Versions).CurrentItem;
-            var selecDate = (DateTime)obj;
 
             TachesProd.Clear();
             TachesAnnexe.Clear();
@@ -60,7 +74,6 @@ namespace JobOverview.ViewModel
                 var triProd = Utilisateur.TachesProd.
                     Where(tp => tp.CodeLogiciel == selecLog.CodeLogiciel &&
                     tp.CodeVersion == selecVer.NumVersion).ToList();
-                var tot = triProd.Sum(c => c.TravauxProd.Count);
                 if (triProd != null)
                 {
                     foreach (var tp in triProd)
@@ -69,11 +82,19 @@ namespace JobOverview.ViewModel
                         {
                             foreach (var trP in tp.TravauxProd)
                             {
-                                if (trP.Date == selecDate)
+                                if (trP.Date == DateTime.Today)
                                 {
-                                    TachesProd.Add(tp);
-                                    break;
+                                    HeuresRestantes -= trP.Heures;
                                 }
+                                var tach = new TacheApercu();
+                                tach.Date = trP.Date;
+                                tach.DureePrevue = tp.DureePrevue;
+                                tach.DureeRestante = tp.DureeRestante;
+                                tach.NomTache = tp.NomTache;
+                                tach.IdTache = tp.IdTache;
+                                tach.Heures = trP.Heures;
+                                TachesProd.Add(tach);
+                                break;
                             }
                         }
                     }
@@ -92,16 +113,25 @@ namespace JobOverview.ViewModel
                         {
                             foreach (var trA in ta.TravauxAnnexes)
                             {
-                                if (trA.Date == selecDate)
+                                if (trA.Date == DateTime.Today)
                                 {
-                                    TachesAnnexe.Add(ta);
-                                    break;
+                                    HeuresRestantes -= trA.Heures;
                                 }
+                                    var tach = new TacheApercu();
+                                    tach.NomTache = ta.NomTache;
+                                    tach.IdTache = ta.IdTache;
+                                    tach.CodeActivite = ta.CodeActivite;
+                                    tach.Date = trA.Date;
+                                    tach.Heures = trA.Heures;
+                                    TachesAnnexe.Add(tach);
+                                    break;
                             }
                         }
                     }
                 }
             }
+            ICollectionView triage = CollectionViewSource.GetDefaultView(TachesProd);
+            triage.Filter = FiltreEnCours;
         }
 
         private bool Activation(object obj)
@@ -115,5 +145,38 @@ namespace JobOverview.ViewModel
             }
             return false;
         }
+
+        private void TrierTaches (object radioContent)
+        {
+            
+            AfficherTaches(new object());
+            ICollectionView triage = CollectionViewSource.GetDefaultView(TachesProd);
+            var choice = radioContent.ToString();
+            switch (choice)
+            {
+                case "F":
+                    triage.Filter = FiltreTerminee;
+                    break;
+                case "EC":
+                    triage.Filter = FiltreEnCours; 
+                    break;
+                case "T":
+                    triage.Filter = null;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private bool FiltreTerminee(object o)
+        {
+            return ((TacheApercu)o).DureeRestante == 0;
+        }
+
+        private bool FiltreEnCours(object o)
+        {
+            return ((TacheApercu)o).DureeRestante > 0;
+        }
+
     }
 }

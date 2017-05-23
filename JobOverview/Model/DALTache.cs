@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JobOverview.Entity;
+using System.Collections.ObjectModel;
 
 namespace JobOverview.Model
 {
@@ -269,7 +270,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 pers.NomPrenom = (string)reader["NomComplet"];
                 pers.CodeMetier = (string)reader["CodeMetier"];
 
-                pers.TachesProd = new List<TacheProd>();
+                pers.TachesProd = new ObservableCollection<TacheProd>();
 
                 listPers.Add(pers);
             }

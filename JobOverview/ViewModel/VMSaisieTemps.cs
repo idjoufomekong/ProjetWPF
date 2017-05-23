@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace JobOverview.ViewModel
 {
@@ -22,49 +24,18 @@ namespace JobOverview.ViewModel
         public ObservableCollection<Tache> TachesAnnexe { get; set; } =
         new ObservableCollection<Tache>();
         public Personne Utilisateur { get; set; }
-        private string _nomLogiciel;
-        public string NomLogiciel
+        public int HeuresRestantes { get; set; }
+
+        private ICommand _cmdValider;
+        public ICommand CmdValider
         {
             get
             {
-                return _nomLogiciel;
-            }
-            set
-            {
-                _nomLogiciel = value;
-                AffichTacheProd(NumVersion, DateSelectionnee, value);
+                if (_cmdValider == null)
+                    _cmdValider = new RelayCommand(AfficherTaches,Activation);
+                return _cmdValider;
             }
         }
-
-        private float _numVersion;
-        public float NumVersion
-        {
-            get
-            {
-                return _numVersion;
-            }
-            set
-            {
-                _numVersion = value;
-                AffichTacheProd(value, DateSelectionnee, NomLogiciel);
-            }
-        }
-
-        private DateTime _dateSelectionee = new DateTime(2016, 01, 01);
-        public DateTime DateSelectionnee
-        {
-            get
-            {
-                return _dateSelectionee;
-            }
-            set
-            {
-                _dateSelectionee = value;
-                AffichTacheProd(NumVersion, value, NomLogiciel);
-                AffichTacheAnnexe(value);
-            }
-        }
-
 
         public VMSaisieTemps(ObservableCollection<Logiciel> LogicielsVMMain)
         {
@@ -73,46 +44,76 @@ namespace JobOverview.ViewModel
             Logiciels = LogicielsVMMain;
         }
 
-        private void AffichTacheProd(float numVersion, DateTime dateSelectionnee, string nomLogiciel)
+        private void AfficherTaches (object obj)
         {
+            var selecLog = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
+            var selecVer = (Entity.Version)CollectionViewSource.GetDefaultView(selecLog.Versions).CurrentItem;
+            var selecDate = (DateTime)obj;
+
             TachesProd.Clear();
+            TachesAnnexe.Clear();
+
+            HeuresRestantes = 8;
+
             if (Utilisateur.TachesProd != null)
             {
-                var p = (Utilisateur.TachesProd.Where(tp => tp.CodeLogiciel == nomLogiciel && tp.CodeVersion == numVersion)).ToList();
-                foreach (var t in p)
+                var triProd = Utilisateur.TachesProd.
+                    Where(tp => tp.CodeLogiciel == selecLog.CodeLogiciel &&
+                    tp.CodeVersion == selecVer.NumVersion).ToList();
+                var tot = triProd.Sum(c => c.TravauxProd.Count);
+                if (triProd != null)
                 {
-                    foreach (Travail tr in t.TravauxProd)
+                    foreach (var tp in triProd)
                     {
-                        if (tr.Date == dateSelectionnee)
+                        if (tp.TravauxProd != null)
                         {
-                            TachesProd.Add(t);
-                            break;
+                            foreach (var trP in tp.TravauxProd)
+                            {
+                                if (trP.Date == selecDate)
+                                {
+                                    TachesProd.Add(tp);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (Utilisateur.TachesAnnexes != null)
+            {
+                var triAnnex = Utilisateur.TachesAnnexes.ToList();
+
+                if (triAnnex != null)
+                {
+                    foreach (var ta in triAnnex)
+                    {
+                        if (ta.TravauxAnnexes != null)
+                        {
+                            foreach (var trA in ta.TravauxAnnexes)
+                            {
+                                if (trA.Date == selecDate)
+                                {
+                                    TachesAnnexe.Add(ta);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-        private void AffichTacheAnnexe(DateTime dateSelectionnee)
+        private bool Activation(object obj)
         {
-            TachesAnnexe.Clear();
-            if (Utilisateur.TachesAnnexes != null)
+            var selecLog = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
+            if (selecLog != null)
             {
-                foreach (var t in Utilisateur.TachesAnnexes)
-                {
-                    if (t.TravauxAnnexes != null)
-                    {
-                        foreach (Travail tr in t.TravauxAnnexes)
-                        {
-                            if (tr.Date == dateSelectionnee)
-                            {
-                                TachesAnnexe.Add(t);
-                                break;
-                            }
-                        }
-                    }
-                }
+                var selecVer = (Entity.Version)CollectionViewSource.GetDefaultView(selecLog.Versions).CurrentItem;
+                if (selecVer != null)
+                    return true;
             }
+            return false;
         }
     }
 }

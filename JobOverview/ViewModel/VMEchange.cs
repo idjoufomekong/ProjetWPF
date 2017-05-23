@@ -81,7 +81,7 @@ namespace JobOverview.ViewModel
         /// <summary>
         /// Charge la liste des personnes et tâches en brut pour le logiciel la version sélectionnés
         /// </summary>
-        private void Charger()
+        private void Charger(object obj)
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
@@ -96,7 +96,7 @@ namespace JobOverview.ViewModel
             }
         }
 
-        private void Exporter()
+        private void Exporter(object obj)
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;

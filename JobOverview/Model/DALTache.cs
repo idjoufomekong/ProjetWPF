@@ -240,7 +240,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 //Récupération des travaux de production
                 if (reader["DateTravail"] != DBNull.Value)
                 {
-                    tache.TravauxAnnexes = new List<Travail>();
+                    if (tache.TravauxAnnexes == null)
+                        tache.TravauxAnnexes = new List<Travail>();
                     Travail tra = new Travail();
 
                     tra.Date = (DateTime)reader["DateTravail"];
@@ -311,7 +312,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 //Récupération des travaux de production
                 if (reader["DateTravail"] != DBNull.Value)
                 {
-                    tache.TravauxProd = new List<Travail>();
+                    if (tache.TravauxProd == null)
+                        tache.TravauxProd = new List<Travail>();
                     Travail tra = new Travail();
 
                     tra.Date = (DateTime)reader["DateTravail"];
@@ -463,6 +465,10 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             // On complète la liste des tâches annexes de chaque employé
             foreach (var emp in listPers)
             {
+                // Il faut gérer le cas où la liste de tâche annexe de l'employé courant est vide.
+                if (emp.TachesAnnexes == null)
+                    emp.TachesAnnexes = new List<Tache>();
+
                 foreach (var act in listAnnexes)
                 {
                     var res = emp.TachesAnnexes.Where(a => a.CodeActivite == act.CodeActivite).FirstOrDefault();

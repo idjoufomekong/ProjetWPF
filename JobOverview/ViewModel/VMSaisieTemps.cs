@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Text.RegularExpressions;
 
 namespace JobOverview.ViewModel
 {
@@ -24,6 +25,14 @@ namespace JobOverview.ViewModel
         public ObservableCollection<TacheApercu> TachesAnnexe { get; set; } =
         new ObservableCollection<TacheApercu>();
         public Personne Utilisateur { get; set; }
+        public TacheApercu TacheCourante {
+            get
+            {
+                ICollectionView current = CollectionViewSource.GetDefaultView(TachesProd);
+                return (TacheApercu)current.CurrentItem;
+            }
+        }
+        public bool Choice { get; set; }
         private float _heuresRestante;
         public float HeuresRestantes {
             get { return _heuresRestante; }
@@ -130,8 +139,6 @@ namespace JobOverview.ViewModel
                     }
                 }
             }
-            ICollectionView triage = CollectionViewSource.GetDefaultView(TachesProd);
-            triage.Filter = FiltreEnCours;
         }
 
         private bool Activation(object obj)
@@ -146,13 +153,13 @@ namespace JobOverview.ViewModel
             return false;
         }
 
-        private void TrierTaches (object radioContent)
+        private void TrierTaches (object radioTag)
         {
             
             AfficherTaches(new object());
             ICollectionView triage = CollectionViewSource.GetDefaultView(TachesProd);
-            var choice = radioContent.ToString();
-            switch (choice)
+            var choix = radioTag.ToString();
+            switch (choix)
             {
                 case "F":
                     triage.Filter = FiltreTerminee;

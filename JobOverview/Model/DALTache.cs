@@ -288,6 +288,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 if ((pers.TachesProd.Count == 0) || (pers.TachesProd[pers.TachesProd.Count - 1].NumTache != numTache))
                 {
                     tache = new TacheProd();
+                    tache.IdTache = (Guid)reader["IdTache"];
                     tache.NumTache = (int)reader["Numero"];
                     tache.NomTache = (string)reader["Libelle"];
                     tache.Annexe = false;
@@ -493,6 +494,44 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
 
                 // On retourne la liste obtenue
                 return listActivites;
+            }
+        }
+
+        public static void SupprimerTacheProd(Guid id)
+        {
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+            string queryString1 = @"delete from jo.TacheProd where IdTache=@id ";
+            string queryString2 = @"delete from jo.Tache where IdTache=@id ";
+
+            var param1 = new SqlParameter("@id", DbType.Guid);
+            param1.Value = id;
+
+            var param2 = new SqlParameter("@id", DbType.Guid);
+            param2.Value = id;
+
+            using (var connect = new SqlConnection(connectString))
+            {
+                connect.Open();
+                SqlTransaction tran = connect.BeginTransaction();
+
+                try
+                {
+                    var command1 = new SqlCommand(queryString1, connect, tran);
+                    command1.Parameters.Add(param1);
+
+                    var command2 = new SqlCommand(queryString2, connect, tran);
+                    command2.Parameters.Add(param2);
+
+                    command1.ExecuteNonQuery();
+                    command2.ExecuteNonQuery();
+
+                    tran.Commit();
+                }
+                catch (Exception)
+                {
+                    tran.Rollback();
+                    throw;
+                }
             }
         }
     }

@@ -4,6 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Data;
+using System;
+using JobOverview.Model;
+using System.Windows;
+using System.Data.SqlClient;
+using JobOverview.View;
 
 namespace JobOverview.ViewModel
 {
@@ -15,6 +20,7 @@ namespace JobOverview.ViewModel
         private string _userCourant;
         private bool _enCours;
         private bool _termine;
+        private string _selection;
         private ObservableCollection<Personne> _listPersTachesProd;
         private Personne _personneCourante;
         #region Propriétés
@@ -28,6 +34,15 @@ namespace JobOverview.ViewModel
             get { return _enCours; }
             set { SetProperty(ref _enCours, value); }
         }
+        public string Selection
+        {
+            get { return _selection; }
+            set {  _selection= value;
+                Trier();
+            }
+        }
+
+
         public bool Termine
         {
             get { return _termine; }
@@ -120,8 +135,19 @@ namespace JobOverview.ViewModel
             get
             {
                 if (_cmdSupprimer == null)
-                    _cmdSupprimer = new RelayCommand(Supprimer);
+                    _cmdSupprimer = new RelayCommand(SupprimerTache);
                 return _cmdSupprimer;
+            }
+        }
+
+        private ICommand _cmdAjoutTachesProd;
+        public ICommand CmdAjoutTachesProd
+        {
+            get
+            {
+                if (_cmdAjoutTachesProd == null)
+                    _cmdAjoutTachesProd = new RelayCommand(AjouterTaches);
+                return _cmdAjoutTachesProd;
             }
         }
         #endregion
@@ -167,9 +193,22 @@ namespace JobOverview.ViewModel
         }
 
         //Suppression de la tâche sélectionnée
-        private void Supprimer()
+        private void SupprimerTache()
         {
             TacheProd t= (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
+            try
+            {
+            DALTache.SupprimerTacheProd(t.IdTache);
+
+            }
+            catch (SqlException e)
+            {
+                if(e.Number==547)
+                MessageBox.Show("Cette Tâche contient des heures de travail. Il n'est pas possible de la supprimer."
+                    + "\n" + "", "Attention", MessageBoxButton.OK);
+                else
+                    MessageBox.Show(e.Message + "\n" + "", "Attention", MessageBoxButton.OK);
+            }
         }
 
         //Gère l'affichage des tâches en cours
@@ -222,6 +261,44 @@ namespace JobOverview.ViewModel
             }
         }
 
+
+
+        private void Trier()
+        {
+            _personneCourante = (Personne)CollectionViewSource.GetDefaultView(PersonnesTachesProd).CurrentItem;
+            CollectionView vue = (CollectionView)CollectionViewSource.GetDefaultView(PersonnesTachesProd);
+            PersonnesTachesProd.Clear();
+            LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
+            VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
+            foreach (var a in _listPersTachesProd)
+            {
+                PersonnesTachesProd.Add(a);
+            }
+            vue.MoveCurrentTo(_personneCourante);
+            var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
+
+            if (b.TachesProd != null)
+            {
+
+                var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
+                && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
+                if (p != null)
+                    b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+            }
+            if (Selection== " En cours") {
+                if (b.TachesProd != null)
+                {
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
+                }
+            }
+            else if (Selection == "Terminées")
+            {
+                if (b.TachesProd != null)
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerTermine;
+            }
+            else { }
+        }
+
         private bool FiltrerEncours(object o)
         {
                 return ((TacheProd)o).DureeRestante > 0;
@@ -230,6 +307,15 @@ namespace JobOverview.ViewModel
         private bool FiltrerTermine(object o)
         {
                 return ((TacheProd)o).DureeRestante == 0;
+        }
+
+        private void AjouterTaches()
+        {
+            var dlg = new ModalWindow(new VMSaisieTache());
+            dlg.Title = "Saisie des tâches";
+            dlg.Height = 800; 
+            dlg.Width = 600;
+            bool? res = dlg.ShowDialog();
         }
         #endregion
     }

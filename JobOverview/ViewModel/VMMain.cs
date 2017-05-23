@@ -132,6 +132,8 @@ namespace JobOverview.ViewModel
                 return _cmdTachesProd;
             }
         }
+
+        
         #endregion
 
     }

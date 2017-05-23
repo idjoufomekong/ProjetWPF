@@ -44,6 +44,11 @@
             </Grid.RowDefinitions>
             <Label Content="Personnes"/>
             <DockPanel Grid.Column="1" VerticalAlignment="Center">
+                <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Selection}">
+                    <ComboBoxItem Content="En cours" Tag="En cours" />
+                    <ComboBoxItem Content="Terminées" Tag="Terminées" />
+                    <ComboBoxItem Content="Toutes" Tag="Toutes"/>
+                </ComboBox>
                 <CheckBox IsChecked="{Binding EnCours}" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" 
                           Command="{Binding CmdChecker}" />
                 <CheckBox IsChecked="{Binding Termine}" Content="Terminées" DockPanel.Dock="Right" Margin="5" 
@@ -77,7 +82,7 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Ajouter" Margin="5"/>
+            <Button Content="Ajouter" Margin="5" Command="{Binding CmdAjoutTachesProd}"/>
             <Button Content="Supprimer" Margin="5" Command="{Binding CmdSupprimer}"/>
         </StackPanel>
     </Grid>

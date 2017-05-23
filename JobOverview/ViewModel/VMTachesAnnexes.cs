@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -20,7 +21,6 @@ namespace JobOverview.ViewModel
 
         #region Propriétés
         public ObservableCollection<Personne> Personnes { get; private set; }
-        public ObservableCollection<Activite> ActivitesAnnexes { get; private set; }
         #endregion
 
         #region Constructeur
@@ -47,13 +47,18 @@ namespace JobOverview.ViewModel
             get
             {
                 if (_cmdEnregistrer == null)
-                    _cmdEnregistrer = new RelayCommand(ModifierTachesAnnexes);
+                    _cmdEnregistrer = new RelayCommand(EnregistrerTachesAnnexes);
                 return _cmdEnregistrer;
             }
         }
         #endregion
 
-        private void ModifierTachesAnnexes()
+        #region Méthode associée à la commande
+        /// <summary>
+        /// Ajoute ou supprime des tâches annexes
+        /// </summary>
+        /// <param name="obj"></param>
+        private void EnregistrerTachesAnnexes(object obj)
         {
             // On récupère l'employé courant
             var empCourant = (Personne)CollectionViewSource.GetDefaultView(Personnes).CurrentItem;
@@ -61,7 +66,7 @@ namespace JobOverview.ViewModel
             // Liste des tâches annexes de départ (soit avant toute modification)
             var listPers = DALTache.RecupererPersonnesTachesAnnexes(_usercourant);
             DALTache.RecupererPersonnesTachesAnnexesEtendues(listPers);
-            var listTachesDépart =listPers.Where(p => p.CodePersonne == empCourant.CodePersonne).FirstOrDefault().TachesAnnexes;
+            var listTachesDépart = listPers.Where(p => p.CodePersonne == empCourant.CodePersonne).FirstOrDefault().TachesAnnexes;
 
             // On compare la liste actuelle des tâches annexes de l'employé à celle de départ
             // Cela permet de détecter les changements effectués par l'utilisateur.
@@ -73,12 +78,33 @@ namespace JobOverview.ViewModel
                 // On ajoute ou supprimer une tâche annexe si l'assignation associée change de valeur
                 if (t.Assignation != assignationDépart)
                 {
-                    if(t.Assignation)
-                        DALTache.AjouterTacheAnnexe(empCourant.CodePersonne, t);
+                    if (t.Assignation)
+                        try
+                        {
+                            DALTache.AjouterTacheAnnexe(empCourant.CodePersonne, t);                        // Ajout
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Erreur");
+                        }
                     else
-                        DALTache.SupprimerTacheAnnexe(empCourant.CodePersonne, t.CodeActivite);
+                    {
+                        try
+                        {
+                            DALTache.SupprimerTacheAnnexe(empCourant.CodePersonne, t.CodeActivite);         // Suppression
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Erreur");
+                        }
+
+                        //TODO : [Gestion des tâches annexes] --> RAZ du champ description, améliorer la gestion de ce champ
+
+                        //TODO : [Gestion des tâches annexes] --> Le champ description est limité à 1000 caractères
+                    }
                 }
             }
         }
+        #endregion
     }
 }

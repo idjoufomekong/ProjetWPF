@@ -3,23 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:conv="clr-namespace:JobOverview"
+             xmlns:cv="clr-namespace:JobOverview"
              xmlns:local="clr-namespace:JobOverview.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
     <UserControl.Resources>
+        <!-- Convertisseurs -->
+        <cv:TravauxAnnexesToBoolConverter x:Key="TravauxAnnexesToBoolConverter"/>
+        <cv:TravauxAnnexesToColorBrushConverter x:Key="TravauxAnnexesToColorBrushConverter"/>
         <!-- Style appliqué aux boutons -->
         <Style TargetType="Button">
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
         </Style>
     </UserControl.Resources>
+
     <DockPanel >
         <!-- Bouton "Enregistrer" -->
         <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
-                Command="{Binding CmdEnregistrer}"/>
+                Command="{Binding CmdEnregistrer}" />
         <Grid>
-        <!--<Grid DataContext="{Binding Personnes}">-->
+            <!-- Création de 2 colonnes -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2*"/>
@@ -31,18 +36,31 @@
             </DockPanel>
             <DockPanel Grid.Column="1" Margin="10">
                 <Label Content="Tâches annexes" DockPanel.Dock="Top"/>
-                <!-- Description de la tâche annexe sélectionnée -->
-                <TextBlock DockPanel.Dock="Bottom" Margin="0,10,0,0"
-                           Text="{Binding Path=Personnes/TachesAnnexes/Description, StringFormat='Description de la tâche : {0}'}"/>
+                <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="Description de la tâche : "/>
+                    <!-- Description de la tâche annexe sélectionnée -->
+                    <TextBox VerticalAlignment="Center" TextWrapping="Wrap"
+                             Height="35"
+                             Text="{Binding Path=Personnes/TachesAnnexes/Description}" 
+                             IsEnabled="{Binding Path=Personnes/TachesAnnexes/TravauxAnnexes, Converter={StaticResource TravauxAnnexesToBoolConverter}}" />
+                </DockPanel>
                 <!-- Liste des tâches annexes -->
                 <ListView ItemsSource="{Binding Path=Personnes/TachesAnnexes}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
-                            <GridViewColumn Header="Activité annexe" DisplayMemberBinding="{Binding Path=NomTache}"/>
+                            <GridViewColumn Header="Activité annexe">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=NomTache}" 
+                                        Foreground="{Binding Path=TravauxAnnexes, Converter={StaticResource TravauxAnnexesToColorBrushConverter}}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Tâche dispo">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Path=Assignation}"/>
+                                        <CheckBox IsChecked="{Binding Path=Assignation}"
+                                                  IsEnabled="{Binding Path=TravauxAnnexes, Converter={StaticResource TravauxAnnexesToBoolConverter}}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

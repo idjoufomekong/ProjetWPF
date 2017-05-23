@@ -593,11 +593,13 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                     // Validation de la transaction si tout se passe bien.
                     tran.Commit();
                 }
-                catch (Exception)
+                catch (SqlException ex)
                 {
                     // Annulation de la transaction
                     tran.Rollback();
-                    throw;
+
+                    if (ex.Number == 8152)
+                        throw new Exception("Création impossible : le champ description d'une des tâches à créer comporte plus de 1000 caractères.", ex);
                 }
             }
         }
@@ -641,11 +643,14 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                     // Validation de la transaction si tout se passe bien.
                     tran.Commit();
                 }
-                catch (Exception)
+                catch (SqlException ex)
                 {
                     // Annulation de la transaction
                     tran.Rollback();
-                    throw;
+
+                    // Erreur liée au cas où du temps a été saisi sur la tâche à supprimer
+                    if (ex.Number == 547)
+                        throw new Exception("Suppression impossible : du temps est déjà saisi sur une des tâches à supprimer.", ex);
                 }
             }
         }

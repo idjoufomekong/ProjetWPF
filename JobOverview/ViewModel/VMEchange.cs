@@ -100,8 +100,7 @@ namespace JobOverview.ViewModel
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
-            PersonnesTaches = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
-                VersionCourante.NumVersion, _userCourant);
+            PersonnesTaches = DALTache.RecupererPersonnesTaches( _userCourant);
             //DALEchange.ExporterXML(PersonnesTaches);
 
             //Récupération de la liste et sélection des tâches en fonction de la version

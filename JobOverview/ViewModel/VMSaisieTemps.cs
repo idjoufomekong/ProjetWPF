@@ -63,10 +63,8 @@ namespace JobOverview.ViewModel
 
         public VMSaisieTemps(ObservableCollection<Logiciel> LogicielsVMMain)
         {
-            Utilisateur = (DALPersonne.RecupererPersonneConnecte(
+            Utilisateur = (DALTache.RecupererPersonnesTaches(
                Properties.Settings.Default.CodeDernierUtilisateur)).FirstOrDefault();
-            Utilisateur = (DALTache.RecupererPersonnesTachesProd(Utilisateur.CodePersonne)).FirstOrDefault();
-            //Utilisateur.TachesAnnexes = (DALTache.RecupererPersonnesTachesAnnexes(Utilisateur.CodePersonne));
             Logiciels = LogicielsVMMain;
         }
 

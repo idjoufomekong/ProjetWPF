@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JobOverview.Entity;
+using System.Collections.ObjectModel;
 
 namespace JobOverview.Model
 {
@@ -22,7 +23,7 @@ namespace JobOverview.Model
             //On récupère les 50 dernières modifications
             //Pour la version et le logiciel sélectionnés
             //Pour le manager connecté
-            string queryString = @"select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,
+            string queryString = @"select top(50) P.Login, P.Nom+' '+P.Prenom NomComplet,P.CodeMetier,P.Manager,T.IdTache,
             T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
             TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
             from jo.Personne P
@@ -31,7 +32,7 @@ namespace JobOverview.Model
             left outer join jo.Travail TR on  TR.IdTache=T.IdTache 
             where CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and ( Manager=@manager OR P.Login=@manager )
 UNION
-select top(50) P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,T.IdTache,
+select top(50) P.Login, P.Nom+' '+P.Prenom NomComplet,P.CodeMetier,P.Manager,T.IdTache,
             T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
             TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
             from jo.Personne P
@@ -118,14 +119,14 @@ order by DateTravail";
         /// tâches prod et tâches annexes incluses
         /// </summary>
         /// <returns></returns>
-        public static List<Personne> RecupererPersonnesTaches(string codeLogiciel, float version, string codeManager)
+        public static List<Personne> RecupererPersonnesTaches(/*string codeLogiciel, float version,*/ string codeManager)
         {
             List<Personne> listPers = new List<Entity.Personne>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
             //On récupère d'abord les tâches de production
-            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,
+            string queryStringPersonne = @"select P.Login, P.Nom+' '+P.Prenom NomComplet,P.CodeMetier,P.Manager,
             T.IdTache,T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
             TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
             from jo.Personne P
@@ -136,11 +137,11 @@ order by DateTravail";
 order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and
             //TODO Bien définir quelles tâches on veut exporter afin de peaufiner la requête
 
-            var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
-            var numVersion = new SqlParameter("@numVersion", DbType.Double);
+            //var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
+            //var numVersion = new SqlParameter("@numVersion", DbType.Double);
             var codeMng = new SqlParameter("@manager", DbType.Double);
-            codeLog.Value = codeLogiciel;
-            numVersion.Value = version;
+            //codeLog.Value = codeLogiciel;
+            //numVersion.Value = version;
             codeMng.Value = codeManager;
             //TODO: Mettre à jour les paramètres de la méthode
 
@@ -148,8 +149,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             {
                 //Récupération liste des tâches de production
                 var command = new SqlCommand(queryStringPersonne, connect);
-                command.Parameters.Add(codeLog);
-                command.Parameters.Add(numVersion);
+                //command.Parameters.Add(codeLog);
+                //command.Parameters.Add(numVersion);
                 command.Parameters.Add(codeMng);
                 connect.Open();
 
@@ -269,7 +270,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 pers.NomPrenom = (string)reader["NomComplet"];
                 pers.CodeMetier = (string)reader["CodeMetier"];
 
-                pers.TachesProd = new List<TacheProd>();
+                pers.TachesProd = new ObservableCollection<TacheProd>();
+
 
                 listPers.Add(pers);
             }
@@ -331,7 +333,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
             //On récupère d'abord les membres de l'équipe du manager connecté
-            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager
+            string queryStringPersonne = @"select P.Login, P.Nom+' '+P.Prenom NomComplet,P.CodeMetier,P.Manager
             from jo.Personne P
             where Manager=@manager OR P.Login=@manager";
 
@@ -400,7 +402,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
-            string queryStringPersonne = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,P.Manager,
+            string queryStringPersonne = @"select P.Login, P.Nom+' '+P.Prenom NomComplet,P.CodeMetier,P.Manager,
             T.IdTache,T.Libelle,T.CodeActivite,T.Description, T.Annexe,TP.Numero,TP.DureePrevue,TP.DureeRestanteEstimee,
             TP.CodeLogicielVersion,TP.CodeModule,TP.NumeroVersion,TR.DateTravail,TR.Heures,TR.TauxProductivite
             from jo.Personne P

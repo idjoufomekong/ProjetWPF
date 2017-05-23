@@ -112,7 +112,7 @@ namespace JobOverview.ViewModel
 
                 var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
                 && (x.CodeLogiciel == LogicielCourant.CodeLogiciel)).ToList();
-                b.TachesProd = p;
+                b.TachesProd = new ObservableCollection<Entity.TacheProd>(p);
             }
 
             SaveFileDialog dos = new SaveFileDialog();

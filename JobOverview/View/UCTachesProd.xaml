@@ -18,7 +18,21 @@
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <local:UCLogicielVersion/>
+        <StackPanel Orientation="Horizontal" 
+                    Height="25">
+            <Label Content="Logiciel"/>
+            <ComboBox Name="cbLogiciels" ItemsSource="{Binding Logiciels}" 
+                      DisplayMemberPath="NomLogiciel" SelectedValuePath="CodeLogiciel"
+                      IsSynchronizedWithCurrentItem="True" Width="110"
+                      SelectedIndex="0" SelectedValue="{Binding Path=NomLogiciel}"/>
+            <Label Content="Version"/>
+            <ComboBox Name="cbVersions" ItemsSource="{Binding Logiciels/Versions}" 
+                      DisplayMemberPath="NumVersion" SelectedValuePath="NumVersion"
+                      IsSynchronizedWithCurrentItem="True" MaxWidth="80"
+                      SelectedIndex="0" SelectedValue="{Binding Path=NumVersion}" Width="51"/>
+            <Button Content="Afficher"  
+                Margin="40,0" VerticalAlignment="Center" Command="{Binding CmdAfficher}"/>
+        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -30,8 +44,10 @@
             </Grid.RowDefinitions>
             <Label Content="Personnes"/>
             <DockPanel Grid.Column="1" VerticalAlignment="Center">
-                <CheckBox IsChecked="True" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" />
-                <CheckBox IsChecked="False" Content="Terminées" DockPanel.Dock="Right" Margin="5" VerticalAlignment="Center"/>
+                <CheckBox IsChecked="{Binding EnCours}" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" 
+                          Command="{Binding CmdChecker}" />
+                <CheckBox IsChecked="{Binding Termine}" Content="Terminées" DockPanel.Dock="Right" Margin="5" 
+                          VerticalAlignment="Center" Command="{Binding CmdChecker}"/>
                 <Label Content="Tâches de production" VerticalContentAlignment="Center"/>
             </DockPanel>
             <ListView Grid.Row="1" Margin="10"
@@ -40,13 +56,24 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn Header="Employé" DisplayMemberBinding="{Binding Path=NomPrenom }" />
+                        <GridViewColumn Header="Temps total réalisé" DisplayMemberBinding="{Binding Path=TotalRealise }" />
+                        <GridViewColumn Header="Temps total restant" DisplayMemberBinding="{Binding Path=TotalRestant }" />
                     </GridView>
                 </ListView.View>
             </ListView>
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
-                <ListView ></ListView>
+                <ListView ItemsSource="{Binding PersonnesTachesProd/TachesProd}" IsSynchronizedWithCurrentItem="True">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="True">
+                            <GridViewColumn Header="Numéro" DisplayMemberBinding="{Binding Path=NumTache }" />
+                            <GridViewColumn Header="Libellé" DisplayMemberBinding="{Binding Path=NomTache }" />
+                            <GridViewColumn Header="Temps travaillé (en h)" DisplayMemberBinding="{Binding Path=Tempstravaille}"/>
+                            <GridViewColumn Header="Temps restant (en h)" DisplayMemberBinding="{Binding Path=DureeRestante }" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
                 <TextBox Text="Description"/>
-                <TextBox TextWrapping="Wrap" Text="DescriptionTâche"/>
+                <TextBox TextWrapping="Wrap" Text="{Binding Path=TachesProd/Description}"/>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

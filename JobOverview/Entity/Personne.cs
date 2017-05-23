@@ -16,6 +16,24 @@ namespace JobOverview.Entity
         public string CodeMetier { get; set; }
 
         public bool Manager { get; set; } = false;
+        public float TotalRealise
+        {
+            get
+            {
+                if (TachesProd != null)
+                    return TachesProd.Sum(x => x.Tempstravaille);
+                else return 0;
+            }
+        }
+        public float TotalRestant
+        {
+            get
+            {
+                if (TachesProd != null)
+                    return TachesProd.Sum(x => x.DureeRestante);
+                else return 0;
+            }
+        }
         [XmlElement]
         public ObservableCollection<TacheProd> TachesProd { get; set; }
         [XmlElement]

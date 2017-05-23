@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JobOverview.Entity;
+using System.Collections.ObjectModel;
 
 namespace JobOverview.Model
 {
@@ -118,7 +119,7 @@ order by DateTravail";
         /// tâches prod et tâches annexes incluses
         /// </summary>
         /// <returns></returns>
-        public static List<Personne> RecupererPersonnesTaches(string codeLogiciel, float version, string codeManager)
+        public static List<Personne> RecupererPersonnesTaches(/*string codeLogiciel, float version,*/ string codeManager)
         {
             List<Personne> listPers = new List<Entity.Personne>();
 
@@ -136,11 +137,11 @@ order by DateTravail";
 order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@numVersion and
             //TODO Bien définir quelles tâches on veut exporter afin de peaufiner la requête
 
-            var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
-            var numVersion = new SqlParameter("@numVersion", DbType.Double);
+            //var codeLog = new SqlParameter("@codeLogiciel", DbType.String);
+            //var numVersion = new SqlParameter("@numVersion", DbType.Double);
             var codeMng = new SqlParameter("@manager", DbType.Double);
-            codeLog.Value = codeLogiciel;
-            numVersion.Value = version;
+            //codeLog.Value = codeLogiciel;
+            //numVersion.Value = version;
             codeMng.Value = codeManager;
             //TODO: Mettre à jour les paramètres de la méthode
 
@@ -148,8 +149,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             {
                 //Récupération liste des tâches de production
                 var command = new SqlCommand(queryStringPersonne, connect);
-                command.Parameters.Add(codeLog);
-                command.Parameters.Add(numVersion);
+                //command.Parameters.Add(codeLog);
+                //command.Parameters.Add(numVersion);
                 command.Parameters.Add(codeMng);
                 connect.Open();
 
@@ -227,7 +228,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                     tache.NomTache = (string)reader["Libelle"];
                     tache.Annexe = true;
                     tache.CodeActivite = (string)reader["CodeActivite"];
-                    tache.Description = (string)reader["Description"];
+                    tache.Description = reader["Description"].ToString();
 
                     listTache.Add(tache);
                 }
@@ -269,7 +270,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 pers.NomPrenom = (string)reader["NomComplet"];
                 pers.CodeMetier = (string)reader["CodeMetier"];
 
-                pers.TachesProd = new List<TacheProd>();
+                pers.TachesProd = new ObservableCollection<TacheProd>();
+
 
                 listPers.Add(pers);
             }

@@ -13,6 +13,6 @@
 			      ItemsSource="{Binding Path=Personnes}"
                   DisplayMemberPath="NomPrenom" SelectedValuePath="CodePersonne"
                   SelectedValue="{Binding Source={x:Static prop:Settings.Default}, Path=CodeDernierUtilisateur}"
-                  IsSynchronizedWithCurrentItem="True"/>
+                  IsSynchronizedWithCurrentItem="True" VerticalContentAlignment="Center"/>
 	</StackPanel>
 </UserControl>

@@ -16,6 +16,7 @@ namespace JobOverview.ViewModel
         private bool _enCours;
         private bool _termine;
         private ObservableCollection<Personne> _listPersTachesProd;
+        private Personne _personneCourante;
         #region Propriétés
 
         public List<Personne> PersonnesTaches { get; private set; }
@@ -43,6 +44,13 @@ namespace JobOverview.ViewModel
             set { SetProperty(ref _version, value); }
         }
 
+        public Personne PersonneCourante
+        {
+            get
+            {
+                return (Personne)CollectionViewSource.GetDefaultView(PersonnesTachesProd).CurrentItem;
+            }
+        }
         //Permettet de gérer l'affichage directement avec les listes
         //private string _nomLogiciel;
         //public string NomLogiciel
@@ -105,6 +113,17 @@ namespace JobOverview.ViewModel
                 return _cmdChecker;
             }
         }
+
+        private ICommand _cmdSupprimer;
+        public ICommand CmdSupprimer
+        {
+            get
+            {
+                if (_cmdSupprimer == null)
+                    _cmdSupprimer = new RelayCommand(Supprimer);
+                return _cmdSupprimer;
+            }
+        }
         #endregion
 
         #region Méthodes privées
@@ -119,6 +138,7 @@ namespace JobOverview.ViewModel
             //var listTache = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
             //    VersionCourante.NumVersion, _userCourant);
             //var listCourante = new List<Personne>();
+            PersonnesTachesProd.Clear();
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
 
@@ -138,94 +158,78 @@ namespace JobOverview.ViewModel
                 var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
                 && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
                 if (p!=null)
-                b.TachesProd = p.ToList();
+                b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
                 }
             }
+
+        }
+
+        //Suppression de la tâche sélectionnée
+        private void Supprimer()
+        {
+            TacheProd t= (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
         }
 
         //Gère l'affichage des tâches en cours
         private void TrierTachesTerminees()
         {
+            _personneCourante= (Personne)CollectionViewSource.GetDefaultView(PersonnesTachesProd).CurrentItem;
+            CollectionView vue = (CollectionView)CollectionViewSource.GetDefaultView(PersonnesTachesProd);
             PersonnesTachesProd.Clear();
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
+            foreach (var a in _listPersTachesProd)
+            {
+                PersonnesTachesProd.Add(a);
+            }
+            vue.MoveCurrentTo(_personneCourante);
+            var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
 
+                    if (b.TachesProd != null)
+                    {
+
+                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
+                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
+                        if (p != null)
+                        b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+                }
             if (EnCours && Termine)//Les 2 checkbox sont cochées, on affiche toutes les tâches de la personne
             {
-                foreach (var a in _listPersTachesProd)
-                {
-                    PersonnesTachesProd.Add(a);
-                }
-                //Sélection des tâches en fonction de la version et du logiciel
-                foreach (var b in PersonnesTachesProd)
-                {
-                    if (b.TachesProd != null)
-                    {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
-                        if (p != null)
-                            b.TachesProd = p.ToList();
-                    }
-                }
+                return;
             }
-            else if(EnCours && !Termine)//La checkbox Encours est cochée seule, on affiche les tâches en cours de la personne
+            else if(EnCours)//La checkbox Encours est cochée seule, on affiche les tâches en cours de la personne
             {
-                foreach (var a in _listPersTachesProd)
-                {
-                    PersonnesTachesProd.Add(a);
-                }
-                //Sélection des tâches en fonction de la version et du logiciel
-                foreach (var b in PersonnesTachesProd)
-                {
-                    if (b.TachesProd != null)
+               
+                if (b.TachesProd != null)
                     {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel) && (x.DureeRestante > 0));
-                        if (p != null)
-                            b.TachesProd = p.ToList();
-                    }
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
                 }
             }
-            else if (!EnCours && Termine)//La checkbox Termine est cochée seule, on affiche les tâches terminées de la personne
+            else if (Termine)//La checkbox Termine est cochée seule, on affiche les tâches terminées de la personne
             {
-                foreach (var a in _listPersTachesProd)
-                {
-                    PersonnesTachesProd.Add(a);
-                }
-                //Sélection des tâches en fonction de la version et du logiciel
-                foreach (var b in PersonnesTachesProd)
-                {
-                    if (b.TachesProd != null)
-                    {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel) && (x.DureeRestante == 0));
-                        if (p != null)
-                            b.TachesProd = p.ToList();
-                    }
-                }
+                if (b.TachesProd != null)
+                CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerTermine;
             }
-            else if (!EnCours && !Termine)//Aucune checkbox n'est cochée, on affiche toutes les tâches de la personne
+            else //Aucune checkbox n'est cochée, on affiche toutes les tâches de la personne
             {
-                foreach (var a in _listPersTachesProd)
-                {
-                    PersonnesTachesProd.Add(a);
-                }
-                //Sélection des tâches en fonction de la version et du logiciel
-                foreach (var b in PersonnesTachesProd)
-                {
-                    if (b.TachesProd != null)
+                
+                if (b.TachesProd != null)
                     {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
-                        if (p != null)
-                            b.TachesProd = p.ToList();
-                    }
+                        b.TachesProd = new ObservableCollection<Entity.TacheProd>();
                 }
             }
+        }
+
+        private bool FiltrerEncours(object o)
+        {
+                return ((TacheProd)o).DureeRestante > 0;
+        }
+
+        private bool FiltrerTermine(object o)
+        {
+                return ((TacheProd)o).DureeRestante == 0;
         }
         #endregion
     }

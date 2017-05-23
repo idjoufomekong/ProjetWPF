@@ -100,8 +100,7 @@ namespace JobOverview.ViewModel
         {
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
-            PersonnesTaches = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
-                VersionCourante.NumVersion, _userCourant);
+            PersonnesTaches = DALTache.RecupererPersonnesTaches( _userCourant);
             //DALEchange.ExporterXML(PersonnesTaches);
 
             //Récupération de la liste et sélection des tâches en fonction de la version
@@ -113,7 +112,7 @@ namespace JobOverview.ViewModel
 
                 var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
                 && (x.CodeLogiciel == LogicielCourant.CodeLogiciel)).ToList();
-                b.TachesProd = p;
+                b.TachesProd = new ObservableCollection<Entity.TacheProd>(p);
             }
 
             SaveFileDialog dos = new SaveFileDialog();

@@ -33,88 +33,129 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        <DataTemplate x:Key="TextBoxGridView">
-            <TextBox Text="{Binding RelativeSource={RelativeSource Self}, 
-                            Path=TachesProd/TravauxProd/Heures}"
-                            IsEnabled="{Binding ElementName=Edition, Path=IsChecked}"/>
-        </DataTemplate>
-        <DataTemplate x:Key="CheckBoxGridView">
-            <CheckBox Name="Edition" />
-        </DataTemplate>
     </UserControl.Resources>
-    <DockPanel>
-        <!-- DatePicker + Combobox + Compteur -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" 
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel >
+            <!-- DatePicker + Combobox + Compteur -->
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" 
                     HorizontalAlignment="Left" Width="600" >
-            <DatePicker Name="dp_Date" SelectedDate="{x:Static sys:DateTime.Now}" 
-                        BorderThickness="0" VerticalAlignment="Center"/>
-            <Label Content="Logiciel" VerticalContentAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding Path=Logiciels}" DisplayMemberPath="NomLogiciel" 
+                <Label Content="Logiciel" VerticalContentAlignment="Center"/>
+                <ComboBox ItemsSource="{Binding Path=Logiciels}" DisplayMemberPath="NomLogiciel" 
                       IsSynchronizedWithCurrentItem="True" Width="100" Margin="5,10"
                       Name="cb_Log" SelectedValue="{Binding Path=NomLogiciel}"/>
-            <Label Content="Version" VerticalContentAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding Path=Logiciels/Versions}" DisplayMemberPath="NumVersion" 
+                <Label Content="Version" VerticalContentAlignment="Center"/>
+                <ComboBox ItemsSource="{Binding Path=Logiciels/Versions}" DisplayMemberPath="NumVersion" 
                       IsSynchronizedWithCurrentItem="True" Width="40" Margin="5,10"
                       Name="cb_Ver" SelectedValue="{Binding Path=NumVersion}"/>
-            <Button Content="Valider" Margin="10,5" Height="25" Command="{Binding CmdValider}"
+                <Button Content="Valider" Margin="10,5" Height="25" Command="{Binding CmdValider}"
                     CommandParameter="{Binding ElementName=dp_Date, Path=SelectedDate}"/>
-            <TextBlock Text="Heure(s) restante(s) :" Margin="10,5,0,5"/>
-            <TextBlock Text="{Binding Path=HeuresRestantes}" Margin="5" HorizontalAlignment="Right"/>
-        </StackPanel>
-        <!-- Bouton "Enregistrer" -->
-        <Button DockPanel.Dock="Bottom" Content="Enregistrer" Grid.Row="2" HorizontalAlignment="Right"
+            </StackPanel>
+            <!-- Bouton "Enregistrer" -->
+            <Button DockPanel.Dock="Bottom" Content="Enregistrer" Grid.Row="2" HorizontalAlignment="Right"
                 Width="80" Height="25" Margin="10" />
-        <!-- Listes + filtres -->
-        <Grid>
-            <!-- Création de 2 lignes et 2 colonnes-->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <!-- Colonne 0 : Liste des tâches de production -->
-            <DockPanel VerticalAlignment="Top">
-                <Label Content="Tâches de production" Foreground="Blue"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <CheckBox VerticalAlignment="Center"/>
-                    <Label Content="Terminées"/>
-                    <CheckBox VerticalAlignment="Center" IsChecked="True"/>
-                    <Label Content="En cours"/>
-                </StackPanel>
-            </DockPanel>
-            <DockPanel Grid.Row="1">
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                    <Label Content="Description" Foreground="Blue"/>
-                    <TextBlock Text=""/>
-                </StackPanel>
-                <!-- Affichage des taches de production de la personne connectée-->
-                <ListView Grid.Row="1" ItemsSource="{Binding Path=TachesProd}" IsSynchronizedWithCurrentItem="True">
+            <!-- Listes + filtres -->
+            <Grid>
+                <!-- Création de 2 lignes et 2 colonnes-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="350"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <!-- Colonne 0 : Liste des tâches de production -->
+                <DockPanel VerticalAlignment="Top">
+                    <Label Content="Tâches de production" Foreground="Blue"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <RadioButton Content="Finies" Tag="F" Margin="5,0" Command="{Binding CmdTriTachProd}"
+                                 CommandParameter="{Binding RelativeSource={RelativeSource Self},  Path=Tag}"/>
+                        <RadioButton Content="En cours" Tag="EC" Margin="5,0" Command="{Binding CmdTriTachProd}"
+                                 CommandParameter="{Binding RelativeSource={RelativeSource Self},  Path=Tag}" IsChecked="True"/>
+                        <RadioButton Content="Toutes" Tag="T"  Margin="5,0" Command="{Binding CmdTriTachProd}"
+                                 CommandParameter="{Binding RelativeSource={RelativeSource Self},  Path=Tag}" />
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Grid.Row="1">
+                    <!-- Affichage des taches de production de la personne connectée-->
+                    <ListView Grid.Row="1" ItemsSource="{Binding Path=TachesProd}" IsSynchronizedWithCurrentItem="True">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="True">
+                                <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>
+                                <GridViewColumn Header="Prévu (j)" DisplayMemberBinding="{Binding Path=DureePrevue}"/>
+                                <GridViewColumn Header="Restant (j)" DisplayMemberBinding="{Binding Path=DureeRestante}"/>
+                                <GridViewColumn Header="Heure(s)">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Heures}"
+                                         IsEnabled="{Binding ElementName=cb_EditionProd, Path=IsChecked}"
+                                         Width="30"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Edition">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Name="cb_EditionProd" IsChecked="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+                <!-- Colonne 1 : Liste des tâches annexes -->
+                <Label Grid.Column="1" Content="Tâches annexes" Foreground="Blue"/>
+                <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=TachesAnnexe}" 
+                                IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
-                        <GridView AllowsColumnReorder="True">
+                        <GridView>
                             <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>
-                            <GridViewColumn Header="Prévu (j)" DisplayMemberBinding="{Binding Path=DureePrevue}"/>
-                            <GridViewColumn Header="Restant (j)" DisplayMemberBinding="{Binding Path=DureeRestante}"/>
-                            <GridViewColumn Header="Heure(s)" CellTemplate="{StaticResource TextBoxGridView}"/>
-                            <GridViewColumn Header="Edition" CellTemplate="{StaticResource CheckBoxGridView}"/>
+                            <GridViewColumn Header="Activité" DisplayMemberBinding="{Binding Path=CodeActivite}"/>
+                            <GridViewColumn Header="Heure(s)" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Heures}"
+                                             IsEnabled="{Binding ElementName=cb_EditionAnn, Path=IsChecked}"
+                                        Width="30"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Edition" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox x:Name="cb_EditionAnn" IsChecked="False"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
-            </DockPanel>
-            <!-- Colonne 1 : Liste des tâches annexes -->
-            <Label Grid.Column="1" Content="Tâches annexes" Foreground="Blue"/>
-            <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=TachesAnnexe}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>
-                        <GridViewColumn Header="Activité" DisplayMemberBinding="{Binding Path=CodeActivite}"/>
-                        <GridViewColumn Header="Heure(s)" CellTemplate="{StaticResource TextBoxGridView}"/>
-                        <GridViewColumn Header="Edition" CellTemplate="{StaticResource CheckBoxGridView}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
-    </DockPanel>
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Grid.Row="2"
+                        Grid.ColumnSpan="2">
+                    <Label Content="Description" Foreground="Blue"/>
+                    <TextBlock Text="{Binding Path=Description}"/>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+        <Expander Grid.Column="1">
+            <StackPanel>
+                <TextBlock Text="Heure(s) restante(s): " Margin="10,5,0,5"/>
+                <TextBlock Text="{Binding Path=HeuresRestantes}" Margin="5" HorizontalAlignment="Right"/>
+                <DatePicker SelectedDate="{x:Static sys:DateTime.Now}"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Heures"/>
+                    <TextBox Text="{Binding Path=Heures}"/>
+                </StackPanel>
+            </StackPanel>
+        </Expander>
+    </Grid>
 </UserControl>

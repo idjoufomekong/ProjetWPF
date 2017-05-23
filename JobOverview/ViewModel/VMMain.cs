@@ -64,7 +64,7 @@ namespace JobOverview.ViewModel
             get
             {
                 if (_cmdLogin == null)
-                    _cmdLogin = new RelayCommand(() => VMCourante = new VMLogin());
+                    _cmdLogin = new RelayCommand((o) => VMCourante = new VMLogin());
                 return _cmdLogin;
             }
         }
@@ -77,7 +77,7 @@ namespace JobOverview.ViewModel
                 if (Logiciels == null || Logiciels.Count == 0)
                     Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
                 if (_cmdEchange == null)
-                    _cmdEchange = new RelayCommand(() => VMCourante = new VMEchange(Logiciels));
+                    _cmdEchange = new RelayCommand((o) => VMCourante = new VMEchange(Logiciels));
                 return _cmdEchange;
             }
         }
@@ -88,7 +88,7 @@ namespace JobOverview.ViewModel
             get
             {
                 if (_cmdProgressBar == null)
-                    _cmdProgressBar = new RelayCommand(() => VMCourante = new VMProgressBar());
+                    _cmdProgressBar = new RelayCommand((o) => VMCourante = new VMProgressBar());
                 return _cmdProgressBar;
             }
         }
@@ -101,7 +101,7 @@ namespace JobOverview.ViewModel
                 if (Logiciels == null || Logiciels.Count == 0 )
                     Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
                 if (_cmdSaisieTemps == null)
-                    _cmdSaisieTemps = new RelayCommand(() => VMCourante = new VMSaisieTemps(Logiciels));
+                    _cmdSaisieTemps = new RelayCommand((o) => VMCourante = new VMSaisieTemps(Logiciels));
                 return _cmdSaisieTemps;
             }
         }
@@ -113,7 +113,7 @@ namespace JobOverview.ViewModel
             get
             {
                 if (_cmdTachesAnnexes == null)
-                    _cmdTachesAnnexes = new RelayCommand(() => VMCourante = new VMTachesAnnexes());
+                    _cmdTachesAnnexes = new RelayCommand((o) => VMCourante = new VMTachesAnnexes());
                 return _cmdTachesAnnexes;
             }
         }
@@ -128,7 +128,7 @@ namespace JobOverview.ViewModel
                 if (PersonnesTaches == null || PersonnesTaches.Count == 0)
                     PersonnesTaches = new ObservableCollection<Personne>(DALTache.RecupererPersonnesTachesProd(Properties.Settings.Default.CodeDernierUtilisateur));
                 if (_cmdTachesProd == null)
-                    _cmdTachesProd = new RelayCommand(() => VMCourante = new VMTachesProd(Logiciels, PersonnesTaches));
+                    _cmdTachesProd = new RelayCommand((o) => VMCourante = new VMTachesProd(Logiciels, PersonnesTaches));
                 return _cmdTachesProd;
             }
         }

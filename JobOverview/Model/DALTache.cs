@@ -240,7 +240,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 //Récupération des travaux de production
                 if (reader["DateTravail"] != DBNull.Value)
                 {
-                    tache.TravauxAnnexes = new List<Travail>();
+                    if (tache.TravauxAnnexes == null)
+                        tache.TravauxAnnexes = new List<Travail>();
                     Travail tra = new Travail();
 
                     tra.Date = (DateTime)reader["DateTravail"];
@@ -310,7 +311,8 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 //Récupération des travaux de production
                 if (reader["DateTravail"] != DBNull.Value)
                 {
-                    tache.TravauxProd = new List<Travail>();
+                    if (tache.TravauxProd == null)
+                        tache.TravauxProd = new List<Travail>();
                     Travail tra = new Travail();
 
                     tra.Date = (DateTime)reader["DateTravail"];

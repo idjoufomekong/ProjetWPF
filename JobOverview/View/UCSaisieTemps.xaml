@@ -21,12 +21,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!-- Style associé aux boutons -->
-        <Style TargetType="Button">
-            <Setter Property="Width" Value="70"/>
-            <Setter Property="Height" Value="25"/>
-            <Setter Property="Margin" Value="10"/>
-        </Style>
         <!-- Style associé aux ComboBox -->
         <Style TargetType="ComboBox">
             <Setter Property="Width" Value="80"/>
@@ -52,21 +46,24 @@
         <!-- DatePicker + Combobox + Compteur -->
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" 
                     HorizontalAlignment="Left" Width="600" >
-            <DatePicker SelectedDate="{Binding Path=DateSelectionnee}" 
+            <DatePicker Name="dp_Date" SelectedDate="{x:Static sys:DateTime.Now}" 
                         BorderThickness="0" VerticalAlignment="Center"/>
-            <Label Content="Logiciel"/>
+            <Label Content="Logiciel" VerticalContentAlignment="Center"/>
             <ComboBox ItemsSource="{Binding Path=Logiciels}" DisplayMemberPath="NomLogiciel" 
-                      IsSynchronizedWithCurrentItem="True" Width="100"
+                      IsSynchronizedWithCurrentItem="True" Width="100" Margin="5,10"
                       Name="cb_Log" SelectedValue="{Binding Path=NomLogiciel}"/>
-            <Label Content="Version"/>
+            <Label Content="Version" VerticalContentAlignment="Center"/>
             <ComboBox ItemsSource="{Binding Path=Logiciels/Versions}" DisplayMemberPath="NumVersion" 
-                      IsSynchronizedWithCurrentItem="True" Width="40"
+                      IsSynchronizedWithCurrentItem="True" Width="40" Margin="5,10"
                       Name="cb_Ver" SelectedValue="{Binding Path=NumVersion}"/>
+            <Button Content="Valider" Margin="10,5" Height="25" Command="{Binding CmdValider}"
+                    CommandParameter="{Binding ElementName=dp_Date, Path=SelectedDate}"/>
             <TextBlock Text="Heure(s) restante(s) :" Margin="10,5,0,5"/>
-            <TextBlock Text="{Binding Path=HeureRestante}" Margin="5" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding Path=HeuresRestantes}" Margin="5" HorizontalAlignment="Right"/>
         </StackPanel>
         <!-- Bouton "Enregistrer" -->
-        <Button DockPanel.Dock="Bottom" Content="Enregistrer" Grid.Row="2" HorizontalAlignment="Right"/>
+        <Button DockPanel.Dock="Bottom" Content="Enregistrer" Grid.Row="2" HorizontalAlignment="Right"
+                Width="80" Height="25" Margin="10" />
         <!-- Listes + filtres -->
         <Grid>
             <!-- Création de 2 lignes et 2 colonnes-->
@@ -94,7 +91,7 @@
                     <TextBlock Text=""/>
                 </StackPanel>
                 <!-- Affichage des taches de production de la personne connectée-->
-                <ListView Grid.Row="1" DataContext="{Binding Path=TachesProd}">
+                <ListView Grid.Row="1" ItemsSource="{Binding Path=TachesProd}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
                             <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>
@@ -108,7 +105,7 @@
             </DockPanel>
             <!-- Colonne 1 : Liste des tâches annexes -->
             <Label Grid.Column="1" Content="Tâches annexes" Foreground="Blue"/>
-            <ListView Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=TachesAnnexe}">
+            <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=TachesAnnexe}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>

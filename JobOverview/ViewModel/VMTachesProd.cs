@@ -128,7 +128,7 @@ namespace JobOverview.ViewModel
 
         #region Méthodes privées
         //Charge le datacontext en fonction de la personne sélectionnée
-        private void Afficher()
+        private void Afficher(object obj)
         {
             //PersonnesTaches = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
             //   VersionCourante.NumVersion, _userCourant);
@@ -143,8 +143,8 @@ namespace JobOverview.ViewModel
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
 
             //Chargement du datacontext
-             
-            foreach(var a in _listPersTachesProd)
+
+            foreach (var a in _listPersTachesProd)
             {
                 PersonnesTachesProd.Add(a);
             }
@@ -155,10 +155,10 @@ namespace JobOverview.ViewModel
                 if (b.TachesProd != null)
                 {
 
-                var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
-                if (p!=null)
-                b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+                    var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
+                    && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
+                    if (p != null)
+                        b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
 
                     CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
                 }
@@ -167,15 +167,15 @@ namespace JobOverview.ViewModel
         }
 
         //Suppression de la tâche sélectionnée
-        private void Supprimer()
+        private void Supprimer(object obj)
         {
-            TacheProd t= (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
+            TacheProd t = (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
         }
 
         //Gère l'affichage des tâches en cours
-        private void TrierTachesTerminees()
+        private void TrierTachesTerminees(object obj)
         {
-            _personneCourante= (Personne)CollectionViewSource.GetDefaultView(PersonnesTachesProd).CurrentItem;
+            _personneCourante = (Personne)CollectionViewSource.GetDefaultView(PersonnesTachesProd).CurrentItem;
             CollectionView vue = (CollectionView)CollectionViewSource.GetDefaultView(PersonnesTachesProd);
             PersonnesTachesProd.Clear();
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
@@ -187,49 +187,46 @@ namespace JobOverview.ViewModel
             vue.MoveCurrentTo(_personneCourante);
             var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
 
-                    if (b.TachesProd != null)
-                    {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
-                        if (p != null)
-                        b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
-                }
+            if (b.TachesProd != null)
+            {
+                var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
+                && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
+                if (p != null)
+                    b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+            }
             if (EnCours && Termine)//Les 2 checkbox sont cochées, on affiche toutes les tâches de la personne
             {
-                return;
+                vue.MoveCurrentTo(_personneCourante);
             }
-            else if(EnCours)//La checkbox Encours est cochée seule, on affiche les tâches en cours de la personne
+            else if (EnCours)//La checkbox Encours est cochée seule, on affiche les tâches en cours de la personne
             {
-               
                 if (b.TachesProd != null)
-                    {
                     CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
-                }
+                vue.MoveCurrentTo(_personneCourante);
             }
             else if (Termine)//La checkbox Termine est cochée seule, on affiche les tâches terminées de la personne
             {
                 if (b.TachesProd != null)
-                CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerTermine;
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerTermine;
+                vue.MoveCurrentTo(_personneCourante);
             }
             else //Aucune checkbox n'est cochée, on affiche toutes les tâches de la personne
             {
-                
                 if (b.TachesProd != null)
-                    {
-                        b.TachesProd = new ObservableCollection<Entity.TacheProd>();
+                {
+                    b.TachesProd.Clear();
                 }
             }
         }
 
         private bool FiltrerEncours(object o)
         {
-                return ((TacheProd)o).DureeRestante > 0;
+            return ((TacheProd)o).DureeRestante > 0;
         }
 
         private bool FiltrerTermine(object o)
         {
-                return ((TacheProd)o).DureeRestante == 0;
+            return ((TacheProd)o).DureeRestante == 0;
         }
         #endregion
     }

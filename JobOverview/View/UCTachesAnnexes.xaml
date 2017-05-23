@@ -8,22 +8,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
+        <!-- Style appliqué aux boutons -->
         <Style TargetType="Button">
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
         </Style>
-        <!--<conv:TacheAnnexeToBool x:Key="TacheAnnexeToBool"/>-->
     </UserControl.Resources>
-    <DockPanel>
-        <!-- Enregistrer -->
+    <DockPanel >
+        <!-- Bouton "Enregistrer" -->
         <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"/>
-        <Grid >
+        <Grid>
+        <!--<Grid DataContext="{Binding Personnes}">-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <DockPanel Margin="10">
-                <Label Content="Membres de l'équipe (préciser ?)" DockPanel.Dock="Top"/>
+                <Label Content="Membres de l'équipe" DockPanel.Dock="Top"/>
                 <!-- Liste des membres de l'équipe -->
                 <ListBox Name="list" ItemsSource="{Binding Personnes}" DisplayMemberPath="NomPrenom" IsSynchronizedWithCurrentItem="True"/>
             </DockPanel>
@@ -31,19 +32,18 @@
                 <Label Content="Tâches annexes" DockPanel.Dock="Top"/>
                 <!-- Description de la tâche annexe sélectionnée -->
                 <TextBlock DockPanel.Dock="Bottom" Margin="0,10,0,0"
-                           Text="{Binding Path=TachesAnnexes/Description, StringFormat='Description de la tâche : {0}'}"/>
-                <!-- Liste des activités annexes -->
-                <ListView ItemsSource="{Binding ActivitesAnnexes}">
+                           Text="{Binding Path=Personnes/TachesAnnexes/Description, StringFormat='Description de la tâche : {0}'}"/>
+                <!-- Liste des tâches annexes -->
+                <ListView ItemsSource="{Binding Path=Personnes/TachesAnnexes}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
-                            <GridViewColumn Header="Activité annexe" DisplayMemberBinding="{Binding Path=NomActivite}"/>
-                            <!--<GridViewColumn Header="Code d'activité" DisplayMemberBinding="{Binding Path=CodeActivite}"/>-->
+                            <GridViewColumn Header="Activité annexe" DisplayMemberBinding="{Binding Path=NomTache}"/>
                             <GridViewColumn Header="Tâche dispo">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <!--<CheckBox IsChecked="{Binding Path=CodeActivite, 
-                                            Converter={StaticResource TacheAnnexeToBool},
-                                            ConverterParameter={DynamicResource ElementName=list, Path=TachesAnnexes }}"/>-->
+                                        <CheckBox IsChecked="{Binding Path=Assignation}"/>
+                                        <!--IsChecked="{Binding Path=Assignation}" Command="{Binding CmdCheckerAnnexe}"-->
+                                        <!--CommandParameter="{Binding Path=IsChecked, RelativeSource={RelativeSource self}}"-->
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

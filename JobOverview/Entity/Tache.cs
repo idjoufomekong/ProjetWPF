@@ -20,6 +20,7 @@ namespace JobOverview.Entity
         public string Description { get; set; }
         [XmlElement]
         public List<Travail> TravauxAnnexes { get; set; }
+        public bool Assignation { get; set; }
     }
 
     public class Travail

@@ -447,11 +447,50 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             return listPers;
         }
 
+
+        /// <summary>
+        /// Permet d'étendre la liste des tâches annexes des employés
+        /// </summary>
+        /// <param name="listPers"></param>
+        public static void RecupererPersonnesTachesAnnexesEtendues(List<Personne> listPers)
+        {
+            // On récupère la liste des activités annexes
+            List<Activite> listAnnexes = RecupererActivitesAnnexes();
+
+            // On complète la liste des tâches annexes de chaque employé
+            foreach(var emp in listPers)
+            {
+                foreach(var act in listAnnexes)
+                {
+                    var res = emp.TachesAnnexes.Where(a => a.CodeActivite == act.CodeActivite).FirstOrDefault();
+
+                    if (res == null)
+                    {
+                        var t = new Tache();
+
+                        t.CodeActivite = act.CodeActivite;
+                        t.NomTache = act.NomActivite;
+                        t.Annexe = true;
+                        t.Assignation = false;
+
+                        emp.TachesAnnexes.Add(t);
+                    }
+                    else
+                    {
+                        res.Assignation = true;
+                    }
+                }
+
+                // Tri par ordre alphabétique selon le nom des tâches annexes
+                emp.TachesAnnexes = emp.TachesAnnexes.OrderBy(a => a.NomTache).ToList();
+            }
+        }
+
         /// <summary>
         /// Retourne la liste des activités annexes
         /// </summary>
         /// <returns></returns>
-        public static List<Activite> RecupererActivitesAnnexes()
+        private static List<Activite> RecupererActivitesAnnexes()
         {
             // Liste à retourner
             var listActivites = new List<Activite>();

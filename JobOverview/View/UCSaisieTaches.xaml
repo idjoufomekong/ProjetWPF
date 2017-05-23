@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JobOverview.View"
+             xmlns:local1="clr-namespace:JobOverview"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700">
     <UserControl.Resources>
+        <local1:ConvModeEditLectureSeule x:Key="ConvModeEditLectureSeule"/>
         <Style TargetType="Button">
             <Setter Property="Width" Value="30"/>
             <Setter Property="Height" Value="20"/>
@@ -36,8 +38,6 @@
 
             <StackPanel Grid.Column="1">
                 <DockPanel VerticalAlignment="Center">
-                    <Button Content="Annul" DockPanel.Dock="Right" Command="{Binding CmdAnnuler}"/>
-                    <Button Content="Enr" DockPanel.Dock="Right" Command="{Binding CmdEnregistrer}"/>
                     <Button Content="Supp" DockPanel.Dock="Right" Command="{Binding CmdSupprimer}"/>
                     <Button Content="Ajout" DockPanel.Dock="Right" Command="{Binding CmdAjouter}"/>
                     <TextBlock Text="Liste des tâches récemment saisies" VerticalAlignment="Center"/>
@@ -46,6 +46,7 @@
                       IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
+                            <GridViewColumn Header="Login" DisplayMemberBinding="{Binding Path=Login }" />
                             <GridViewColumn Header="Libellé" DisplayMemberBinding="{Binding Path=NomTache }" />
                             <GridViewColumn Header="Durée prévue" DisplayMemberBinding="{Binding Path=DureePrevue }" />
                             <GridViewColumn Header="Durée restante estimée" DisplayMemberBinding="{Binding Path=DureeRestante }" />
@@ -71,21 +72,24 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Libellé"/>
-                    <TextBox Text="{Binding Libelle}" />
+                    <TextBox Text="{Binding Libelle}" IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée prévue"/>
-                    <TextBox Text="{Binding DureePrevue}"/>
+                    <TextBox Text="{Binding NouvelleTache.DureePrevue}" 
+                             IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée restante"/>
-                    <TextBox Text="{Binding DureeRestante}"/>
+                    <TextBox Text="{Binding NouvelleTache.DureeRestante}"
+                             IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1">
             <Label Content="Description"/>
-            <TextBox TextWrapping="Wrap" Text="{Binding Description}"/>
+            <TextBox TextWrapping="Wrap" Text="{Binding NouvelleTache.Description}" 
+                     IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
         </StackPanel>
     </Grid>
 </UserControl>

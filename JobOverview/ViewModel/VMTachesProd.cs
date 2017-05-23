@@ -22,12 +22,21 @@ namespace JobOverview.ViewModel
         private ObservableCollection<Personne> _listPersTachesProd;
         private Personne _personneCourante;
         private CollectionView vue;
+        private ModesEdition _modeEdition;
         #region Propriétés
 
         public List<Personne> PersonnesTaches { get; private set; }
         public ObservableCollection<Personne> PersonnesTachesProd { get; private set; }
         public ObservableCollection<Logiciel> Logiciels { get; private set; }
         public ObservableCollection<Entity.Version> Versions { get; set; }
+        public ModesEdition ModeEdit
+        {
+            get { return _modeEdition; }
+            private set
+            {
+                SetProperty(ref _modeEdition, value);
+            }
+        }
 
         public bool Termine
         {
@@ -91,7 +100,7 @@ namespace JobOverview.ViewModel
             get
             {
                 if (_cmdSupprimer == null)
-                    _cmdSupprimer = new RelayCommand(SupprimerTache);
+                    _cmdSupprimer = new RelayCommand(SupprimerTache, Validation);
                 return _cmdSupprimer;
             }
         }
@@ -137,12 +146,13 @@ namespace JobOverview.ViewModel
                     CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
                 }
             }
-
+            ModeEdit = ModesEdition.Edition;
         }
 
         //Suppression de la tâche sélectionnée
         private void SupprimerTache(object o)
         {
+            if (PersonneCourante == null) return;
             TacheProd t = (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
             try
             {
@@ -166,6 +176,7 @@ namespace JobOverview.ViewModel
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
 
+            if (_personneCourante == null) return;
             var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
             vue = (CollectionView)CollectionViewSource.GetDefaultView(b.TachesProd);
 

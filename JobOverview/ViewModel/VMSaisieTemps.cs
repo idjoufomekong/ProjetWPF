@@ -17,11 +17,14 @@ namespace JobOverview.ViewModel
     public class VMSaisieTemps : ViewModelBase
     {
         public ObservableCollection<Logiciel> Logiciels { get; set; }
-        public ObservableCollection<TacheProd> TachesProd { get; set; }
-        public ObservableCollection<Tache> TachesAnnexe { get; set; }
+        public ObservableCollection<TacheProd> TachesProd { get; set; } =
+        new ObservableCollection<TacheProd>();
+        public ObservableCollection<Tache> TachesAnnexe { get; set; } =
+        new ObservableCollection<Tache>();
         public Personne Utilisateur { get; set; }
         private string _nomLogiciel;
-        public string NomLogiciel {
+        public string NomLogiciel
+        {
             get
             {
                 return _nomLogiciel;
@@ -34,7 +37,8 @@ namespace JobOverview.ViewModel
         }
 
         private float _numVersion;
-        public float NumVersion {
+        public float NumVersion
+        {
             get
             {
                 return _numVersion;
@@ -46,8 +50,9 @@ namespace JobOverview.ViewModel
             }
         }
 
-        private DateTime _dateSelectionee = DateTime.Today;
-        public DateTime DateSelectionnee {
+        private DateTime _dateSelectionee = new DateTime(2016, 01, 01);
+        public DateTime DateSelectionnee
+        {
             get
             {
                 return _dateSelectionee;
@@ -70,10 +75,10 @@ namespace JobOverview.ViewModel
 
         private void AffichTacheProd(float numVersion, DateTime dateSelectionnee, string nomLogiciel)
         {
-            TachesProd = new ObservableCollection<TacheProd>();
+            TachesProd.Clear();
             if (Utilisateur.TachesProd != null)
             {
-                var p = (Utilisateur.TachesProd.Where(tp => tp.CodeLogiciel == nomLogiciel && tp.CodeVersion == numVersion));
+                var p = (Utilisateur.TachesProd.Where(tp => tp.CodeLogiciel == nomLogiciel && tp.CodeVersion == numVersion)).ToList();
                 foreach (var t in p)
                 {
                     foreach (Travail tr in t.TravauxProd)
@@ -85,22 +90,25 @@ namespace JobOverview.ViewModel
                         }
                     }
                 }
-            }   
+            }
         }
 
         private void AffichTacheAnnexe(DateTime dateSelectionnee)
         {
-            TachesAnnexe = new ObservableCollection<Tache>();
+            TachesAnnexe.Clear();
             if (Utilisateur.TachesAnnexes != null)
             {
                 foreach (var t in Utilisateur.TachesAnnexes)
                 {
-                    foreach (Travail tr in t.TravauxAnnexes)
+                    if (t.TravauxAnnexes != null)
                     {
-                        if (tr.Date == dateSelectionnee)
+                        foreach (Travail tr in t.TravauxAnnexes)
                         {
-                            TachesAnnexe.Add(t);
-                            break;
+                            if (tr.Date == dateSelectionnee)
+                            {
+                                TachesAnnexe.Add(t);
+                                break;
+                            }
                         }
                     }
                 }

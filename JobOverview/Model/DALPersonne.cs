@@ -18,8 +18,7 @@ namespace JobOverview.Model
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
-            string queryString = @"select Login, Prenom+' '+Nom NomComplet from jo.Personne
-                                    order by Nom, Prenom";
+            string queryString = @"select Login, Prenom+' '+Nom NomComplet from jo.Personne order by 2";
 
             using (var connect = new SqlConnection(connectString))
             {
@@ -49,8 +48,8 @@ namespace JobOverview.Model
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
             string queryString = @"select Login, Prenom+' '+Nom NomComplet from jo.Personne
-                                    where login = @log or Manager=@lo
-                                    order by ";
+                                    where login = @log or Manager=@log
+                                    order by 2";
 
             var log = new SqlParameter("@log", DbType.String);
             log.Value = personneConnecte;

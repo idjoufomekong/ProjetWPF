@@ -40,7 +40,7 @@
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="Description de la tâche : "/>
                     <!-- Description de la tâche annexe sélectionnée -->
                     <TextBox VerticalAlignment="Center" TextWrapping="Wrap"
-                             Height="35"
+                             Height="35" MaxLength="1000"
                              Text="{Binding Path=Personnes/TachesAnnexes/Description}" 
                              IsEnabled="{Binding Path=Personnes/TachesAnnexes/TravauxAnnexes, Converter={StaticResource TravauxAnnexesToBoolConverter}}" />
                 </DockPanel>

@@ -113,6 +113,17 @@ namespace JobOverview.ViewModel
                 return _cmdChecker;
             }
         }
+
+        private ICommand _cmdSupprimer;
+        public ICommand CmdSupprimer
+        {
+            get
+            {
+                if (_cmdSupprimer == null)
+                    _cmdSupprimer = new RelayCommand(Supprimer);
+                return _cmdSupprimer;
+            }
+        }
         #endregion
 
         #region Méthodes privées
@@ -148,8 +159,17 @@ namespace JobOverview.ViewModel
                 && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
                 if (p!=null)
                 b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
                 }
             }
+
+        }
+
+        //Suppression de la tâche sélectionnée
+        private void Supprimer()
+        {
+            TacheProd t= (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
         }
 
         //Gère l'affichage des tâches en cours
@@ -165,17 +185,8 @@ namespace JobOverview.ViewModel
                 PersonnesTachesProd.Add(a);
             }
             vue.MoveCurrentTo(_personneCourante);
+            var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
 
-            if (EnCours && Termine)//Les 2 checkbox sont cochées, on affiche toutes les tâches de la personne
-            {
-                //foreach (var a in _listPersTachesProd)
-                //{
-                //    PersonnesTachesProd.Add(a);
-                //}
-                //Sélection des tâches en fonction de la version et du logiciel
-                //foreach (var b in PersonnesTachesProd)
-                //{
-                    var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
                     if (b.TachesProd != null)
                     {
 
@@ -184,68 +195,41 @@ namespace JobOverview.ViewModel
                         if (p != null)
                         b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
                 }
-               // }
+            if (EnCours && Termine)//Les 2 checkbox sont cochées, on affiche toutes les tâches de la personne
+            {
+                return;
             }
             else if(EnCours)//La checkbox Encours est cochée seule, on affiche les tâches en cours de la personne
             {
-                //foreach (var a in _listPersTachesProd)
-                //{
-                //    PersonnesTachesProd.Add(a);
-                //}
-                //Sélection des tâches en fonction de la version et du logiciel
-                //foreach (var b in PersonnesTachesProd)
-                //{
-                var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
+               
                 if (b.TachesProd != null)
                     {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel) && (x.DureeRestante > 0));
-                        if (p != null)
-                        b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+                    CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerEncours;
                 }
-               // }
             }
             else if (Termine)//La checkbox Termine est cochée seule, on affiche les tâches terminées de la personne
             {
-                //foreach (var a in _listPersTachesProd)
-                //{
-                //    PersonnesTachesProd.Add(a);
-                //}
-                //Sélection des tâches en fonction de la version et du logiciel
-                //foreach (var b in PersonnesTachesProd)
-                //{
-                var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
                 if (b.TachesProd != null)
-                    {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel) && (x.DureeRestante == 0));
-                        if (p != null)
-                            b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
-                    }
-               // }
+                CollectionViewSource.GetDefaultView(b.TachesProd).Filter = FiltrerTermine;
             }
             else //Aucune checkbox n'est cochée, on affiche toutes les tâches de la personne
             {
-                //foreach (var a in _listPersTachesProd)
-                //{
-                //    PersonnesTachesProd.Add(a);
-                //}
-                //Sélection des tâches en fonction de la version et du logiciel
-                //foreach (var b in PersonnesTachesProd)
-                //{
-                var b = PersonnesTachesProd.Where(x => x.CodePersonne == _personneCourante.CodePersonne).FirstOrDefault();
+                
                 if (b.TachesProd != null)
                     {
-
-                        var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                        && (x.CodeLogiciel == LogicielCourant.CodeLogiciel));
-                        if (p != null)
-                        b.TachesProd = new ObservableCollection<Entity.TacheProd>(p.ToList());
+                        b.TachesProd = new ObservableCollection<Entity.TacheProd>();
                 }
-               // }
             }
+        }
+
+        private bool FiltrerEncours(object o)
+        {
+                return ((TacheProd)o).DureeRestante > 0;
+        }
+
+        private bool FiltrerTermine(object o)
+        {
+                return ((TacheProd)o).DureeRestante == 0;
         }
         #endregion
     }

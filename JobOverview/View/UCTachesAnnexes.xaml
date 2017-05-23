@@ -16,7 +16,8 @@
     </UserControl.Resources>
     <DockPanel >
         <!-- Bouton "Enregistrer" -->
-        <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"/>
+        <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
+                Command="{Binding CmdEnregistrer}"/>
         <Grid>
         <!--<Grid DataContext="{Binding Personnes}">-->
             <Grid.ColumnDefinitions>
@@ -42,8 +43,6 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <CheckBox IsChecked="{Binding Path=Assignation}"/>
-                                        <!--IsChecked="{Binding Path=Assignation}" Command="{Binding CmdCheckerAnnexe}"-->
-                                        <!--CommandParameter="{Binding Path=IsChecked, RelativeSource={RelativeSource self}}"-->
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

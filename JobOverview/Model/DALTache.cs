@@ -460,9 +460,9 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
             List<Activite> listAnnexes = RecupererActivitesAnnexes();
 
             // On complète la liste des tâches annexes de chaque employé
-            foreach(var emp in listPers)
+            foreach (var emp in listPers)
             {
-                foreach(var act in listAnnexes)
+                foreach (var act in listAnnexes)
                 {
                     var res = emp.TachesAnnexes.Where(a => a.CodeActivite == act.CodeActivite).FirstOrDefault();
 
@@ -532,6 +532,115 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
 
                 // On retourne la liste obtenue
                 return listActivites;
+            }
+        }
+
+        /// <summary>
+        /// Enregistre une tâche annexe dans la base de données
+        /// </summary>
+        /// <param name="codePersonne"></param>
+        /// <param name="tache"></param>
+        public static void AjouterTacheAnnexe(string codePersonne, Tache tache)
+        {
+            // Récupération de la chaîne de connexion
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+
+            // Ecriture de la requête
+            string req = @"insert jo.Tache(IdTache, Libelle, Annexe, CodeActivite, Login, Description)
+                            values (@Id, @nom, 1, @codeAct, @log, @descript)";
+
+            // Paramètres de la requête
+            var paramID = new SqlParameter("@Id", DbType.Guid);
+            paramID.Value = Guid.NewGuid();
+            var paramNom = new SqlParameter("@nom", DbType.String);
+            paramNom.Value = tache.NomTache;
+            var paramCodeAct = new SqlParameter("@codeAct", DbType.String);
+            paramCodeAct.Value = tache.CodeActivite;
+            var paramLog = new SqlParameter("@log", DbType.String);
+            paramLog.Value = codePersonne;
+            var paramDescript = new SqlParameter("@descript", DbType.String);
+            // La description de la tâche est facultative
+            if (tache.Description != null)
+                paramDescript.Value = tache.Description;
+            else paramDescript.Value = DBNull.Value;
+
+            // Création d'une connexion à partir de la chaîne de connexion
+            using (var cnx = new SqlConnection(connectString))
+            {
+                // Ouverture de la connection
+                cnx.Open();
+
+                // Utilisation d'une transaction
+                SqlTransaction tran = cnx.BeginTransaction();
+
+                // Création de la commande et entrée des paramètres.
+                var command = new SqlCommand(req, cnx, tran);
+                command.Parameters.Add(paramID);
+                command.Parameters.Add(paramNom);
+                command.Parameters.Add(paramCodeAct);
+                command.Parameters.Add(paramLog);
+                command.Parameters.Add(paramDescript);
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    // Validation de la transaction si tout se passe bien.
+                    tran.Commit();
+                }
+                catch (Exception)
+                {
+                    // Annulation de la transaction
+                    tran.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Supprime une tâche annexe dans la base de données
+        /// </summary>
+        /// <param name="codePersonne"></param>
+        /// <param name="codeActivite"></param>
+        public static void SupprimerTacheAnnexe(string codePersonne, string codeActivite)
+        {
+            // Récupération de la chaîne de connexion
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+
+            //Ecriture de la requête
+            string req = @"delete jo.Tache where Annexe = 1 and Login=@log and CodeActivite=@codeAct";
+
+            // Paramètres de la requête
+            var paramLog = new SqlParameter("@log", DbType.String);
+            paramLog.Value = codePersonne;
+            var paramCodeAct = new SqlParameter("@codeAct", DbType.String);
+            paramCodeAct.Value = codeActivite;
+
+            // Création d'une connexion à partir de la chaîne de connexion
+            using (var cnx = new SqlConnection(connectString))
+            {
+                // Ouverture de la connection
+                cnx.Open();
+
+                // Utilisation d'une transaction
+                SqlTransaction tran = cnx.BeginTransaction();
+
+                // Création de la commande et entrée des paramètres.
+                var command = new SqlCommand(req, cnx, tran);
+                command.Parameters.Add(paramLog);
+                command.Parameters.Add(paramCodeAct);
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    // Validation de la transaction si tout se passe bien.
+                    tran.Commit();
+                }
+                catch (Exception)
+                {
+                    // Annulation de la transaction
+                    tran.Rollback();
+                    throw;
+                }
             }
         }
     }

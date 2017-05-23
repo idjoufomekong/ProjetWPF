@@ -14,14 +14,14 @@ namespace JobOverview.ViewModel
 	public class VMLogin : ViewModelBase
 	{
 
-        public List<Personne> Personnes { get; set; }
-		// TODO : à remplacer par une vraie liste de personnes
+        public ObservableCollection<Personne> Personnes { get; set; }
 
-		public VMLogin()
+		public VMLogin(ObservableCollection<Personne> VMMainToutesPersonnes)
 		{
-			// TODO : à remplacer par un appel à une méthode de DAL
-			Personnes = DALPersonne.RecupererToutesPersonne();
-		}
+            //Personnes = DALPersonne.RecupererToutesPersonne();
+            Personnes = VMMainToutesPersonnes;
+
+        }
 
         public override ValidationResult Validate()
         {

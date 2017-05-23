@@ -23,6 +23,7 @@ namespace JobOverview.ViewModel
                 SetProperty(ref _logiciel, value);
             }
         }
+
         private ObservableCollection<Personne> _personnes;
         public ObservableCollection<Personne> Personnes
         {

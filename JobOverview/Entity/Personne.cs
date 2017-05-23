@@ -38,6 +38,7 @@ namespace JobOverview.Entity
         public ObservableCollection<TacheProd> TachesProd { get; set; }
         [XmlElement]
         public List<Tache> TachesAnnexes { get; set; }
+        public List<Activite> Activites { get; set; }
     }
 
     public class Metier

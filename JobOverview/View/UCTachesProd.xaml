@@ -44,10 +44,12 @@
             </Grid.RowDefinitions>
             <Label Content="Personnes"/>
             <DockPanel Grid.Column="1" VerticalAlignment="Center">
-                <CheckBox IsChecked="{Binding EnCours}" Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" 
-                          Command="{Binding CmdChecker}" />
-                <CheckBox IsChecked="{Binding Termine}" Content="Terminées" DockPanel.Dock="Right" Margin="5" 
-                          VerticalAlignment="Center" Command="{Binding CmdChecker}"/>
+                <CheckBox  Content="En cours" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" 
+                           Command="{Binding CmdChecker}" 
+                           CommandParameter="{Binding Source={RelativeSource Self}, Path=IsChecked}" />
+                <CheckBox Content="Terminées" DockPanel.Dock="Right" Margin="5" 
+                          VerticalAlignment="Center" Command="{Binding CmdChecker}" 
+                          CommandParameter="{Binding Source={RelativeSource Self}, Path=IsChecked}"/>
                 <Label Content="Tâches de production" VerticalContentAlignment="Center"/>
             </DockPanel>
             <ListView Grid.Row="1" Margin="10"

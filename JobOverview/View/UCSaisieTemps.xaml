@@ -36,10 +36,11 @@
         <DataTemplate x:Key="TextBoxGridView">
             <TextBox Text="{Binding RelativeSource={RelativeSource Self}, 
                             Path=TachesProd/TravauxProd/Heures}"
-                            IsEnabled="{Binding ElementName=Edition, Path=IsChecked}"/>
+                            IsEnabled="{Binding ElementName=Edition, Path=IsChecked}"
+                            Width="30"/>
         </DataTemplate>
-        <DataTemplate x:Key="CheckBoxGridView">
-            <CheckBox Name="Edition" />
+        <DataTemplate x:Key="CheckBoxGridView" >
+            <CheckBox Name="Edition" IsChecked="False"/>
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel>
@@ -88,7 +89,7 @@
             <DockPanel Grid.Row="1">
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
                     <Label Content="Description" Foreground="Blue"/>
-                    <TextBlock Text=""/>
+                    <TextBlock Text="{Binding Path=Description}"/>
                 </StackPanel>
                 <!-- Affichage des taches de production de la personne connectée-->
                 <ListView Grid.Row="1" ItemsSource="{Binding Path=TachesProd}" IsSynchronizedWithCurrentItem="True">
@@ -105,7 +106,8 @@
             </DockPanel>
             <!-- Colonne 1 : Liste des tâches annexes -->
             <Label Grid.Column="1" Content="Tâches annexes" Foreground="Blue"/>
-            <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=TachesAnnexe}">
+            <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=TachesAnnexe}" 
+                                IsSynchronizedWithCurrentItem="True">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>

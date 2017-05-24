@@ -140,9 +140,9 @@ namespace JobOverview.Model
                     {
                         a.Versions = RecupererVersionsSynthese(a.CodeLogiciel, connect);
                     }
+                }
+                return listLogiciel;
             }
-
-            return listLogiciel;
         }
 
 
@@ -205,13 +205,13 @@ namespace JobOverview.Model
             {
                 while (reader.Read())
                 {
-                    RecupererLogicielsVersionsFromDataReader(listVersion, reader);
+                    RecupererVersionsFromDataReader(listVersion, reader);
                 }
             }
             return listVersion;
         }
 
-        private static void RecupererLogicielsVersionsFromDataReader(List<Entity.Version> listVersion, SqlDataReader reader)
+        private static void RecupererVersionsFromDataReader(List<Entity.Version> listVersion, SqlDataReader reader)
         {
 
             Entity.Version vers = new Entity.Version();

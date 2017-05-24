@@ -19,6 +19,12 @@ namespace JobOverview.ViewModel
 {
     public class VMSaisieTemps : ViewModelBase
     {
+        private float _heuresProd;
+        private float _heuresAnnexe;
+        private float _heuresRestante;
+
+        #region Propriétés
+
         public ObservableCollection<Logiciel> Logiciels { get; set; }
         public ObservableCollection<TacheApercu> TachesProd { get; set; } =
         new ObservableCollection<TacheApercu>();
@@ -44,7 +50,6 @@ namespace JobOverview.ViewModel
         public bool Choice { get; set; }
 
         public DateTime DateSelec { get; set; } = DateTime.Today;
-        private float _heuresProd;
         public float HeuresProd
         {
             get
@@ -59,7 +64,6 @@ namespace JobOverview.ViewModel
                 SetProperty(ref _heuresProd, value);
             }
         }
-        private float _heuresAnnexe;
         public float HeuresAnnexe
         {
             get
@@ -74,7 +78,6 @@ namespace JobOverview.ViewModel
                 SetProperty(ref _heuresAnnexe, value);
             }
         }
-        private float _heuresRestante;
         public float HeuresRestantes {
             get { return (8 - HeuresAnnexe - HeuresProd); }
             set {  SetProperty(ref _heuresRestante, value); }
@@ -87,6 +90,11 @@ namespace JobOverview.ViewModel
                 return tra.Heures;
             return 0;
         }
+
+        #endregion
+
+
+        #region Commandes
 
         private ICommand _cmdEnregistrer;
         public ICommand CmdEnregistrer
@@ -110,6 +118,8 @@ namespace JobOverview.ViewModel
             }
         }
 
+        #endregion
+
         public VMSaisieTemps(ObservableCollection<Logiciel> LogicielsVMMain)
         {
             Utilisateur = (DALTache.RecupererPersonnesTaches(
@@ -117,11 +127,19 @@ namespace JobOverview.ViewModel
             Logiciels = LogicielsVMMain;
         }
 
+
+        #region Méthodes privées
+
         private void EnregistrerTache(object o)
         {
-
+            throw new NotImplementedException();
         }
 
+
+        /// <summary>
+        /// Affichage des différentes taches déjà enregistrée sur la personne connectée (prod et annexe)
+        /// </summary>
+        /// <param name="obj">Paramètre de la commande</param>
         private void AfficherTaches (object obj)
         {
             var selecLog = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
@@ -193,6 +211,11 @@ namespace JobOverview.ViewModel
             }
         }
 
+        /// <summary>
+        /// Condition d'activation des commandes (si les listes version et logiciel ne sont pas null)
+        /// </summary>
+        /// <param name="obj">Paramètre de la commande</param>
+        /// <returns>Boolean : Vrai si liste non null</returns>
         private bool Activation(object obj)
         {
             var selecLog = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
@@ -205,6 +228,10 @@ namespace JobOverview.ViewModel
             return false;
         }
 
+        /// <summary>
+        /// Triage de la liste de tâche de production en fonction de l'option choisie
+        /// </summary>
+        /// <param name="radioTag">Valeur des radios boutons associés</param>
         private void TrierTaches (object radioTag)
         {
             
@@ -227,15 +254,28 @@ namespace JobOverview.ViewModel
             }
         }
 
+        /// <summary>
+        /// Option de filtrage pour le fitre ICollectionView.Filter
+        /// Taches terminées
+        /// </summary>
+        /// <param name="o">Objet de la liste source pour validation du filtre</param>
+        /// <returns>Boolean : Vrai si correspond au filtre</returns>
         private bool FiltreTerminee(object o)
         {
             return ((TacheApercu)o).DureeRestante == 0;
         }
 
+        /// <summary>
+        /// Option de filtrage pour le fitre ICollectionView.Filter 
+        /// Taches en cours
+        /// </summary>
+        /// <param name="o">Objet de la liste source pour validation du filtre</param>
+        /// <returns>Boolean : Vrai si correspond au filtre</returns>
         private bool FiltreEnCours(object o)
         {
             return ((TacheApercu)o).DureeRestante > 0;
         }
 
+        #endregion
     }
 }

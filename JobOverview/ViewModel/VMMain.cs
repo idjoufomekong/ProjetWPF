@@ -59,6 +59,7 @@ namespace JobOverview.ViewModel
         }
 
         #region Commandes
+
         private ICommand _cmdLogin;
         public ICommand CmdLogin
         {

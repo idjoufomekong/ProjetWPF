@@ -599,6 +599,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                     // Annulation de la transaction
                     tran.Rollback();
 
+                    // Erreur si le nombre de caractères du champ description dépasse 1000 caractères
                     if (ex.Number == 8152)
                         throw new Exception("Création impossible : le champ description d'une des tâches à créer comporte plus de 1000 caractères.", ex);
                 }

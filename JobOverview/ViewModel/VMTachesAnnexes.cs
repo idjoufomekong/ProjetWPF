@@ -12,8 +12,17 @@ using System.Windows.Input;
 
 namespace JobOverview.ViewModel
 {
+    /// <summary>
+    /// ViewModel associée au UserControl "UCTachesAnnexes"
+    /// </summary>
     class VMTachesAnnexes : ViewModelBase
     {
+        //TODO : [Gestion des tâches annexes] --> Lors de la modification d'une tâche d'une personne, il faudrait verrouiller la liste des employés.
+        //                                        Il faudrait alors cliquer sur le bouton enregistrer pour pouvoir sélectionner un autre employé.
+        //                                        Ce cas se présente seulement si l'utilisateur de l'application a le statut de manager.
+
+        //TODO : [Gestion des tâches annexes] --> Il reste à gérer le rafraîchissement du champ description suite à une suppression.
+
         #region Champs privés
         private string _usercourant;
         private List<Personne> _listPers;
@@ -21,11 +30,16 @@ namespace JobOverview.ViewModel
 
         #region Propriétés
         public ObservableCollection<Personne> Personnes { get; private set; }
+        public bool StatutManager { get; private set; }
         #endregion
 
         #region Constructeur
         public VMTachesAnnexes()
         {
+            // Récupération du statut manager de la personne connecté
+            // True = la personne connectée est manager
+            StatutManager = Properties.Settings.Default.Manager;
+
             // Récupération du code de l'utilisateur courant
             _usercourant = Properties.Settings.Default.CodeDernierUtilisateur;
 
@@ -33,7 +47,7 @@ namespace JobOverview.ViewModel
             _listPers = DALTache.RecupererPersonnesTachesAnnexes(_usercourant);
 
             // Récupération de la liste des personnes avec leurs tâches annexes étendues
-            // On se sert du booléen Assignation pour savoir si l'activité annexe est assignée ou non à l'employé
+            // On se sert du booléen Assignation pour savoir si l'activité annexe est affectée ou non à l'employé
             DALTache.RecupererPersonnesTachesAnnexesEtendues(_listPers);
 
             Personnes = new ObservableCollection<Personne>(_listPers);
@@ -41,6 +55,9 @@ namespace JobOverview.ViewModel
         #endregion
 
         #region Commande
+        /// <summary>
+        /// Commande d'enregistrement et de suppression des tâches annexes
+        /// </summary>
         private ICommand _cmdEnregistrer;
         public ICommand CmdEnregistrer
         {
@@ -55,7 +72,7 @@ namespace JobOverview.ViewModel
 
         #region Méthode associée à la commande
         /// <summary>
-        /// Ajoute ou supprime des tâches annexes
+        /// Ajoute ou supprime des tâches annexes dans la base de données
         /// </summary>
         /// <param name="obj"></param>
         private void EnregistrerTachesAnnexes(object obj)
@@ -75,7 +92,7 @@ namespace JobOverview.ViewModel
                 // Assignation de départ de la tâche annexes courante
                 var assignationDépart = listTachesDépart.Where(a => a.CodeActivite == t.CodeActivite).FirstOrDefault().Assignation;
 
-                // On ajoute ou supprimer une tâche annexe si l'assignation associée change de valeur
+                // On ajoute ou supprime une tâche annexe si l'assignation associée change de valeur
                 if (t.Assignation != assignationDépart)
                 {
                     if (t.Assignation)
@@ -97,10 +114,6 @@ namespace JobOverview.ViewModel
                         {
                             MessageBox.Show(ex.Message, "Erreur");
                         }
-
-                        //TODO : [Gestion des tâches annexes] --> RAZ du champ description, améliorer la gestion de ce champ
-
-                        //TODO : [Gestion des tâches annexes] --> Le champ description est limité à 1000 caractères
                     }
                 }
             }

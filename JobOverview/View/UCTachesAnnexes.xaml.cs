@@ -24,10 +24,5 @@ namespace JobOverview.View
         {
             InitializeComponent();
         }
-
-        private void CheckBox_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-
-        }
     }
 }

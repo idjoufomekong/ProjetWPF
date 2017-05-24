@@ -21,8 +21,8 @@
 
     <DockPanel >
         <!-- Bouton "Enregistrer" -->
-        <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
-                Command="{Binding CmdEnregistrer}" />
+        <Button Name="btnEnregistrer" Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
+                Command="{Binding CmdEnregistrer}" IsEnabled="{Binding Path=StatutManager}"/>
         <Grid>
             <!-- Création de 2 colonnes -->
             <Grid.ColumnDefinitions>
@@ -32,22 +32,25 @@
             <DockPanel Margin="10">
                 <Label Content="Membres de l'équipe" DockPanel.Dock="Top"/>
                 <!-- Liste des membres de l'équipe -->
-                <ListBox Name="list" ItemsSource="{Binding Personnes}" DisplayMemberPath="NomPrenom" IsSynchronizedWithCurrentItem="True"/>
+                <ListBox Name="list" ItemsSource="{Binding Path=Personnes}" DisplayMemberPath="NomPrenom" IsSynchronizedWithCurrentItem="True"/>
             </DockPanel>
             <DockPanel Grid.Column="1" Margin="10">
                 <Label Content="Tâches annexes" DockPanel.Dock="Top"/>
                 <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="Description de la tâche : "/>
                     <!-- Description de la tâche annexe sélectionnée -->
-                    <TextBox VerticalAlignment="Center" TextWrapping="Wrap"
+                    <Grid IsEnabled="{Binding ElementName=btnEnregistrer, Path=IsEnabled}">
+                        <TextBox VerticalAlignment="Center" TextWrapping="Wrap"
                              Height="35" MaxLength="1000"
                              Text="{Binding Path=Personnes/TachesAnnexes/Description}" 
                              IsEnabled="{Binding Path=Personnes/TachesAnnexes/TravauxAnnexes, Converter={StaticResource TravauxAnnexesToBoolConverter}}" />
+                    </Grid>
                 </DockPanel>
                 <!-- Liste des tâches annexes -->
                 <ListView ItemsSource="{Binding Path=Personnes/TachesAnnexes}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
+                            <!-- Colonne "Activité annexe" -->
                             <GridViewColumn Header="Activité annexe">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -56,11 +59,14 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+                            <!-- Colonne "Tâche dispo" (CheckBox) -->
                             <GridViewColumn Header="Tâche dispo">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Path=Assignation}"
+                                        <Grid IsEnabled="{Binding ElementName=btnEnregistrer, Path=IsEnabled}">
+                                            <CheckBox IsChecked="{Binding Path=Assignation}"
                                                   IsEnabled="{Binding Path=TravauxAnnexes, Converter={StaticResource TravauxAnnexesToBoolConverter}}"/>
+                                        </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

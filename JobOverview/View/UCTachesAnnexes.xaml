@@ -21,8 +21,8 @@
 
     <DockPanel >
         <!-- Bouton "Enregistrer" -->
-        <Button Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
-                Command="{Binding CmdEnregistrer}" />
+        <Button Name="btnEnregistrer" Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
+                Command="{Binding CmdEnregistrer}" IsEnabled="{Binding StatutManager}"/>
         <Grid>
             <!-- Création de 2 colonnes -->
             <Grid.ColumnDefinitions>
@@ -59,8 +59,11 @@
                             <GridViewColumn Header="Tâche dispo">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Path=Assignation}"
+                                        <TextBlock IsEnabled="{Binding ElementName=btnEnregistrer, Path=IsEnabled}">
+                                            <!--<CheckBox/>-->
+                                            <CheckBox IsChecked="{Binding Path=Assignation}"
                                                   IsEnabled="{Binding Path=TravauxAnnexes, Converter={StaticResource TravauxAnnexesToBoolConverter}}"/>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

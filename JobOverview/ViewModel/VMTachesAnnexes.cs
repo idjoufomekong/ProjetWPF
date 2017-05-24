@@ -21,6 +21,7 @@ namespace JobOverview.ViewModel
 
         #region Propriétés
         public ObservableCollection<Personne> Personnes { get; private set; }
+        public bool StatutManager { get; private set; }
         #endregion
 
         #region Constructeur
@@ -37,6 +38,8 @@ namespace JobOverview.ViewModel
             DALTache.RecupererPersonnesTachesAnnexesEtendues(_listPers);
 
             Personnes = new ObservableCollection<Personne>(_listPers);
+            
+            StatutManager = Properties.Settings.Default.Manager;
         }
         #endregion
 
@@ -99,8 +102,6 @@ namespace JobOverview.ViewModel
                         }
 
                         //TODO : [Gestion des tâches annexes] --> RAZ du champ description, améliorer la gestion de ce champ
-
-                        //TODO : [Gestion des tâches annexes] --> Le champ description est limité à 1000 caractères
                     }
                 }
             }

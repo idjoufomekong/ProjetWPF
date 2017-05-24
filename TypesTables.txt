@@ -1,0 +1,29 @@
+drop type TypeTableTache
+go
+create type TypeTableTache as table
+(
+	Id uniqueidentifier not null,
+	Libelle nvarchar(40) not null,
+	--Annexe bit ,
+	Activite varchar(20) not null,
+	Login varchar(20) not null,
+	Description nvarchar(100)
+	)
+go
+
+drop type TypeTableTacheProd
+go	
+create type TypeTableTacheProd as table
+(
+Id uniqueidentifier not null,
+	
+	--Annexe bit not null,
+	DureePrevue float not null,
+	DureeRestante float not null,
+	Module varchar(20) not null,
+	LogicielModule varchar(20) not null,
+	NumeroVersion float not null,
+	Logicielversion varchar(20) not null
+	
+)
+go

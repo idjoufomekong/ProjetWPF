@@ -61,6 +61,7 @@ namespace JobOverview.ViewModel
 
         #region Commandes
 
+        // Commande associée à la gestion du login
         private ICommand _cmdLogin;
         public ICommand CmdLogin
         {
@@ -72,6 +73,7 @@ namespace JobOverview.ViewModel
             }
         }
 
+        //Commande associée à la gestion de l'exportation XML
         private ICommand _cmdEchange;
         public ICommand CmdEchange
         {
@@ -85,6 +87,7 @@ namespace JobOverview.ViewModel
             }
         }
 
+        //Commande associée à la barre progression de la fenetre d'export
         private ICommand _cmdProgressBar;
         public ICommand CmdProgressBar
         {
@@ -96,6 +99,7 @@ namespace JobOverview.ViewModel
             }
         }
 
+        //Commande associée à la gestion du temps des travaaux
         private ICommand _cmdSaisieTemps;
         public ICommand CmdSaisieTemps
         {
@@ -121,6 +125,7 @@ namespace JobOverview.ViewModel
             }
         }
 
+        //Commande associée à la gestion des tâches de productions
         private ICommand _cmdTachesProd;
         public ICommand CmdTachesProd
         {
@@ -136,6 +141,7 @@ namespace JobOverview.ViewModel
             }
         }
 
+        //Commande associée l'affichage de la vue de synthèse logiciel/version
         private ICommand _cmdSynthese;
         public ICommand CmdSynthese
         {
@@ -147,6 +153,7 @@ namespace JobOverview.ViewModel
             }
         }
 
+        //Commande associée à l'affichage des métadonnées
         private ICommand _cmdAPropos;
         public ICommand CmdAPropos
         {

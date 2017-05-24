@@ -128,4 +128,45 @@ namespace JobOverview
             throw new NotImplementedException();
         }
     }
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">Combobox</param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter">Dictionnaire de ressources</param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            Visibility v = ((bool)value ? Visibility.Visible : Visibility.Hidden);
+            return v;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TimeSpanToColorBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            //TimeSpan d = (TimeSpan)value;
+            //TimeSpan seuil = (TimeSpan)parameter;
+            ////Color c = (d > 0 ? Colors.Yellow : Colors.White);
+            //return new SolidColorBrush(c);
+            return 0;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -212,7 +212,7 @@ namespace JobOverview.ViewModel
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
             var dlg = new ModalWindow(new VMSaisieTache(LogicielCourant.CodeLogiciel, VersionCourante.NumVersion));
-            dlg.Title = "saisie des tâches";
+            dlg.Title = "Saisie des tâches de production";
             bool? res = dlg.ShowDialog();
 
         }

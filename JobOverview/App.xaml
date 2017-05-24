@@ -33,5 +33,11 @@
         <DataTemplate DataType="{x:Type vm:VMAPropos}">
             <vw:UCAPropos/>
         </DataTemplate>
+        <!--<Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="Bisque"/>
+        </Style>-->
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="Aqua"/>
+        </Style>
     </Application.Resources>
 </Application>

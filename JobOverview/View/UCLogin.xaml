@@ -8,7 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal" MinHeight="100" >
-		<Label Content="Utilisateur" VerticalAlignment="Center" Margin="10"/>
+		<Label Content="Utilisateur" VerticalAlignment="Center" Margin="10"
+               Foreground="#FF013BFF" FontWeight="DemiBold" FontSize="16"/>
         <ComboBox Height="30" Width="200" Name="cb_Login"
 			      ItemsSource="{Binding Path=Personnes}"
                   DisplayMemberPath="NomPrenom" SelectedValuePath="CodePersonne"

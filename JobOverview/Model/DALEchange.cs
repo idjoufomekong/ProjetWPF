@@ -13,34 +13,7 @@ namespace JobOverview.Model
 {
     public class DALEchange
     {
-        /// <summary>
-        /// Export de la liste complète des tâches de l'équipe du manager connecté
-        /// </summary>
-        /// <param name="listPersonne">Liste des membres de l'équipe du manager connecté</param>
-        /// <param name="path">Chemin du fichier de sauvegarde</param>
-        public static void ExporterXML(List<Personne> listPersonne)//,string path)
-        {
-
-            SaveFileDialog dos = new SaveFileDialog();
-            dos.Filter = "XML Files (*.xml)|*.xml";
-            dos.DefaultExt = "xml";
-            dos.AddExtension = true;
-            if (dos.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(dos.FileName))
-            {
-                // Exportation de la liste sous format xml
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Personne>),
-                                  new XmlRootAttribute("Personne"));
-
-                using (var sw = new StreamWriter(dos.FileName))
-                {
-                    serializer.Serialize(sw, listPersonne);
-                }
-
-            }
-
-        }
-
-        public static void ExporterXML2(List<Personne> lstPers, string path)
+        public static void ExporterXML(List<Personne> lstPers, string path)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -62,14 +35,6 @@ namespace JobOverview.Model
                 {
                     writer.WriteStartElement("Personne");
                     writer.WriteAttributeString("Login", col.CodePersonne);
-                    //writer.WriteAttributeString("Activite", col.Activite);
-                    //writer.WriteAttributeString("Personne", col.Login);
-                    //writer.WriteAttributeString("DureePrev", col.DureePrevue.ToString());
-                    //writer.WriteAttributeString("DureeRest", col.DureeRestante.ToString());
-                    //writer.WriteAttributeString("Logiciel", col.Logiciel);
-                    //writer.WriteAttributeString("Module", col.Module);
-                    //writer.WriteAttributeString("Version", col.NumeroVersion.ToString());
-
 
                     if (col.TachesProd != null)
                     {

@@ -11,28 +11,24 @@ using System.Windows.Data;
 
 namespace JobOverview.ViewModel
 {
-	public class VMLogin : ViewModelBase
-	{
+    public class VMLogin : ViewModelBase
+    {
 
         public List<Personne> Personnes { get; set; }
 
-		public VMLogin()
-		{
+        public VMLogin()
+        {
             Personnes = DALPersonne.RecupererToutesPersonne();
-
         }
 
         public override ValidationResult Validate()
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(Personnes);
-            try
-            {
-                DALPersonne.SauvegardePropriete((Personne)view.CurrentItem);             
-            }
-            catch (Exception)
-            {
-                return new ValidationResult(false, "Erreur lors de la connection à l'application!"); 
-            }
+
+            //Enregistrement de l'identifiant de la personne connectée dans les paramètres de l'appli (portée User)
+            Properties.Settings.Default.CodeDernierUtilisateur = ((Personne)view.CurrentItem).CodePersonne;
+            Properties.Settings.Default.Save();
+
             return new ValidationResult(true);
         }
     }

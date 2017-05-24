@@ -16,7 +16,7 @@ namespace UnitTestJobOverView
         [TestMethod]
         public void TestMethod1()
         {
-            List<Personne> _personnes = DALTache.RecupererPersonnesTaches("GENOMICA", 1, "BNORMAND");
+            List<Personne> _personnes = DALTache.RecupererPersonnesTaches("GENOMICA");
             var p = _personnes.Where(x => x.CodePersonne == "RBEAUMONT").FirstOrDefault();
             Assert.AreEqual(9, p.TachesProd.Count());
 

@@ -14,6 +14,16 @@
         <Style TargetType="Button">
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
+            <Setter Property="Background" Value="#FFDDFBF7"/>
+            <Setter Property="BorderBrush" Value="#FFB2DCF0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF013BFF"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -50,13 +60,16 @@
             <DockPanel Grid.Column="1" VerticalAlignment="Center">
                 <RadioButton Content="Toutes" Tag="T" Command="{Binding CmdChecker}" 
                              CommandParameter="{Binding RelativeSource= {RelativeSource Self}, Path=Tag}" DockPanel.Dock="Right"
-                             IsEnabled="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditActivation}}"/>
+                             IsEnabled="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditActivation}}"
+                             VerticalContentAlignment="Center" Margin="5,5"/>
                 <RadioButton Content="Terminées" Tag="F"  Command="{Binding CmdChecker}" 
                              CommandParameter="{Binding RelativeSource= {RelativeSource Self}, Path=Tag}" DockPanel.Dock="Right"
-                             IsEnabled="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditActivation}}"/>
+                             IsEnabled="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditActivation}}"
+                             VerticalContentAlignment="Center" Margin="0,5"/>
                 <RadioButton Content="En cours" Tag="EC" IsChecked="True" Command="{Binding CmdChecker}" 
                              CommandParameter="{Binding RelativeSource= {RelativeSource Self}, Path=Tag}" DockPanel.Dock="Right"
-                             IsEnabled="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditActivation}}"/>
+                             IsEnabled="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditActivation}}"
+                             VerticalContentAlignment="Center" Margin="3,5"/>
                 <Label Content="Tâches de production" VerticalContentAlignment="Center"/>
             </DockPanel>
             <ListView Grid.Row="1" Margin="10"
@@ -81,10 +94,8 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <!--<TextBlock >-->
                 <TextBlock Text="Description" Visibility="{Binding Path=PersonnesTachesProd/TachesProd/Description, Converter={StaticResource CurrentTacheDescriptiontoVisibility}}"/>
                 <TextBlock TextWrapping="Wrap" Text="{Binding Path=PersonnesTachesProd/TachesProd/Description}"/>
-                <!--</TextBlock>-->
             </StackPanel >
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"

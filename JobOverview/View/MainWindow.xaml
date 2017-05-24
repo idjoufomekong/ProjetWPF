@@ -16,7 +16,9 @@
 			<Setter Property="Margin" Value="0,5"/>
 			<Setter Property="HorizontalContentAlignment" Value="Left"/>
 			<Setter Property="FontSize" Value="16"/>
-		</Style>
+            <Setter Property="Background" Value="#FFD9F9F8"/>
+            <Setter Property="BorderBrush" Value="#FF4FB5E4"/>
+        </Style>
 
 		<Style TargetType="fa:IconBlock">
 			<Setter Property="Margin" Value="5,0"/>
@@ -46,13 +48,13 @@
             <Button Command="{Binding CmdSaisieTemps}">
                 <StackPanel Orientation="Horizontal">
                     <fa:IconBlock Icon="ClockO" />
-                    <TextBlock Text="Saisie temps" />
+                    <TextBlock Text="Saisie de temps" />
                 </StackPanel>
             </Button>
             <Button Command="{Binding CmdEchange}" >
 				<StackPanel Orientation="Horizontal">
 					<fa:IconBlock Icon="FileTextO"/>
-					<TextBlock Text="Export"/>
+					<TextBlock Text="Exportation"/>
 				</StackPanel>
 			</Button>
             <Button Command="{Binding CmdSynthese}">
@@ -64,7 +66,7 @@
             <Button Command="{Binding CmdAPropos}">
                 <StackPanel Orientation="Horizontal">
                     <fa:IconBlock Icon="Info"/>
-                    <TextBlock Text="A propos"/>
+                    <TextBlock Text="A Propos" FontStyle="Italic" FontWeight="DemiBold"/>
                 </StackPanel>
             </Button>
         </StackPanel>

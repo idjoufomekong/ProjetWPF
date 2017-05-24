@@ -1,98 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Personne xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Personne CodePersonne="RBEAUMONT">
-    <NomPrenom>Rosline BEAUMONT</NomPrenom>
-    <CodeMetier>DEV</CodeMetier>
-    <Manager>false</Manager>
-    <TachesProd NomTache="AF Marquage" Annexe="false" DureePrevue="64" DureeRestante="2" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>22</NumTache>
-      <TravauxProd Date="2017-01-20T00:00:00" Heures="4" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AT Marquage" Annexe="false" DureePrevue="48" DureeRestante="19" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>23</NumTache>
-      <TravauxProd Date="2017-01-20T00:00:00" Heures="2" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="DEV Marquage" Annexe="false" DureePrevue="56" DureeRestante="27" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>24</NumTache>
-      <TravauxProd Date="2017-01-20T00:00:00" Heures="2" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AF Séparation" Annexe="false" DureePrevue="80" DureeRestante="18" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>31</NumTache>
-      <TravauxProd Date="2017-01-20T00:00:00" Heures="4" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AT Séparation" Annexe="false" DureePrevue="64" DureeRestante="35" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>32</NumTache>
-      <TravauxProd Date="2017-01-20T00:00:00" Heures="2" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="DEV Séparation" Annexe="false" DureePrevue="48" DureeRestante="19" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>33</NumTache>
-      <TravauxProd Date="2017-01-20T00:00:00" Heures="2" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AF Variations alléliques" Annexe="false" DureePrevue="16" DureeRestante="0" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>40</NumTache>
-    </TachesProd>
-    <TachesProd NomTache="AT Variations alléliques" Annexe="false" DureePrevue="40" DureeRestante="0" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>41</NumTache>
-    </TachesProd>
-    <TachesProd NomTache="DEV Variations alléliques" Annexe="false" DureePrevue="64" DureeRestante="0" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>42</NumTache>
-    </TachesProd>
-    <TachesAnnexes NomTache="Réunion de service" Annexe="true" CodeActivite="REUNION_SERVICE" Description="Réunion de service">
-      <IdTache>1ce7d020-6cbb-4a62-9a3d-410aa05d8519</IdTache>
-    </TachesAnnexes>
-    <TachesAnnexes NomTache="Réunion d'équipe" Annexe="true" CodeActivite="REUNION_EQUIPE" Description="Réunion d'équipe">
-      <IdTache>23f18c03-503c-4bed-a756-e1ddf5721afe</IdTache>
-    </TachesAnnexes>
-  </Personne>
-  <Personne CodePersonne="RFISHER">
-    <NomPrenom>Raymond FISHER</NomPrenom>
-    <CodeMetier>DEV</CodeMetier>
-    <Manager>false</Manager>
-    <TachesProd NomTache="AF Paramétrage" Annexe="false" DureePrevue="80" DureeRestante="36" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>25</NumTache>
-      <TravauxProd Date="2016-02-17T00:00:00" Heures="1" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AT Paramétrage" Annexe="false" DureePrevue="72" DureeRestante="11" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>26</NumTache>
-      <TravauxProd Date="2016-02-17T00:00:00" Heures="4" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="DEV Paramétrage" Annexe="false" DureePrevue="64" DureeRestante="9" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>27</NumTache>
-      <TravauxProd Date="2016-02-17T00:00:00" Heures="3" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AF Séquençage" Annexe="false" DureePrevue="32" DureeRestante="0" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>34</NumTache>
-      <TravauxProd Date="2016-02-17T00:00:00" Heures="1" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="AT Séquençage" Annexe="false" DureePrevue="56" DureeRestante="0" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>35</NumTache>
-      <TravauxProd Date="2016-02-17T00:00:00" Heures="4" TauxProductivite="1" />
-    </TachesProd>
-    <TachesProd NomTache="DEV Séquençage" Annexe="false" DureePrevue="72" DureeRestante="17" CodeLogiciel="GENOMICA" CodeVersion="2">
-      <IdTache>00000000-0000-0000-0000-000000000000</IdTache>
-      <NumTache>36</NumTache>
-      <TravauxProd Date="2016-02-17T00:00:00" Heures="3" TauxProductivite="1" />
-    </TachesProd>
-    <TachesAnnexes NomTache="Réunion de service" Annexe="true" CodeActivite="REUNION_SERVICE" Description="Réunion de service">
-      <IdTache>06b934c1-fc22-43a5-814e-1779f5d72262</IdTache>
-      <TravauxAnnexes Date="2016-01-10T00:00:00" Heures="2" TauxProductivite="1" />
-    </TachesAnnexes>
-    <TachesAnnexes NomTache="Réunion d'équipe" Annexe="true" CodeActivite="REUNION_EQUIPE" Description="Réunion d'équipe">
-      <IdTache>f5276409-9589-4841-8d3f-f1059c5ebbb5</IdTache>
-    </TachesAnnexes>
-  </Personne>
-</Personne>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Personnes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<Personne Login="BNORMAND">
+		<TâchesAnnexes>
+			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
+			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
+		</TâchesAnnexes>
+	</Personne>
+	<Personne Login="LBUTLER">
+		<TâchesProd />
+		<TâchesAnnexes>
+			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
+			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
+		</TâchesAnnexes>
+	</Personne>
+	<Personne Login="RBEAUMONT">
+		<TâchesProd />
+		<TâchesAnnexes>
+			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
+			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
+		</TâchesAnnexes>
+	</Personne>
+	<Personne Login="RFISHER">
+		<TâchesProd />
+		<TâchesAnnexes>
+			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
+			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
+		</TâchesAnnexes>
+	</Personne>
+</Personnes>

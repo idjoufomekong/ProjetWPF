@@ -15,6 +15,7 @@ namespace JobOverview.ViewModel
     {
 
         private ObservableCollection<Logiciel> _logiciel;
+        public bool Manager { get; } = Properties.Settings.Default.Manager;
         public ObservableCollection<Logiciel> Logiciels
         {
             get { return _logiciel; }

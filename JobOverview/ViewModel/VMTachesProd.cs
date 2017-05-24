@@ -29,6 +29,7 @@ namespace JobOverview.ViewModel
         public ObservableCollection<Personne> PersonnesTachesProd { get; private set; }
         public ObservableCollection<Logiciel> Logiciels { get; private set; }
         public ObservableCollection<Entity.Version> Versions { get; set; }
+        public bool Manager { get; } = Properties.Settings.Default.Manager;
         public ModesEdition ModeEdit
         {
             get { return _modeEdition; }

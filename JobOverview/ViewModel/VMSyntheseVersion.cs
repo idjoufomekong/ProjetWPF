@@ -11,9 +11,7 @@ namespace JobOverview.ViewModel
 {
     public class VMSyntheseVersion:ViewModelBase
     {
-        #region Propriétés
         public ObservableCollection<Logiciel> Logiciels { get; set; }
-        #endregion
 
         public VMSyntheseVersion()
         {

@@ -12,6 +12,11 @@ namespace JobOverview.Model
 {
     public class DALPersonne
     {
+        /// <summary>
+        /// Récupération de la liste de toutes les personnes de la BDD
+        /// avec leurs activités associées
+        /// </summary>
+        /// <returns>Liste de toutes les personnes</returns>
         public static List<Personne> RecupererToutesPersonne()
         {
             List<Personne> listPersonne = new List<Personne>();
@@ -19,15 +24,14 @@ namespace JobOverview.Model
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
             string queryString = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,A.CodeActivite, A.Libelle
- from jo.Personne P 
- inner join jo.Metier M on M.CodeMetier=P.CodeMetier
- inner join jo.ActiviteMetier AM on AM.MetierCodeMetier=M.CodeMetier
- inner join jo.Activite A on A.CodeActivite=AM.ActiviteCodeActivite
- order by 2,4";
+                                 from jo.Personne P 
+                                 inner join jo.Metier M on M.CodeMetier=P.CodeMetier
+                                 inner join jo.ActiviteMetier AM on AM.MetierCodeMetier=M.CodeMetier
+                                 inner join jo.Activite A on A.CodeActivite=AM.ActiviteCodeActivite
+                                 order by 2,4";
 
             using (var connect = new SqlConnection(connectString))
             {
-                //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
                 connect.Open();
 
@@ -35,8 +39,8 @@ namespace JobOverview.Model
                 {
                     while (reader.Read())
                     {
-                            var log = (string)reader["Login"];
-                            Personne p = null;
+                        var log = (string)reader["Login"];
+                        Personne p = null;
                         if ((listPersonne.Count == 0) || (listPersonne.Last().CodePersonne != log))
                         {
                             p = new Personne();
@@ -48,16 +52,21 @@ namespace JobOverview.Model
                         p = listPersonne.Last();
 
                         //Chargement de la liste d'activités
-                        Activite  act = new Activite();
-                        act.CodeActivite= reader["CodeActivite"].ToString();
-                        act.NomActivite= reader["Libelle"].ToString();
+                        Activite act = new Activite();
+                        act.CodeActivite = reader["CodeActivite"].ToString();
+                        act.NomActivite = reader["Libelle"].ToString();
                     }
                 }
             }
-
             return listPersonne;
         }
 
+        /// <summary>
+        /// Récupération de la liste d'une personnes ou d'une équipe de la BDD
+        /// avec leurs activités associées
+        /// </summary>
+        /// <returns>Liste des personnes</returns>
+        /// <param name="manager">Code personne</param>
         public static List<Personne> RecupererToutesPersonneActivite(string manager)
         {
             List<Personne> listPersonne = new List<Personne>();
@@ -65,18 +74,17 @@ namespace JobOverview.Model
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
 
             string queryString = @"select P.Login, P.Prenom+' '+P.Nom NomComplet,P.CodeMetier,A.CodeActivite, A.Libelle
- from jo.Personne P 
- inner join jo.Metier M on M.CodeMetier=P.CodeMetier
- inner join jo.ActiviteMetier AM on AM.MetierCodeMetier=M.CodeMetier
- inner join jo.Activite A on A.CodeActivite=AM.ActiviteCodeActivite
-where Manager=@log and Annexe=0
- order by 2,4";
+                                 from jo.Personne P 
+                                 inner join jo.Metier M on M.CodeMetier=P.CodeMetier
+                                 inner join jo.ActiviteMetier AM on AM.MetierCodeMetier=M.CodeMetier
+                                 inner join jo.Activite A on A.CodeActivite=AM.ActiviteCodeActivite
+                                 where Manager=@log and Login=@log and Annexe=0
+                                 order by 2,4";
             var log = new SqlParameter("@log", DbType.String);
             log.Value = manager;
 
             using (var connect = new SqlConnection(connectString))
             {
-                //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
                 command.Parameters.Add(log);
                 connect.Open();
@@ -105,9 +113,15 @@ where Manager=@log and Annexe=0
                     }
                 }
             }
-
             return listPersonne;
         }
+
+        /// <summary>
+        /// Récupération de la liste de personne liée à la personne connecté
+        /// si non manager 1 personne récupérée, sinon toute l'équipe
+        /// </summary>
+        /// <param name="personneConnecte"></param>
+        /// <returns>Liste de personne</returns>
         public static List<Personne> RecupererPersonneConnecte(string personneConnecte)
         {
             List<Personne> listPersonne = new List<Personne>();
@@ -123,7 +137,6 @@ where Manager=@log and Annexe=0
 
             using (var connect = new SqlConnection(connectString))
             {
-                //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
                 command.Parameters.Add(log);
                 connect.Open();
@@ -143,14 +156,5 @@ where Manager=@log and Annexe=0
             }
             return listPersonne;
         }
-
-        public static void SauvegardePropriete(Personne connecte)
-        {
-            Properties.Settings.Default.CodeDernierUtilisateur = connecte.CodePersonne;
-            Properties.Settings.Default.Manager = connecte.Manager;
-            Properties.Settings.Default.Save();
-        }
-
-
     }
 }

@@ -28,7 +28,6 @@ namespace JobOverview.Model
 
             using (var connect = new SqlConnection(connectString))
             {
-                //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
                 connect.Open();
 
@@ -40,7 +39,6 @@ namespace JobOverview.Model
                     }
                 }
             }
-
             return listLogiciel;
         }
 
@@ -67,7 +65,7 @@ namespace JobOverview.Model
                 log = listLogiciel.Last();
             }
             Entity.Version vers = new Entity.Version();
-            vers.NumVersion= (float)reader["NumeroVersion"];
+            vers.NumVersion = (float)reader["NumeroVersion"];
             log.Versions.Add(vers);
         }
 
@@ -90,7 +88,6 @@ namespace JobOverview.Model
 
             using (var connect = new SqlConnection(connectString))
             {
-                //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
                 command.Parameters.Add(param);
                 connect.Open();
@@ -106,15 +103,13 @@ namespace JobOverview.Model
                     }
                 }
             }
-
             return listModule;
         }
 
         /// <summary>
         /// Récupère la liste des logiciels avec leurs modules et versions pour la synthèse 
         /// </summary>
-        /// <param name="codeLogiciel"></param>
-        /// <returns></returns>
+        /// <returns>Liste de tous les logiciels</returns>
         public static List<Logiciel> RecupererLogicielSynthese()
         {
             List<Logiciel> listLogiciel = new List<Logiciel>();
@@ -131,7 +126,6 @@ namespace JobOverview.Model
 
             using (var connect = new SqlConnection(connectString))
             {
-                //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
                 connect.Open();
 
@@ -142,17 +136,21 @@ namespace JobOverview.Model
                         RecupererLogicielsModulesFromDataReader(listLogiciel, reader);
                     }
 
-                }
-                    foreach(var a in listLogiciel)
+                    foreach (var a in listLogiciel)
                     {
-                       // a.Versions = new Entity.Version();
-                        a.Versions= RecupererVersionsSynthese(a.CodeLogiciel, connect);
+                        a.Versions = RecupererVersionsSynthese(a.CodeLogiciel, connect);
                     }
+                }
+                return listLogiciel;
             }
-
-            return listLogiciel;
         }
 
+
+        /// <summary>
+        /// Lecture du dataread retourné pr la requête SQL de récupération des logiciels et versions
+        /// </summary>
+        /// <param name="listLogiciel">Liste de logiciel</param>
+        /// <param name="reader">donnée du reader</param>
         private static void RecupererLogicielsModulesFromDataReader(List<Logiciel> listLogiciel, SqlDataReader reader)
         {
             string codeLogiciel = (string)reader["CodeLogiciel"];
@@ -169,7 +167,7 @@ namespace JobOverview.Model
 
             log = listLogiciel.Last();
             Module mod = new Module();
-            mod.CodeModule= (string)reader["CodeModule"];
+            mod.CodeModule = (string)reader["CodeModule"];
             mod.NomModule = (string)reader["Libelle"];
             mod.TempsRealise =(double)reader["travaille"]/8; //Pour avoir le nombre de jours
             log.Modules.Add(mod);
@@ -178,8 +176,8 @@ namespace JobOverview.Model
         /// <summary>
         /// Pour chaque logiciel entré en paramètres, récupère la liste des versions
         /// </summary>
-        /// <param name="codeLogiciel"></param>
-        /// <param name="connect"></param>
+        /// <param name="codeLogiciel">Identifiant du logiciel</param>
+        /// <param name="connect">Connection à la base</param>
         /// <returns></returns>
         public static List<Entity.Version> RecupererVersionsSynthese(string codeLogiciel, SqlConnection connect)
         {
@@ -187,56 +185,46 @@ namespace JobOverview.Model
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
             string queryString = @"select V.CodeLogiciel,R.NumeroVersion, V.NumeroVersion,V.DateSortiePrevue, V.DateSortieReelle, sum(TR.Heures) travaille,COUNT(R.NumeroRelease) nbRelease
-from jo.Version V 
-inner join jo.Release R on R.NumeroVersion=V.NumeroVersion
-inner join jo.TacheProd TP on TP.NumeroVersion=V.NumeroVersion
-inner join jo.Tache T on T.IdTache=TP.IdTache
-inner join jo.Travail TR on TR.IdTache=T.IdTache
-where V.CodeLogiciel=@codeLogiciel
-group by  V.CodeLogiciel,R.NumeroVersion, V.NumeroVersion,V.DateSortiePrevue, V.DateSortieReelle
-order by 3";
+                                    from jo.Version V 
+                                    inner join jo.Release R on R.NumeroVersion=V.NumeroVersion
+                                    inner join jo.TacheProd TP on TP.NumeroVersion=V.NumeroVersion
+                                    inner join jo.Tache T on T.IdTache=TP.IdTache
+                                    inner join jo.Travail TR on TR.IdTache=T.IdTache
+                                    where V.CodeLogiciel=@codeLogiciel
+                                    group by  V.CodeLogiciel,R.NumeroVersion, V.NumeroVersion,V.DateSortiePrevue, V.DateSortieReelle
+                                    order by 3";
 
             var param = new SqlParameter("@codeLogiciel", DbType.String);
             param.Value = codeLogiciel;
-            //using (var connect = new SqlConnection(connectString))
-            //{
-                //Récupération liste des tâches de production
-                var command = new SqlCommand(queryString, connect);
+
+            var command = new SqlCommand(queryString, connect);
             command.Parameters.Add(param);
-                //connect.Open();
+            connect.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        RecupererLogicielsVersionsFromDataReader(listVersion, reader);
-                    }
+                    RecupererVersionsFromDataReader(listVersion, reader);
                 }
-           // }
-
+            }
             return listVersion;
         }
 
-        private static void RecupererLogicielsVersionsFromDataReader(List<Entity.Version> listVersion, SqlDataReader reader)
+        private static void RecupererVersionsFromDataReader(List<Entity.Version> listVersion, SqlDataReader reader)
         {
 
             Entity.Version vers = new Entity.Version();
 
                 vers.NumVersion = (float)reader["NumeroVersion"];
                 vers.DateSortiePrevue = (DateTime)reader["DateSortiePrevue"];
-            if(reader["DateSortieReelle"]!=DBNull.Value)
-                vers.DateSortieReelle = (DateTime)reader["DateSortieReelle"];
+                if(reader["DateSortieReelle"]!=DBNull.Value)
+                    vers.DateSortieReelle = (DateTime)reader["DateSortieReelle"];
                 vers.TempsTotalRealise = (double)reader["travaille"];
-            vers.NombreReleases = (int)reader["nbRelease"];
+                vers.NombreReleases = (int)reader["nbRelease"];
 
-                listVersion.Add(vers);
+            listVersion.Add(vers);
 
         }
-        //private static float ConvertirEnJours(float temps)
-        //{
-        //    if (temps == 0)
-        //        return 0;
-        //    var p = temps / 8;
-        //}
     }
 }

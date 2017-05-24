@@ -21,6 +21,7 @@ namespace JobOverview.ViewModel
         private Logiciel _logicielCourant;
         private Entity.Version _version;
         private string _userCourant;
+
         #region Propriétés
 
         public List<Personne> PersonnesTaches { get; private set; }
@@ -41,18 +42,18 @@ namespace JobOverview.ViewModel
 
         public VMEchange(ObservableCollection<Logiciel> logicielVMMain)
         {
-            //Chargement des ComboBox en observablecollection pour anticiper la MAJ lors de la création de nouvelles versions ou 
-            //logiciels
-            // Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
             Logiciels = logicielVMMain;
 
-            // J'instancie juste la liste pour initialiser le DataContext car la liste est chargée au clic du bouton
             TachesApercu = new ObservableCollection<TacheApercu>();
 
             _userCourant = Properties.Settings.Default.CodeDernierUtilisateur;
         }
 
         #region Commandes
+
+        /// <summary>
+        /// Commande d'exportation
+        /// </summary>
         private ICommand _cmdExporter;
         public ICommand CmdExporter
         {
@@ -64,6 +65,9 @@ namespace JobOverview.ViewModel
             }
         }
 
+        /// <summary>
+        /// Commande d'aperçu
+        /// </summary>
         private ICommand _cmdCharger;
         public ICommand CmdCharger
         {
@@ -78,6 +82,7 @@ namespace JobOverview.ViewModel
         #endregion
 
         #region Méthodes privées
+
         /// <summary>
         /// Charge la liste des personnes et tâches en brut pour le logiciel la version sélectionnés
         /// </summary>
@@ -96,38 +101,38 @@ namespace JobOverview.ViewModel
             }
         }
 
+        /// <summary>
+        /// Exportation au format xml
+        /// </summary>
+        /// <param name="obj">Paramètre de la commande</param>
         private void Exporter(object obj)
         {
+
             LogicielCourant = (Logiciel)CollectionViewSource.GetDefaultView(Logiciels).CurrentItem;
             VersionCourante = (Entity.Version)CollectionViewSource.GetDefaultView(LogicielCourant.Versions).CurrentItem;
             PersonnesTaches = DALTache.RecupererPersonnesTaches( _userCourant);
-            //DALEchange.ExporterXML(PersonnesTaches);
-
-            //Récupération de la liste et sélection des tâches en fonction de la version
-            //var listTache = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
-            //    VersionCourante.NumVersion, _userCourant);
-            //var listCourante = new List<Personne>();
-            if (PersonnesTaches == null || PersonnesTaches.Count == 0)
-                return;
-            else
-            {
 
             foreach (var b in PersonnesTaches)
             {
-
-                var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
-                && (x.CodeLogiciel == LogicielCourant.CodeLogiciel)).ToList();
-                b.TachesProd = new ObservableCollection<Entity.TacheProd>(p);
+                // Si la personne en cours (b) à des taches de production associées
+                if (b.TachesProd != null)
+                {
+                    var p = b.TachesProd.Where(x => (x.CodeVersion == VersionCourante.NumVersion)
+                    && (x.CodeLogiciel == LogicielCourant.CodeLogiciel)).ToList();
+                    b.TachesProd = new ObservableCollection<Entity.TacheProd>(p);
+                }
             }
 
+            // Ouverture de la fenètre pour choisir le chemin d'accès au fichier exporté
             SaveFileDialog dos = new SaveFileDialog();
             dos.Filter = "XML Files (*.xml)|*.xml";
             dos.DefaultExt = "xml";
             dos.AddExtension = true;
             if (dos.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(dos.FileName))
             {
-                DALEchange.ExporterXML2(PersonnesTaches, dos.FileName);
+                DALEchange.ExporterXML(PersonnesTaches, dos.FileName);
             }
+
             #region TestProgressBar
             
             var dlg = new ModalWindow(new VMProgressBar());
@@ -135,8 +140,8 @@ namespace JobOverview.ViewModel
             bool? res = dlg.ShowDialog();
 
             #endregion
-            }
         }
+
         #endregion
 
 

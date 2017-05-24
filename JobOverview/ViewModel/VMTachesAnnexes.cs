@@ -17,6 +17,7 @@ namespace JobOverview.ViewModel
     /// </summary>
     class VMTachesAnnexes : ViewModelBase
     {
+
         //TODO : [Gestion des tâches annexes] --> Lors de la modification d'une tâche d'une personne, il faudrait verrouiller la liste des employés.
         //                                        Il faudrait alors cliquer sur le bouton enregistrer pour pouvoir sélectionner un autre employé.
         //                                        Ce cas se présente seulement si l'utilisateur de l'application a le statut de manager.
@@ -72,6 +73,7 @@ namespace JobOverview.ViewModel
         #endregion
 
         #region Méthode associée à la commande
+
         /// <summary>
         /// Ajoute ou supprime des tâches annexes dans la base de données
         /// </summary>
@@ -119,6 +121,7 @@ namespace JobOverview.ViewModel
                 }
             }
         }
+
         #endregion
     }
 }

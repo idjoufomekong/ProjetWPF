@@ -76,12 +76,12 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée prévue"/>
-                    <TextBox Text="{Binding NouvelleTache.DureePrevue}" 
+                    <TextBox Text="{Binding DureePrevue}" 
                              IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée restante"/>
-                    <TextBox Text="{Binding NouvelleTache.DureeRestante}"
+                    <TextBox Text="{Binding DureeRestante}"
                              IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
                 </StackPanel>
             </StackPanel>

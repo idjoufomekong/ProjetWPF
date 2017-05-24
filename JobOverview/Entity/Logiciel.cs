@@ -28,12 +28,12 @@ namespace JobOverview.Entity
                 return DateSortieReelle.Subtract(DateSortiePrevue);
             }
         }
-        public float TempsTotalRealise { get; set; }
+        public double TempsTotalRealise { get; set; }
     }
     public class Module
     {
         public string CodeModule { get; set; }
         public string NomModule { get; set; }
-        public float TempsRealise { get; set; }
+        public double TempsRealise { get; set; }
     }
 }

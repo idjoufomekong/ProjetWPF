@@ -140,7 +140,6 @@ namespace JobOverview.Model
                     {
                         a.Versions = RecupererVersionsSynthese(a.CodeLogiciel, connect);
                     }
-                }
             }
 
             return listLogiciel;
@@ -170,7 +169,7 @@ namespace JobOverview.Model
             Module mod = new Module();
             mod.CodeModule = (string)reader["CodeModule"];
             mod.NomModule = (string)reader["Libelle"];
-            mod.TempsRealise = (float)reader["travaille"] / 8; //Pour avoir le nombre de jours
+            mod.TempsRealise =(double)reader["travaille"]/8; //Pour avoir le nombre de jours
             log.Modules.Add(mod);
         }
 
@@ -217,11 +216,12 @@ namespace JobOverview.Model
 
             Entity.Version vers = new Entity.Version();
 
-            vers.NumVersion = (float)reader["NumeroVersion"];
-            vers.DateSortiePrevue = (DateTime)reader["DateSortiePrevue"];
-            vers.DateSortieReelle = (DateTime)reader["DateSortieReelle"];
-            vers.TempsTotalRealise = (float)reader["travaille"];
-            vers.NombreReleases = (int)reader["nbRelease"];
+                vers.NumVersion = (float)reader["NumeroVersion"];
+                vers.DateSortiePrevue = (DateTime)reader["DateSortiePrevue"];
+                if(reader["DateSortieReelle"]!=DBNull.Value)
+                    vers.DateSortieReelle = (DateTime)reader["DateSortieReelle"];
+                vers.TempsTotalRealise = (double)reader["travaille"];
+                vers.NombreReleases = (int)reader["nbRelease"];
 
             listVersion.Add(vers);
 

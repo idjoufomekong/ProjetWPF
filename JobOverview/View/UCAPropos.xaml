@@ -9,17 +9,19 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <Style TargetType="TextBlock">
-        
-            
-            
+            <Setter Property="FontSize" Value="16"/>
+
+
         </Style>
     </UserControl.Resources>
     
     
     <StackPanel Margin="5" Background="White">
-        <TextBlock Text="Job Overview" Margin="5,3"/>
-        <TextBlock Text="Version 3.0.0 (05/2017)" Margin="5,3"/>
-        <TextBlock Text="Technologies :" Margin="5,3"/>
+        <TextBlock Text="Job Overview" Margin="5,3" FontWeight="Bold" FontSize="20"/>
+        <Separator Height="30"/>
+        <TextBlock Text="Version 3.0.0 (05/2017)" Margin="5,3" FontStyle="Italic" />
+        <Separator Height="20"/>
+        <TextBlock Text="Technologies :" Margin="5,3" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal" Margin="15,0,3,0">
             <fa:IconBlock Icon="CaretRight" />
             <TextBlock Text=".net Framework 4.6.1"/>
@@ -32,7 +34,8 @@
             <fa:IconBlock Icon="CaretRight"/>
             <TextBlock Text="SQL Server 2008"/>
         </StackPanel>
-        <TextBlock Text="Auteur : " Margin="5,3"/>
+        <Separator Height="20"></Separator>
+        <TextBlock Text="Auteurs : " Margin="5,3" FontWeight="Bold"/>
         <StackPanel Orientation="Horizontal" Margin="15,0,3,0">
             <TextBlock Text="DJOU FOMEKONG Irène"/>
         </StackPanel>

@@ -101,10 +101,26 @@ namespace JobOverview
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (((Tache)value).Description == null)
+            if (value == null)
                 return Visibility.Hidden;
             else
                 return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class BooltoVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((bool)value)
+                return Visibility.Visible;
+            else
+                return Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

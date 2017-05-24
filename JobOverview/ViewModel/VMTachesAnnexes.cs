@@ -31,6 +31,7 @@ namespace JobOverview.ViewModel
         #region Propriétés
         public ObservableCollection<Personne> Personnes { get; private set; }
         public bool StatutManager { get; private set; }
+        public bool Manager { get; } = Properties.Settings.Default.Manager;
         #endregion
 
         #region Constructeur

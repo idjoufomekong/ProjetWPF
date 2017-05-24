@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <local1:ConvModeEditActivation x:Key="ConvModeEditActivation"/>
         <local1:CurrentTacheDescriptiontoVisibility x:Key="CurrentTacheDescriptiontoVisibility"/>
+        <local1:BooltoVisibility x:Key="BooltoVisibility"/>
         <Style TargetType="Button">
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
@@ -81,13 +82,14 @@
                     </ListView.View>
                 </ListView>
                 <!--<TextBlock >-->
-                <TextBox Text="Description" Visibility="{Binding Path=TachesProd/Description, Converter={StaticResource CurrentTacheDescriptiontoVisibility}}"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Path=TachesProd/Description}"/>
+                <TextBlock Text="Description" Visibility="{Binding Path=PersonnesTachesProd/TachesProd/Description, Converter={StaticResource CurrentTacheDescriptiontoVisibility}}"/>
+                <TextBlock TextWrapping="Wrap" Text="{Binding Path=PersonnesTachesProd/TachesProd/Description}"/>
                 <!--</TextBlock>-->
-            </StackPanel>
+            </StackPanel >
         </Grid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Ajouter" Margin="5" Command="{Binding CmdAjoutTachesProd}"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Visibility="{Binding Path=Manager, Converter={StaticResource BooltoVisibility}}">
+            <Button Content="Ajouter" Margin="5" Command="{Binding CmdAjoutTachesProd}" />
             <Button Content="Supprimer" Margin="5" Command="{Binding CmdSupprimer}"/>
         </StackPanel>
     </Grid>

@@ -22,12 +22,14 @@
             </Grid.ColumnDefinitions>
             <StackPanel>
                 <Label Content="Détail Versions"/>
-                    <ListView ItemsSource="{Binding PersonnesTachesProd/TachesProd}" IsSynchronizedWithCurrentItem="True">
+                    <ListView ItemsSource="{Binding Logiciels/Versions}" IsSynchronizedWithCurrentItem="True">
                         <ListView.View>
                             <GridView AllowsColumnReorder="True">
                                 <GridViewColumn Header="Version" DisplayMemberBinding="{Binding Path=NumVersion }" />
-                            <GridViewColumn Header="Date de sortie prévue" DisplayMemberBinding="{Binding Path=DateSortiePrevue }" />
-                            <GridViewColumn Header="Date de sortie effective" DisplayMemberBinding="{Binding Path=DateSortieReelle}"/>
+                            <GridViewColumn Header="Date de sortie prévue" DisplayMemberBinding="{Binding Path=DateSortiePrevue, 
+                                StringFormat='\{0:dd/MM/yyyy\}' }" />
+                            <GridViewColumn Header="Date de sortie effective" DisplayMemberBinding="{Binding Path=DateSortieReelle,
+                                StringFormat='\{0:dd/MM/yyyy\}'}"/>
                             <GridViewColumn Header="Ecart (j)" DisplayMemberBinding="{Binding Path=Ecart }" />
                             <GridViewColumn Header="Nombre de J/H réalisé" DisplayMemberBinding="{Binding Path=TempsTotalRealise }" />
                             <GridViewColumn Header="Nombre de releases" DisplayMemberBinding="{Binding Path=NombreReleases }" />
@@ -37,11 +39,11 @@
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <Label Content="Détail Versions"/>
-                <ListView ItemsSource="{Binding PersonnesTachesProd/TachesProd}" IsSynchronizedWithCurrentItem="True">
+                <ListView ItemsSource="{Binding Logiciels/Modules}" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
                         <GridView AllowsColumnReorder="True">
                             <GridViewColumn Header="Module" DisplayMemberBinding="{Binding Path=NomModule }" />
-                            <GridViewColumn Header="Nombre de J/H réalisé" DisplayMemberBinding="{Binding Path=DureeRestante }" />
+                            <GridViewColumn Header="Nombre de J/H réalisé" DisplayMemberBinding="{Binding Path=TempsRealise }" />
                         </GridView>
                     </ListView.View>
                 </ListView>

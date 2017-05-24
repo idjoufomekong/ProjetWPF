@@ -23,6 +23,7 @@ namespace JobOverview.ViewModel
                 SetProperty(ref _logiciel, value);
             }
         }
+
         private ObservableCollection<Personne> _personnes;
         public ObservableCollection<Personne> Personnes
         {
@@ -130,6 +131,17 @@ namespace JobOverview.ViewModel
                 if (_cmdTachesProd == null)
                     _cmdTachesProd = new RelayCommand((o) => VMCourante = new VMTachesProd(Logiciels, PersonnesTaches));
                 return _cmdTachesProd;
+            }
+        }
+
+        private ICommand _cmdSynthese;
+        public ICommand CmdSynthese
+        {
+            get
+            {
+                if (_cmdSynthese == null)
+                    _cmdSynthese = new RelayCommand((o) => VMCourante = new VMSyntheseVersion());
+                return _cmdSynthese;
             }
         }
         #endregion

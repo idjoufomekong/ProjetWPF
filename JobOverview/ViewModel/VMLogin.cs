@@ -15,13 +15,12 @@ namespace JobOverview.ViewModel
 	{
 
         public List<Personne> Personnes { get; set; }
-		// TODO : à remplacer par une vraie liste de personnes
 
 		public VMLogin()
 		{
-			// TODO : à remplacer par un appel à une méthode de DAL
-			Personnes = DALPersonne.RecupererToutesPersonne();
-		}
+            Personnes = DALPersonne.RecupererToutesPersonne();
+
+        }
 
         public override ValidationResult Validate()
         {

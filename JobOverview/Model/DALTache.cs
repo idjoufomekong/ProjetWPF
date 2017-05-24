@@ -289,6 +289,7 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                 if ((pers.TachesProd.Count == 0) || (pers.TachesProd[pers.TachesProd.Count - 1].NumTache != numTache))
                 {
                     tache = new TacheProd();
+                    tache.IdTache = (Guid)reader["IdTache"];
                     tache.NumTache = (int)reader["Numero"];
                     tache.NomTache = (string)reader["Libelle"];
                     tache.Annexe = false;
@@ -653,6 +654,162 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
                         throw new Exception("Suppression impossible : du temps est déjà saisi sur une des tâches à supprimer.", ex);
                 }
             }
+        }
+
+        public static void SupprimerTacheProd(Guid id)
+        {
+            var connectString = Properties.Settings.Default.JobOverviewConnectionString;
+            string queryString1 = @"delete from jo.TacheProd where IdTache=@id ";
+            string queryString2 = @"delete from jo.Tache where IdTache=@id ";
+
+            var param1 = new SqlParameter("@id", DbType.Guid);
+            param1.Value = id;
+
+            var param2 = new SqlParameter("@id", DbType.Guid);
+            param2.Value = id;
+
+            using (var connect = new SqlConnection(connectString))
+            {
+                connect.Open();
+                SqlTransaction tran = connect.BeginTransaction();
+
+                try
+                {
+                    var command1 = new SqlCommand(queryString1, connect, tran);
+                    command1.Parameters.Add(param1);
+
+                    var command2 = new SqlCommand(queryString2, connect, tran);
+                    command2.Parameters.Add(param2);
+
+                    command1.ExecuteNonQuery();
+                    command2.ExecuteNonQuery();
+
+                    tran.Commit();
+                }
+                catch (Exception)
+                {
+                    tran.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Enregistre une liste de tâches de production dans la base
+        /// </summary>
+        /// <param name="listTaches"></param>
+        public static void EnregistrerTachesProd(List<TacheApercu> listTaches)
+        {
+            string sqlConnectionString = Properties.Settings.Default.JobOverviewConnectionString;
+            string req = @"Insert jo.Tache(IdTache, Libelle, Annexe, CodeActivite, Login, Description)                                                                                                 
+                        select IdTache, Libelle, Annexe, CodeActivite, Login, Description
+								from  @table;
+
+                        Insert jo.TacheProd (IdTache, DureePrevue, DureeRestanteEstimee,
+									CodeModule, CodeLogicielModule, NumeroVersion, CodeLogicielVersion)
+                        select IdTache, DureePrevue, DureeRestanteEstimee,
+								CodeModule, CodeLogicielModule, NumeroVersion, CodeLogicielVersion
+								from @table";
+
+            // Création du paramètre de type table mémoire
+            // /!\ Le type TypeTablePersonne doit être créé au préalable dans la base
+            var param = new SqlParameter("@table", SqlDbType.Structured);
+            DataTable tableTaches = GetDataTableForTachesProd(listTaches);
+            param.TypeName = "TypeTableTachesProd";
+            param.Value = tableTaches;
+
+            using (var cnx = new SqlConnection(sqlConnectionString))
+            {
+                // Ouverture de la connexion et début de la transaction
+                cnx.Open();
+                SqlTransaction tran = cnx.BeginTransaction();
+
+                try
+                {
+                    // Création et exécution de la commande
+                    var command = new SqlCommand(req, cnx, tran);
+                    command.Parameters.Add(param);
+                    command.ExecuteNonQuery();
+
+                    // Validation de la transaction s'il n'y a pas eu d'erreur
+                    tran.Commit();
+                }
+                catch (Exception)
+                {
+                    tran.Rollback(); // Annulation de la transaction en cas d'erreur
+                    throw;   // Remontée de l'erreur à l'appelant
+                }
+            }
+        }
+
+        /// <summary>
+        /// Création et remplissage d'une table mémoire à partir d'une liste de tâches de prod
+        /// </summary>
+        /// <param name="listTachesProd"></param>
+        /// <returns></returns>
+        private static DataTable GetDataTableForTachesProd(List<TacheApercu> listTachesProd)
+        {
+            // Création de la table et de ses colonnes
+            DataTable table = new DataTable();
+
+            var colIdTache = new DataColumn("IdTache", typeof(Guid));
+            colIdTache.AllowDBNull = false;
+            table.Columns.Add(colIdTache);
+            var colDureePrevue = new DataColumn("DureePrevue", typeof(float));
+            colDureePrevue.AllowDBNull = false;
+            table.Columns.Add(colDureePrevue);
+            var colDureeRestanteEstimee = new DataColumn("DureeRestanteEstimee", typeof(float));
+            colDureeRestanteEstimee.AllowDBNull = false;
+            table.Columns.Add(colDureeRestanteEstimee);
+            var colCodeModule = new DataColumn("CodeModule", typeof(string));
+            colCodeModule.AllowDBNull = false;
+            table.Columns.Add(colCodeModule);
+            var colCodeLogicieModule = new DataColumn("CodeLogicielModule", typeof(string));
+            colCodeLogicieModule.AllowDBNull = false;
+            table.Columns.Add(colCodeLogicieModule);
+            var colNumeroVersion = new DataColumn("NumeroVersion", typeof(float));
+            colNumeroVersion.AllowDBNull = false;
+            table.Columns.Add(colNumeroVersion);
+            var colCodeLogicielVersion = new DataColumn("CodeLogicielVersion", typeof(string));
+            colCodeLogicielVersion.AllowDBNull = false;
+            table.Columns.Add(colCodeLogicielVersion);
+            var colLibelle = new DataColumn("Libelle", typeof(string));
+            colLibelle.AllowDBNull = false;
+            table.Columns.Add(colLibelle);
+            var colAnnexe = new DataColumn("Annexe", typeof(bool));
+            colAnnexe.AllowDBNull = false;
+            table.Columns.Add(colAnnexe);
+            var colCodeActivite = new DataColumn("CodeActivite", typeof(string));
+            colCodeActivite.AllowDBNull = false;
+            table.Columns.Add(colCodeActivite);
+            var colLogin = new DataColumn("Login", typeof(string));
+            colLogin.AllowDBNull = false;
+            table.Columns.Add(colLogin);
+            var colDescription = new DataColumn("Description", typeof(string));
+            table.Columns.Add(colDescription);
+
+            // Remplissage de la table
+            foreach (var p in listTachesProd)
+            {
+                DataRow ligne = table.NewRow();
+                ligne["IdTache"] = Guid.NewGuid();
+
+                ligne["DureePrevue"] = p.DureePrevue;
+                ligne["DureeRestanteEstimee"] = p.DureeRestante;
+                ligne["CodeModule"] = p.CodeModule;
+                ligne["CodeLogicielModule"] = p.CodeLogiciel;
+                ligne["NumeroVersion"] = p.CodeVersion;
+                ligne["CodeLogicielVersion"] = p.CodeLogiciel;
+                ligne["Libelle"] = p.NomTache;
+                ligne["Annexe"] = false;
+                ligne["CodeActivite"] = p.CodeActivite;
+                ligne["Login"] = p.Login;
+                ligne["Description"] = p.Description;
+
+                table.Rows.Add(ligne);
+
+            }
+            return table;
         }
     }
 }

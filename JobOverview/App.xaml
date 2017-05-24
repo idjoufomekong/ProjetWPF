@@ -24,5 +24,11 @@
         <DataTemplate DataType="{x:Type vm:VMTachesProd}">
             <vw:UCTachesProd/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMSaisieTache}">
+            <vw:UCSaisieTaches/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMSyntheseVersion}">
+            <vw:UCSyntheseVersion/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

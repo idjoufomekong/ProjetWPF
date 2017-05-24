@@ -22,10 +22,18 @@ namespace JobOverview.Entity
         public DateTime DateSortiePrevue { get; set; }
         public DateTime DateSortieReelle { get; set; }
         public int NombreReleases { get; set; }
+        public TimeSpan Ecart {
+            get
+            {
+                return DateSortieReelle.Subtract(DateSortiePrevue);
+            }
+        }
+        public float TempsTotalRealise { get; set; }
     }
     public class Module
     {
         public string CodeModule { get; set; }
         public string NomModule { get; set; }
+        public float TempsRealise { get; set; }
     }
 }

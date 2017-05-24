@@ -134,7 +134,16 @@ namespace JobOverview.ViewModel
             }
         }
 
-        
+        private ICommand _cmdSynthese;
+        public ICommand CmdSynthese
+        {
+            get
+            {
+                if (_cmdSynthese == null)
+                    _cmdSynthese = new RelayCommand((o) => VMCourante = new VMSyntheseVersion());
+                return _cmdSynthese;
+            }
+        }
         #endregion
 
     }

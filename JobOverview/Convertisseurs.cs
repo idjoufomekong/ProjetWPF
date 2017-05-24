@@ -89,4 +89,20 @@ namespace JobOverview
             throw new NotImplementedException();
         }
     }
+
+    public class CurrentTacheDescriptiontoVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (((Tache)value).Description == null)
+                return Visibility.Hidden;
+            else
+                return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

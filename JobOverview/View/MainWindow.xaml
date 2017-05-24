@@ -53,7 +53,13 @@
 					<TextBlock Text="Export"/>
 				</StackPanel>
 			</Button>
-		</StackPanel>
+            <Button Command="{Binding CmdSynthese}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:IconBlock Icon="ClockO"/>
+                    <TextBlock Text="Synthèse des versions"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
 
 		<!-- zone centrale -->
 		<!-- Les DataTemplates définis en ressources permettent de trouver

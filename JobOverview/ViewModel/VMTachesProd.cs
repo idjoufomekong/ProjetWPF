@@ -156,6 +156,7 @@ namespace JobOverview.ViewModel
             TacheProd t = (TacheProd)CollectionViewSource.GetDefaultView(PersonneCourante.TachesProd).CurrentItem;
             try
             {
+                if (t == null) return;
                 DALTache.SupprimerTacheProd(t.IdTache);
 
             }

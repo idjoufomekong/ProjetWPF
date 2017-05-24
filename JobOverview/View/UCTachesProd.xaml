@@ -9,6 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <local1:ConvModeEditActivation x:Key="ConvModeEditActivation"/>
+        <local1:CurrentTacheDescriptiontoVisibility x:Key="CurrentTacheDescriptiontoVisibility"/>
         <Style TargetType="Button">
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
@@ -74,13 +75,15 @@
                         <GridView AllowsColumnReorder="True">
                             <GridViewColumn Header="Numéro" DisplayMemberBinding="{Binding Path=NumTache }" />
                             <GridViewColumn Header="Libellé" DisplayMemberBinding="{Binding Path=NomTache }" />
-                            <GridViewColumn Header="Temps travaillé (en h)" DisplayMemberBinding="{Binding Path=Tempstravaille}"/>
-                            <GridViewColumn Header="Temps restant (en h)" DisplayMemberBinding="{Binding Path=DureeRestante }" />
+                            <GridViewColumn Header="Temps travaillé (h)" DisplayMemberBinding="{Binding Path=Tempstravaille}"/>
+                            <GridViewColumn Header="Temps restant (h)" DisplayMemberBinding="{Binding Path=DureeRestante }" />
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <TextBox Text="Description"/>
+                <!--<TextBlock >-->
+                <TextBox Text="Description" Visibility="{Binding Path=TachesProd/Description, Converter={StaticResource CurrentTacheDescriptiontoVisibility}}"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=TachesProd/Description}"/>
+                <!--</TextBlock>-->
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

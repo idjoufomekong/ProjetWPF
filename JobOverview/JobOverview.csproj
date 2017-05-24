@@ -75,6 +75,7 @@
     <Compile Include="ViewModel\VMProgressBar.cs" />
     <Compile Include="ViewModel\VMSaisieTache.cs" />
     <Compile Include="ViewModel\VMSaisieTemps.cs" />
+    <Compile Include="ViewModel\VMSyntheseVersion.cs" />
     <Compile Include="ViewModel\VMTachesAnnexes.cs" />
     <Compile Include="ViewModel\VMTachesProd.cs" />
     <Compile Include="View\UCButtonsBar.xaml.cs">
@@ -97,6 +98,9 @@
     </Compile>
     <Compile Include="View\UCSaisieTaches.xaml.cs">
       <DependentUpon>UCSaisieTaches.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UCSyntheseVersion.xaml.cs">
+      <DependentUpon>UCSyntheseVersion.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UCTachesProd.xaml.cs">
       <DependentUpon>UCTachesProd.xaml</DependentUpon>
@@ -148,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UCSaisieTaches.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UCSyntheseVersion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,6 +13,10 @@ using JobOverview.ViewModel;
 
 namespace JobOverview
 {
+    /// <summary>
+    /// Permet de convertir en booléen le fait que des heures sont saisies ou non sur une tâche annexe
+    /// False = du temps est saisi sur la tâche considérée
+    /// </summary>
     public class TravauxAnnexesToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -31,6 +35,9 @@ namespace JobOverview
         }
     }
 
+    /// <summary>
+    /// Permet de convertir en couleur le fait que des heures sont saisies ou non sur une tâche annexe
+    /// </summary>
     public class TravauxAnnexesToColorBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

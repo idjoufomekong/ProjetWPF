@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-16"?>
+<xs:schema id="Personnes" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="Personnes" msdata:IsDataSet="true" msdata:Locale="en-US">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Personne">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TâchesProd" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                            <xs:element name="TâchesAnnexes" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="TâcheAnnexe" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="Nom" type="xs:string" />
+                                                <xs:attribute name="Annexe" type="xs:string" />
+                                                <xs:attribute name="Activité" type="xs:string" />
+                                                <xs:attribute name="Description" type="xs:string" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Login" type="xs:string" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

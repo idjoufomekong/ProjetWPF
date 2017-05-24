@@ -2,12 +2,11 @@
 <Personnes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<Personne Login="BNORMAND">
 		<TâchesAnnexes>
-			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
 			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
+			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
 		</TâchesAnnexes>
 	</Personne>
 	<Personne Login="LBUTLER">
-		<TâchesProd />
 		<TâchesAnnexes>
 			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
 			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
@@ -16,15 +15,15 @@
 	<Personne Login="RBEAUMONT">
 		<TâchesProd />
 		<TâchesAnnexes>
-			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
 			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
+			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
 		</TâchesAnnexes>
 	</Personne>
 	<Personne Login="RFISHER">
 		<TâchesProd />
 		<TâchesAnnexes>
-			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
 			<TâcheAnnexe Nom="Réunion d'équipe" Annexe="True" Activité="REUNION_EQUIPE" Description="Réunion d'équipe" />
+			<TâcheAnnexe Nom="Réunion de service" Annexe="True" Activité="REUNION_SERVICE" Description="Réunion de service" />
 		</TâchesAnnexes>
 	</Personne>
 </Personnes>

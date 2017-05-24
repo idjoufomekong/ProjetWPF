@@ -16,7 +16,7 @@ namespace JobOverview.View
         public MainWindow()
 		{
 			InitializeComponent();
-            DataContext = new VMMain();
+
 
             Loaded += MainWindow_Loaded;
 		}
@@ -41,6 +41,7 @@ namespace JobOverview.View
                     Properties.Settings.Default.Save();
                 }               
             }
+            DataContext = new VMMain();
         }
 	}
 }

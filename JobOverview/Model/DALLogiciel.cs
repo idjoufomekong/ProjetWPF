@@ -136,11 +136,11 @@ namespace JobOverview.Model
                         RecupererLogicielsModulesFromDataReader(listLogiciel, reader);
                     }
 
+                }
                     foreach (var a in listLogiciel)
                     {
                         a.Versions = RecupererVersionsSynthese(a.CodeLogiciel, connect);
                     }
-                }
                 return listLogiciel;
             }
         }
@@ -199,7 +199,6 @@ namespace JobOverview.Model
 
             var command = new SqlCommand(queryString, connect);
             command.Parameters.Add(param);
-            connect.Open();
 
             using (SqlDataReader reader = command.ExecuteReader())
             {
@@ -224,7 +223,6 @@ namespace JobOverview.Model
                 vers.NombreReleases = (int)reader["nbRelease"];
 
             listVersion.Add(vers);
-
         }
     }
 }

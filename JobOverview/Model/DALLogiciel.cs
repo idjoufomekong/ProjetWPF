@@ -12,19 +12,19 @@ namespace JobOverview.Model
     public class DALLogiciel
     {
         /// <summary>
-        /// Récupération de la liste de tous les logiciels et versions qui seront dans les listes déroulantes de toutes 
-        /// les pages
+        /// Récupération de la liste de tous les logiciels et version,  
+        /// présentes dans les listes déroulantes de toutes les pages
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Liste de logiciel</returns>
         public static List<Logiciel> RecupererLogicielsVersions()
         {
             List<Logiciel> listLogiciel = new List<Logiciel>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
             string queryString = @"select L.CodeLogiciel,Nom,NumeroVersion
-from jo.Logiciel L
-inner join jo.Version V on V.CodeLogiciel=L.CodeLogiciel
-order by CodeLogiciel,NumeroVersion";
+                                 from jo.Logiciel L
+                                 inner join jo.Version V on V.CodeLogiciel=L.CodeLogiciel
+                                 order by CodeLogiciel,NumeroVersion";
 
             using (var connect = new SqlConnection(connectString))
             {
@@ -47,8 +47,8 @@ order by CodeLogiciel,NumeroVersion";
         /// <summary>
         /// Lecture du dataread retourné pr la requête SQL de récupération des logiciels et versions
         /// </summary>
-        /// <param name="listLogiciel"></param>
-        /// <param name="reader"></param>
+        /// <param name="listLogiciel">Liste de logiciel</param>
+        /// <param name="reader">donnée du reader</param>
         private static void RecupererLogicielsVersionsFromDataReader(List<Logiciel> listLogiciel, SqlDataReader reader)
         {
             string codeLogiciel = (string)reader["CodeLogiciel"];
@@ -71,14 +71,19 @@ order by CodeLogiciel,NumeroVersion";
             log.Versions.Add(vers);
         }
 
+        /// <summary>
+        /// Récupération de la liste des modules en fonction du logiciel donné
+        /// </summary>
+        /// <param name="logiciel">Logiciel lié aux modules</param>
+        /// <returns>Liste de de module</returns>
         public static List<Module> RecupererModules(string logiciel)
         {
             List<Module> listModule = new List<Module>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
             string queryString = @"select CodeModule,Libelle from jo.Module
- where CodeLogiciel=@logiciel
-order by 2";
+                                 where CodeLogiciel=@logiciel
+                                 order by 2";
 
             var param = new SqlParameter("@logiciel", DbType.String);
             param.Value = logiciel;
@@ -110,19 +115,19 @@ order by 2";
         /// </summary>
         /// <param name="codeLogiciel"></param>
         /// <returns></returns>
-        public static List<Logiciel> RecupererLogicielSynthese(string codeLogiciel)
+        public static List<Logiciel> RecupererLogicielSynthese()
         {
             List<Logiciel> listLogiciel = new List<Logiciel>();
 
             var connectString = Properties.Settings.Default.JobOverviewConnectionString;
             string queryString = @"select L.CodeLogiciel, L.Nom, M.CodeModule, M.Libelle, sum(TR.Heures) travaille
-from jo.Logiciel L
-inner join jo.Module M on M.CodeLogiciel=L.CodeLogiciel
-inner join jo.TacheProd TP on TP.CodeModule= M.CodeModule
-inner join jo.Tache T on T.IdTache=TP.IdTache
-inner join jo.Travail TR on TR.IdTache=T.IdTache
-group by L.CodeLogiciel, L.Nom, M.CodeModule, M.Libelle
-order by 1,3";
+                                 from jo.Logiciel L
+                                 inner join jo.Module M on M.CodeLogiciel=L.CodeLogiciel
+                                 inner join jo.TacheProd TP on TP.CodeModule= M.CodeModule
+                                 inner join jo.Tache T on T.IdTache=TP.IdTache
+                                 inner join jo.Travail TR on TR.IdTache=T.IdTache
+                                 group by L.CodeLogiciel, L.Nom, M.CodeModule, M.Libelle
+                                 order by 1,3";
 
             using (var connect = new SqlConnection(connectString))
             {
@@ -137,12 +142,12 @@ order by 1,3";
                         RecupererLogicielsModulesFromDataReader(listLogiciel, reader);
                     }
 
+                }
                     foreach(var a in listLogiciel)
                     {
                        // a.Versions = new Entity.Version();
                         a.Versions= RecupererVersionsSynthese(a.CodeLogiciel, connect);
                     }
-                }
             }
 
             return listLogiciel;
@@ -166,7 +171,7 @@ order by 1,3";
             Module mod = new Module();
             mod.CodeModule= (string)reader["CodeModule"];
             mod.NomModule = (string)reader["Libelle"];
-            mod.TempsRealise = (float)reader["travaille"]/8; //Pour avoir le nombre de jours
+            mod.TempsRealise =(double)reader["travaille"]/8; //Pour avoir le nombre de jours
             log.Modules.Add(mod);
         }
 
@@ -198,7 +203,7 @@ order by 3";
                 //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
             command.Parameters.Add(param);
-                connect.Open();
+                //connect.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -219,9 +224,10 @@ order by 3";
 
                 vers.NumVersion = (float)reader["NumeroVersion"];
                 vers.DateSortiePrevue = (DateTime)reader["DateSortiePrevue"];
+            if(reader["DateSortieReelle"]!=DBNull.Value)
                 vers.DateSortieReelle = (DateTime)reader["DateSortieReelle"];
-                vers.TempsTotalRealise = (float)reader["travaille"];
-                vers.NombreReleases = (int)reader["nbRelease"];
+                vers.TempsTotalRealise = (double)reader["travaille"];
+            vers.NombreReleases = (int)reader["nbRelease"];
 
                 listVersion.Add(vers);
 

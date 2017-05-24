@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		  xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+		xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:JobOverview"
+        xmlns:cv="clr-namespace:JobOverview"
         mc:Ignorable="d"
        Title="Job Overview" Height="600" Width="900" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
+        <cv:BooltoVisibility x:Key="BooltoVisibility"/>
 		<!-- DataTemplates pour les différents types de vues-modèles -->
 		<Style TargetType="Button">
 			<Setter Property="Height" Value="30"/>
@@ -47,16 +49,22 @@
                     <TextBlock Text="Saisie temps" />
                 </StackPanel>
             </Button>
-            <Button Command="{Binding CmdEchange}">
+            <Button Command="{Binding CmdEchange}" >
 				<StackPanel Orientation="Horizontal">
-					<fa:IconBlock Icon="ClockO"/>
+					<fa:IconBlock Icon="FileTextO"/>
 					<TextBlock Text="Export"/>
 				</StackPanel>
 			</Button>
             <Button Command="{Binding CmdSynthese}">
                 <StackPanel Orientation="Horizontal">
-                    <fa:IconBlock Icon="ClockO"/>
+                    <fa:IconBlock Icon="BarChart"/>
                     <TextBlock Text="Synthèse des versions"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding CmdAPropos}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:IconBlock Icon="Info"/>
+                    <TextBlock Text="A propos"/>
                 </StackPanel>
             </Button>
         </StackPanel>

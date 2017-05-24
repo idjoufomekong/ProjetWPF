@@ -12,6 +12,7 @@
         <!-- Convertisseurs -->
         <cv:TravauxAnnexesToBoolConverter x:Key="TravauxAnnexesToBoolConverter"/>
         <cv:TravauxAnnexesToColorBrushConverter x:Key="TravauxAnnexesToColorBrushConverter"/>
+        <cv:BooltoVisibility x:Key="BooltoVisibility"/>
         <!-- Style appliqué aux boutons -->
         <Style TargetType="Button">
             <Setter Property="Width" Value="70"/>
@@ -22,7 +23,7 @@
     <DockPanel >
         <!-- Bouton "Enregistrer" -->
         <Button Name="btnEnregistrer" Content="Enregistrer" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10"
-                Command="{Binding CmdEnregistrer}" IsEnabled="{Binding Path=StatutManager}"/>
+                Command="{Binding CmdEnregistrer}" IsEnabled="{Binding Path=StatutManager}" Visibility="{Binding Path=Manager, Converter={StaticResource BooltoVisibility}}"/>
         <Grid>
             <!-- Création de 2 colonnes -->
             <Grid.ColumnDefinitions>

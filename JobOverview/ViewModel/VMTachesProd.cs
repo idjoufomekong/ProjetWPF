@@ -29,6 +29,7 @@ namespace JobOverview.ViewModel
         public ObservableCollection<Personne> PersonnesTachesProd { get; private set; }
         public ObservableCollection<Logiciel> Logiciels { get; private set; }
         public ObservableCollection<Entity.Version> Versions { get; set; }
+        public bool Manager { get; } = Properties.Settings.Default.Manager;
         public ModesEdition ModeEdit
         {
             get { return _modeEdition; }
@@ -160,13 +161,10 @@ namespace JobOverview.ViewModel
                 DALTache.SupprimerTacheProd(t.IdTache);
 
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
-                if (e.Number == 547)
-                    MessageBox.Show("Cette Tâche contient des heures de travail. Il n'est pas possible de la supprimer."
+                    MessageBox.Show(e.Message
                         + "\n" + "", "Attention", MessageBoxButton.OK);
-                else
-                    MessageBox.Show(e.Message + "\n" + "", "Attention", MessageBoxButton.OK);
             }
         }
 

@@ -44,6 +44,7 @@ namespace JobOverview.ViewModel
         public bool Choice { get; set; }
 
         public DateTime DateSelec { get; set; } = DateTime.Today;
+        private float _heuresProd;
         public float HeuresProd
         {
             get
@@ -53,7 +54,12 @@ namespace JobOverview.ViewModel
                     Where(tp => tp.IdTache == TacheCouranteProd.IdTache).FirstOrDefault()).TravauxProd);
                 return 0;
             }
+            set
+            {
+                SetProperty(ref _heuresProd, value);
+            }
         }
+        private float _heuresAnnexe;
         public float HeuresAnnexe
         {
             get
@@ -62,6 +68,10 @@ namespace JobOverview.ViewModel
                 return RecupererHeureActuel(DateSelec, (Utilisateur.TachesProd.
                     Where(tp => tp.IdTache == TacheCouranteAnnexe.IdTache).FirstOrDefault()).TravauxAnnexes);
                 return 0;
+            }
+            set
+            {
+                SetProperty(ref _heuresAnnexe, value);
             }
         }
         private float _heuresRestante;
@@ -78,16 +88,16 @@ namespace JobOverview.ViewModel
             return 0;
         }
 
-        //private ICommand _cmdValider;
-        //public ICommand CmdValider
-        //{
-        //    get
-        //    {
-        //        if (_cmdValider == null)
-        //            _cmdValider = new RelayCommand(AfficherTaches,Activation);
-        //        return _cmdValider;
-        //    }
-        //}
+        private ICommand _cmdEnregistrer;
+        public ICommand CmdEnregistrer
+        {
+            get
+            {
+                if (_cmdEnregistrer == null)
+                    _cmdEnregistrer = new RelayCommand(EnregistrerTache, Activation);
+                return _cmdEnregistrer;
+            }
+        }
 
         private ICommand _cmdTriTachProd;
         public ICommand CmdTriTachProd
@@ -105,6 +115,11 @@ namespace JobOverview.ViewModel
             Utilisateur = (DALTache.RecupererPersonnesTaches(
                Properties.Settings.Default.CodeDernierUtilisateur)).FirstOrDefault();
             Logiciels = LogicielsVMMain;
+        }
+
+        private void EnregistrerTache(object o)
+        {
+
         }
 
         private void AfficherTaches (object obj)

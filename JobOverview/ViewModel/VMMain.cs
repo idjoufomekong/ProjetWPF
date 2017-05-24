@@ -15,6 +15,7 @@ namespace JobOverview.ViewModel
     {
 
         private ObservableCollection<Logiciel> _logiciel;
+        public bool Manager { get; } = Properties.Settings.Default.Manager;
         public ObservableCollection<Logiciel> Logiciels
         {
             get { return _logiciel; }
@@ -79,7 +80,7 @@ namespace JobOverview.ViewModel
                 if (Logiciels == null || Logiciels.Count == 0)
                     Logiciels = new ObservableCollection<Logiciel>(DALLogiciel.RecupererLogicielsVersions());
                 if (_cmdEchange == null)
-                    _cmdEchange = new RelayCommand((o) => VMCourante = new VMEchange(Logiciels));
+                    _cmdEchange = new RelayCommand((o) => VMCourante = new VMEchange(Logiciels), (o) => { return Properties.Settings.Default.Manager; });
                 return _cmdEchange;
             }
         }
@@ -143,6 +144,17 @@ namespace JobOverview.ViewModel
                 if (_cmdSynthese == null)
                     _cmdSynthese = new RelayCommand((o) => VMCourante = new VMSyntheseVersion());
                 return _cmdSynthese;
+            }
+        }
+
+        private ICommand _cmdAPropos;
+        public ICommand CmdAPropos
+        {
+            get
+            {
+                if (_cmdAPropos == null)
+                    _cmdAPropos = new RelayCommand((o) => VMCourante = new VMAPropos());
+                return _cmdAPropos;
             }
         }
         #endregion

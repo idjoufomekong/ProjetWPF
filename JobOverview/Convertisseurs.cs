@@ -48,14 +48,14 @@ namespace JobOverview
         }
     }
 
-    public class CurrentTachetoVisibility : IValueConverter
+    public class CurrentTacheToBool : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (((Tache)value).CodeActivite == null)
-                return Visibility.Hidden;
+                return false;
             else
-                return Visibility.Visible;
+                return true;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

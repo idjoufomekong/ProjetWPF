@@ -31,6 +31,16 @@ namespace JobOverview.View
 
 			// Si l'utilisateur annule, on ferme l'application
 			if (!res.Value) Close();
-		}
+
+            if (res.Value)
+            {
+                var p = DALPersonne.RecupererPersonneConnecte(Properties.Settings.Default.CodeDernierUtilisateur);
+                if (p.Count > 1)
+                {
+                    Properties.Settings.Default.Manager = true;
+                    Properties.Settings.Default.Save();
+                }               
+            }
+        }
 	}
 }

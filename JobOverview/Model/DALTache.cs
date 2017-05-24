@@ -686,9 +686,13 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
 
                     tran.Commit();
                 }
-                catch (Exception)
+                catch (SqlException ex)
                 {
                     tran.Rollback();
+                    // Erreur liée au cas où du temps a été saisi sur la tâche à supprimer
+                    if (ex.Number == 547)
+                        throw new Exception("Suppression impossible : du temps est déjà saisi sur cette tâche.", ex);
+                    else
                     throw;
                 }
             }
@@ -701,23 +705,32 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
         public static void EnregistrerTachesProd(List<TacheApercu> listTaches)
         {
             string sqlConnectionString = Properties.Settings.Default.JobOverviewConnectionString;
-            string req = @"Insert jo.Tache(IdTache, Libelle, Annexe, CodeActivite, Login, Description)                                                                                                 
-                        select IdTache, Libelle, Annexe, CodeActivite, Login, Description
-								from  @table;
 
-                        Insert jo.TacheProd (IdTache, DureePrevue, DureeRestanteEstimee,
-									CodeModule, CodeLogicielModule, NumeroVersion, CodeLogicielVersion)
-                        select IdTache, DureePrevue, DureeRestanteEstimee,
-								CodeModule, CodeLogicielModule, NumeroVersion, CodeLogicielVersion
-								from @table";
+            string req = @"Insert jo.Tache(IdTache, Libelle,  CodeActivite, Login, Description)                                                                                                 
+                        select Id, Libelle,  Activite, Login, Description
+                        from  @table";
+
+            string req2 = @"Insert jo.TacheProd(IdTache, DureePrevue, DureeRestanteEstimee,
+                        CodeModule, CodeLogicielModule, NumeroVersion, CodeLogicielVersion)
+                                    select Id, DureePrevue, DureeRestante,
+                                            Module, LogicielModule, NumeroVersion, Logicielversion
+
+                                            from @table2";
 
             // Création du paramètre de type table mémoire
             // /!\ Le type TypeTablePersonne doit être créé au préalable dans la base
             var param = new SqlParameter("@table", SqlDbType.Structured);
-            DataTable tableTaches = GetDataTableForTachesProd(listTaches);
-            param.TypeName = "TypeTableTachesProd";
-            param.Value = tableTaches;
+            param.TypeName = "TypeTableTache";
 
+            var param2 = new SqlParameter("@table2", SqlDbType.Structured);
+            param2.TypeName = "TypeTableTacheProd";
+
+            DataTable tableTaches; 
+            DataTable tableTachesProd;
+
+            RecupererDataTablePourTache(listTaches, out tableTaches, out tableTachesProd);
+            param.Value = tableTaches;
+            param2.Value = tableTachesProd;
             using (var cnx = new SqlConnection(sqlConnectionString))
             {
                 // Ouverture de la connexion et début de la transaction
@@ -726,10 +739,14 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
 
                 try
                 {
-                    // Création et exécution de la commande
+                    // Création et exécution des commandes
                     var command = new SqlCommand(req, cnx, tran);
                     command.Parameters.Add(param);
                     command.ExecuteNonQuery();
+
+                    var command2 = new SqlCommand(req2, cnx, tran);
+                    command2.Parameters.Add(param2);
+                    command2.ExecuteNonQuery();
 
                     // Validation de la transaction s'il n'y a pas eu d'erreur
                     tran.Commit();
@@ -747,69 +764,170 @@ order by Login,Numero";//CodeLogicielVersion=@codeLogiciel and NumeroVersion=@nu
         /// </summary>
         /// <param name="listTachesProd"></param>
         /// <returns></returns>
-        private static DataTable GetDataTableForTachesProd(List<TacheApercu> listTachesProd)
+        private static DataTable RecupererDataTablePourTache(List<TacheApercu> listTachesProd, out DataTable table, out DataTable tableProd)
         {
             // Création de la table et de ses colonnes
-            DataTable table = new DataTable();
+             table = new DataTable();
+            tableProd = new DataTable();
 
-            var colIdTache = new DataColumn("IdTache", typeof(Guid));
+            var colIdTache = new DataColumn("Id", typeof(Guid));
             colIdTache.AllowDBNull = false;
             table.Columns.Add(colIdTache);
-            var colDureePrevue = new DataColumn("DureePrevue", typeof(float));
-            colDureePrevue.AllowDBNull = false;
-            table.Columns.Add(colDureePrevue);
-            var colDureeRestanteEstimee = new DataColumn("DureeRestanteEstimee", typeof(float));
-            colDureeRestanteEstimee.AllowDBNull = false;
-            table.Columns.Add(colDureeRestanteEstimee);
-            var colCodeModule = new DataColumn("CodeModule", typeof(string));
-            colCodeModule.AllowDBNull = false;
-            table.Columns.Add(colCodeModule);
-            var colCodeLogicieModule = new DataColumn("CodeLogicielModule", typeof(string));
-            colCodeLogicieModule.AllowDBNull = false;
-            table.Columns.Add(colCodeLogicieModule);
-            var colNumeroVersion = new DataColumn("NumeroVersion", typeof(float));
-            colNumeroVersion.AllowDBNull = false;
-            table.Columns.Add(colNumeroVersion);
-            var colCodeLogicielVersion = new DataColumn("CodeLogicielVersion", typeof(string));
-            colCodeLogicielVersion.AllowDBNull = false;
-            table.Columns.Add(colCodeLogicielVersion);
+
             var colLibelle = new DataColumn("Libelle", typeof(string));
             colLibelle.AllowDBNull = false;
             table.Columns.Add(colLibelle);
-            var colAnnexe = new DataColumn("Annexe", typeof(bool));
-            colAnnexe.AllowDBNull = false;
-            table.Columns.Add(colAnnexe);
-            var colCodeActivite = new DataColumn("CodeActivite", typeof(string));
+
+            var colCodeActivite = new DataColumn("Activite", typeof(string));
             colCodeActivite.AllowDBNull = false;
             table.Columns.Add(colCodeActivite);
+
             var colLogin = new DataColumn("Login", typeof(string));
             colLogin.AllowDBNull = false;
             table.Columns.Add(colLogin);
+
             var colDescription = new DataColumn("Description", typeof(string));
             table.Columns.Add(colDescription);
+
+            //table Tableprod
+            var colIdTacheprod = new DataColumn("Id", typeof(Guid));
+            colIdTache.AllowDBNull = false;
+            tableProd.Columns.Add(colIdTacheprod);
+
+            var colDureePrevue = new DataColumn("DureePrevue", typeof(float));
+            colDureePrevue.AllowDBNull = false;
+            tableProd.Columns.Add(colDureePrevue);
+
+            var colDureeRestanteEstimee = new DataColumn("DureeRestante", typeof(float));
+            colDureeRestanteEstimee.AllowDBNull = false;
+            tableProd.Columns.Add(colDureeRestanteEstimee);
+
+            var colCodeModule = new DataColumn("Module", typeof(string));
+            colCodeModule.AllowDBNull = false;
+            tableProd.Columns.Add(colCodeModule);
+
+            var colCodeLogicieModule = new DataColumn("LogicielModule", typeof(string));
+            colCodeLogicieModule.AllowDBNull = false;
+            tableProd.Columns.Add(colCodeLogicieModule);
+
+            var colNumeroVersion = new DataColumn("NumeroVersion", typeof(float));
+            colNumeroVersion.AllowDBNull = false;
+            tableProd.Columns.Add(colNumeroVersion);
+
+            var colCodeLogicielVersion = new DataColumn("Logicielversion", typeof(string));
+            colCodeLogicielVersion.AllowDBNull = false;
+            tableProd.Columns.Add(colCodeLogicielVersion);
+
+            //var colAnnexe = new DataColumn("Annexe", typeof(bool));
+            //colAnnexe.AllowDBNull = false;
+            //tableProd.Columns.Add(colAnnexe);
 
             // Remplissage de la table
             foreach (var p in listTachesProd)
             {
                 DataRow ligne = table.NewRow();
-                ligne["IdTache"] = Guid.NewGuid();
+                DataRow ligneProd = tableProd.NewRow();
+                Guid id = Guid.NewGuid();
 
-                ligne["DureePrevue"] = p.DureePrevue;
-                ligne["DureeRestanteEstimee"] = p.DureeRestante;
-                ligne["CodeModule"] = p.CodeModule;
-                ligne["CodeLogicielModule"] = p.CodeLogiciel;
-                ligne["NumeroVersion"] = p.CodeVersion;
-                ligne["CodeLogicielVersion"] = p.CodeLogiciel;
+                ligne["Id"] = id;
                 ligne["Libelle"] = p.NomTache;
-                ligne["Annexe"] = false;
-                ligne["CodeActivite"] = p.CodeActivite;
+                ligne["Activite"] = p.CodeActivite;
                 ligne["Login"] = p.Login;
                 ligne["Description"] = p.Description;
 
+                ligneProd["Id"] = id;
+                ligneProd["DureePrevue"] = p.DureePrevue;
+                ligneProd["DureeRestante"] = p.DureeRestante;
+                ligneProd["Module"] = p.CodeModule;
+                ligneProd["LogicielModule"] = p.CodeLogiciel;
+                ligneProd["NumeroVersion"] = p.CodeVersion;
+                ligneProd["Logicielversion"] = p.CodeLogiciel;
+               // ligneProd["Annexe"] = false;
+
+
                 table.Rows.Add(ligne);
+                tableProd.Rows.Add(ligneProd);
 
             }
             return table;
         }
+
+        //private static DataTable RecupererDataTablePourTacheProd(List<TacheApercu> listTachesProd)
+        //{
+        //    // Création de la table et de ses colonnes
+        //    DataTable table = new DataTable();
+
+        //    var colIdTache = new DataColumn("Id", typeof(Guid));
+        //    colIdTache.AllowDBNull = false;
+        //    table.Columns.Add(colIdTache);
+
+        //    var colLibelle = new DataColumn("Libelle", typeof(string));
+        //    colLibelle.AllowDBNull = false;
+        //    table.Columns.Add(colLibelle);
+
+        //    var colCodeActivite = new DataColumn("Activite", typeof(string));
+        //    colCodeActivite.AllowDBNull = false;
+        //    table.Columns.Add(colCodeActivite);
+
+        //    var colLogin = new DataColumn("Login", typeof(string));
+        //    colLogin.AllowDBNull = false;
+        //    table.Columns.Add(colLogin);
+
+        //    var colDescription = new DataColumn("Description", typeof(string));
+        //    table.Columns.Add(colDescription);
+
+
+        //    /*var colDureePrevue = new DataColumn("DureePrevue", typeof(float));
+        //    colDureePrevue.AllowDBNull = false;
+        //    table.Columns.Add(colDureePrevue);
+
+        //    var colDureeRestanteEstimee = new DataColumn("DureeRestante", typeof(float));
+        //    colDureeRestanteEstimee.AllowDBNull = false;
+        //    table.Columns.Add(colDureeRestanteEstimee);
+
+        //    var colCodeModule = new DataColumn("Module", typeof(string));
+        //    colCodeModule.AllowDBNull = false;
+        //    table.Columns.Add(colCodeModule);
+
+        //    var colCodeLogicieModule = new DataColumn("LogicielModule", typeof(string));
+        //    colCodeLogicieModule.AllowDBNull = false;
+        //    table.Columns.Add(colCodeLogicieModule);
+
+        //    var colNumeroVersion = new DataColumn("NumeroVersion", typeof(float));
+        //    colNumeroVersion.AllowDBNull = false;
+        //    table.Columns.Add(colNumeroVersion);
+
+        //    var colCodeLogicielVersion = new DataColumn("Logicielversion", typeof(string));
+        //    colCodeLogicielVersion.AllowDBNull = false;
+        //    table.Columns.Add(colCodeLogicielVersion);
+
+        //    var colAnnexe = new DataColumn("Annexe", typeof(bool));
+        //    colAnnexe.AllowDBNull = false;
+        //    table.Columns.Add(colAnnexe);
+        //    */
+
+        //    // Remplissage de la table
+        //    foreach (var p in listTachesProd)
+        //    {
+        //        DataRow ligne = table.NewRow();
+        //        ligne["Id"] = Guid.NewGuid();
+        //        ligne["Libelle"] = p.NomTache;
+        //        ligne["Activite"] = p.CodeActivite;
+        //        ligne["Login"] = p.Login;
+        //        ligne["Description"] = p.Description;
+
+        //        /*ligne["DureePrevue"] = p.DureePrevue;
+        //        ligne["DureeRestante"] = p.DureeRestante;
+        //        ligne["Module"] = p.CodeModule;
+        //        ligne["LogicielModule"] = p.CodeLogiciel;
+        //        ligne["NumeroVersion"] = p.CodeVersion;
+        //        ligne["Logicielversion"] = p.CodeLogiciel;
+        //        ligne["Annexe"] = false;*/
+
+        //        table.Rows.Add(ligne);
+
+        //    }
+        //    return table;
+        //}
     }
 }

@@ -110,7 +110,7 @@ order by 2";
         /// </summary>
         /// <param name="codeLogiciel"></param>
         /// <returns></returns>
-        public static List<Logiciel> RecupererLogicielSynthese(string codeLogiciel)
+        public static List<Logiciel> RecupererLogicielSynthese()
         {
             List<Logiciel> listLogiciel = new List<Logiciel>();
 
@@ -137,12 +137,12 @@ order by 1,3";
                         RecupererLogicielsModulesFromDataReader(listLogiciel, reader);
                     }
 
+                }
                     foreach(var a in listLogiciel)
                     {
                        // a.Versions = new Entity.Version();
                         a.Versions= RecupererVersionsSynthese(a.CodeLogiciel, connect);
                     }
-                }
             }
 
             return listLogiciel;
@@ -166,7 +166,7 @@ order by 1,3";
             Module mod = new Module();
             mod.CodeModule= (string)reader["CodeModule"];
             mod.NomModule = (string)reader["Libelle"];
-            mod.TempsRealise = (float)reader["travaille"]/8; //Pour avoir le nombre de jours
+            mod.TempsRealise =(double)reader["travaille"]/8; //Pour avoir le nombre de jours
             log.Modules.Add(mod);
         }
 
@@ -198,7 +198,7 @@ order by 3";
                 //Récupération liste des tâches de production
                 var command = new SqlCommand(queryString, connect);
             command.Parameters.Add(param);
-                connect.Open();
+                //connect.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -219,9 +219,10 @@ order by 3";
 
                 vers.NumVersion = (float)reader["NumeroVersion"];
                 vers.DateSortiePrevue = (DateTime)reader["DateSortiePrevue"];
+            if(reader["DateSortieReelle"]!=DBNull.Value)
                 vers.DateSortieReelle = (DateTime)reader["DateSortieReelle"];
-                vers.TempsTotalRealise = (float)reader["travaille"];
-                vers.NombreReleases = (int)reader["nbRelease"];
+                vers.TempsTotalRealise = (double)reader["travaille"];
+            vers.NombreReleases = (int)reader["nbRelease"];
 
                 listVersion.Add(vers);
 

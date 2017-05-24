@@ -24,8 +24,10 @@ namespace JobOverview.ViewModel
         private Activite _activiteCourante;
         private Module _moduleCourant;
         private Personne _personneCourante;
-        private TacheProd _nouvelleTache;
+        private TacheApercu _nouvelleTache;
         private string _libelle;
+        private string _dureePrevue;
+        private string _dureeRestante;
         private ModesEdition _modeEdition;
 
         #region Propriétés
@@ -35,14 +37,28 @@ namespace JobOverview.ViewModel
         public ObservableCollection<Personne> PersonnesTachesProdAjoutees { get; set; }
         public ObservableCollection<TacheApercu> TachesProdAjoutees { get; set; }
         public string Description { get; set; }
-        public float DureePrevue { get; set; }
-        public float DureeRestante { get; set; }
-        public TacheProd NouvelleTache
+        public TacheApercu NouvelleTache
         {
             get { return _nouvelleTache; }
             private set
             {
                 SetProperty(ref _nouvelleTache, value);
+            }
+        }
+        public string DureePrevue
+        {
+            get { return _dureePrevue; }
+            set
+            {
+                SetProperty(ref _dureePrevue, value);
+            }
+        }
+        public string DureeRestante
+        {
+            get { return _dureeRestante; }
+            set
+            {
+                SetProperty(ref _dureeRestante, value);
             }
         }
         public string Libelle
@@ -73,7 +89,7 @@ namespace JobOverview.ViewModel
             _versionCourante = new Entity.Version();
             _versionCourante.NumVersion = numVersion;
             TachesProdAjoutees = new ObservableCollection<TacheApercu>();
-            NouvelleTache = new TacheProd();
+            NouvelleTache = new TacheApercu();
         }
 
         #region Commandes
@@ -113,9 +129,7 @@ namespace JobOverview.ViewModel
         private void AjouterTache(object o)
         {
             //Gestion de la validation des saisies
-            var Duree = NouvelleTache.DureePrevue.ToString();
-            var DureeRest = NouvelleTache.DureeRestante.ToString();
-            string pattern = @"^\d{1,4}[\,]\d{1}";
+            string pattern = @"^\d{1,4}[\.]?\d?$";
              Regex rgx = new Regex(pattern);
 
 
@@ -125,21 +139,21 @@ namespace JobOverview.ViewModel
                 MessageBox.Show("Le libellé de la tâche est obligatoire!", "Attention", MessageBoxButton.OK);
             }
 
-            else if (!rgx.IsMatch(Duree))
+            else if (string.IsNullOrEmpty(DureePrevue))
+            {
+                MessageBox.Show("La durée prévue est obligatoire!", "Attention", MessageBoxButton.OK);
+            }
+            else if (!rgx.IsMatch(DureePrevue))
             {
 
                 MessageBox.Show("La durée prévue doit être saisie __._!", "Attention", MessageBoxButton.OK);
             }
 
-            else if (NouvelleTache.DureeRestante!=0 && !rgx.IsMatch(DureeRest))
+            else if (!string.IsNullOrEmpty(DureeRestante) && !rgx.IsMatch(DureeRestante))
             {
                 MessageBox.Show("La durée restante doit être saisie __._!", "Attention", MessageBoxButton.OK);
             }
 
-            else if (NouvelleTache.DureePrevue==0)
-            {
-                MessageBox.Show("La durée prévue est obligatoire!", "Attention", MessageBoxButton.OK);
-            }
             else
             {
 
@@ -159,26 +173,32 @@ namespace JobOverview.ViewModel
             tache.CodeModule = _moduleCourant.CodeModule;
             tache.CodeLogiciel = _logicielCourant.CodeLogiciel;
             tache.CodeVersion = _versionCourante.NumVersion;
-                    tache.DureePrevue = NouvelleTache.DureePrevue;
-                if(NouvelleTache.DureeRestante == 0)
-                    tache.DureeRestante = NouvelleTache.DureePrevue;
+               DureePrevue= DureePrevue.Replace(".", ",");
+                float i;
+                    if(float.TryParse(DureePrevue, out i))
+                tache.DureePrevue = i;
+                if (string.IsNullOrEmpty( DureeRestante))
+                    tache.DureeRestante = i;
                 else
-                        tache.DureeRestante = NouvelleTache.DureeRestante;
+                {
+                    DureeRestante = DureeRestante.Replace(".", ",");
+                    float j;
+                    if (float.TryParse(DureeRestante, out j))
+                        tache.DureeRestante = j;
+                }
 
                 TachesProdAjoutees.Add(tache);
             }
-            NouvelleTache = new TacheProd();
+            NouvelleTache = new TacheApercu();
             Libelle = null;
-            //ModeEdit = ModesEdition.Edition;
+            DureePrevue = null;
+            DureeRestante = null;
         }
         private void SupprimerTache(object o)
         {
             TacheApercu tache= (TacheApercu)CollectionViewSource.GetDefaultView(TachesProdAjoutees).CurrentItem;
             TachesProdAjoutees.Remove(tache);
         }
-        //private void AjouterTache(object o) {
-        //    ModeEdit = ModesEdition.Edition;
-        //}
 
         private bool TesterEdition(object o)
         {

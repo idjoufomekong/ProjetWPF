@@ -16,9 +16,9 @@ namespace JobOverview.View
         public MainWindow()
 		{
 			InitializeComponent();
-			DataContext = new VMMain();
+            DataContext = new VMMain();
 
-			Loaded += MainWindow_Loaded;
+            Loaded += MainWindow_Loaded;
 		}
 
 		// Après chargement de la fenêtre
@@ -31,6 +31,9 @@ namespace JobOverview.View
 
 			// Si l'utilisateur annule, on ferme l'application
 			if (!res.Value) Close();
-		}
-	}
+
+
+
+        }
+    }
 }

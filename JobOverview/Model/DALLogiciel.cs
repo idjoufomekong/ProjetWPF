@@ -223,7 +223,6 @@ namespace JobOverview.Model
                 vers.NombreReleases = (int)reader["nbRelease"];
 
             listVersion.Add(vers);
-
         }
     }
 }

@@ -27,7 +27,9 @@ namespace JobOverview.ViewModel
 
             //Enregistrement de l'identifiant de la personne connectée dans les paramètres de l'appli (portée User)
             Properties.Settings.Default.CodeDernierUtilisateur = ((Personne)view.CurrentItem).CodePersonne;
+            Properties.Settings.Default.Manager = false;
             Properties.Settings.Default.Save();
+
 
             return new ValidationResult(true);
         }

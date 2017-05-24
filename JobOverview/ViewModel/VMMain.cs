@@ -145,6 +145,17 @@ namespace JobOverview.ViewModel
                 return _cmdSynthese;
             }
         }
+
+        private ICommand _cmdAPropos;
+        public ICommand CmdAPropos
+        {
+            get
+            {
+                if (_cmdAPropos == null)
+                    _cmdAPropos = new RelayCommand((o) => VMCourante = new VMAPropos());
+                return _cmdAPropos;
+            }
+        }
         #endregion
 
     }

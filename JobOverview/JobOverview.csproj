@@ -71,6 +71,7 @@
     <Compile Include="Model\DALLogiciel.cs" />
     <Compile Include="Model\DALPersonne.cs" />
     <Compile Include="Model\DALTache.cs" />
+    <Compile Include="ViewModel\VMAPropos.cs" />
     <Compile Include="ViewModel\VMEchange.cs" />
     <Compile Include="ViewModel\VMProgressBar.cs" />
     <Compile Include="ViewModel\VMSaisieTache.cs" />
@@ -78,6 +79,9 @@
     <Compile Include="ViewModel\VMSyntheseVersion.cs" />
     <Compile Include="ViewModel\VMTachesAnnexes.cs" />
     <Compile Include="ViewModel\VMTachesProd.cs" />
+    <Compile Include="View\UCAPropos.xaml.cs">
+      <DependentUpon>UCAPropos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UCButtonsBar.xaml.cs">
       <DependentUpon>UCButtonsBar.xaml</DependentUpon>
     </Compile>
@@ -127,6 +131,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\UCAPropos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UCButtonsBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

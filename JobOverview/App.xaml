@@ -30,5 +30,8 @@
         <DataTemplate DataType="{x:Type vm:VMSyntheseVersion}">
             <vw:UCSyntheseVersion/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VMAPropos}">
+            <vw:UCAPropos/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

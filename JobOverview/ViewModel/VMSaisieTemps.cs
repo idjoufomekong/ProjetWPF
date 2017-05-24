@@ -25,30 +25,69 @@ namespace JobOverview.ViewModel
         public ObservableCollection<TacheApercu> TachesAnnexe { get; set; } =
         new ObservableCollection<TacheApercu>();
         public Personne Utilisateur { get; set; }
-        public TacheApercu TacheCourante {
+        public TacheApercu TacheCouranteProd {
             get
             {
                 ICollectionView current = CollectionViewSource.GetDefaultView(TachesProd);
                 return (TacheApercu)current.CurrentItem;
             }
         }
-        public bool Choice { get; set; }
-        private float _heuresRestante;
-        public float HeuresRestantes {
-            get { return _heuresRestante; }
-            set {  SetProperty(ref _heuresRestante, value); }
-        }
 
-        private ICommand _cmdValider;
-        public ICommand CmdValider
+        public TacheApercu TacheCouranteAnnexe
         {
             get
             {
-                if (_cmdValider == null)
-                    _cmdValider = new RelayCommand(AfficherTaches,Activation);
-                return _cmdValider;
+                ICollectionView current = CollectionViewSource.GetDefaultView(TachesAnnexe);
+                return (TacheApercu)current.CurrentItem;
             }
         }
+        public bool Choice { get; set; }
+
+        public DateTime DateSelec { get; set; } = DateTime.Today;
+        public float HeuresProd
+        {
+            get
+            {
+                if (TacheCouranteProd != null)
+                return RecupererHeureActuel(DateSelec, (Utilisateur.TachesProd.
+                    Where(tp => tp.IdTache == TacheCouranteProd.IdTache).FirstOrDefault()).TravauxProd);
+                return 0;
+            }
+        }
+        public float HeuresAnnexe
+        {
+            get
+            {
+                if (TacheCouranteAnnexe != null)
+                return RecupererHeureActuel(DateSelec, (Utilisateur.TachesProd.
+                    Where(tp => tp.IdTache == TacheCouranteAnnexe.IdTache).FirstOrDefault()).TravauxAnnexes);
+                return 0;
+            }
+        }
+        private float _heuresRestante;
+        public float HeuresRestantes {
+            get { return (8 - HeuresAnnexe - HeuresProd); }
+            set {  SetProperty(ref _heuresRestante, value); }
+        }
+
+        private float RecupererHeureActuel (DateTime Date, List<Travail> L_travail)
+        {
+            var tra = L_travail.Where(t => t.Date == Date).FirstOrDefault();
+            if (tra != null)
+                return tra.Heures;
+            return 0;
+        }
+
+        //private ICommand _cmdValider;
+        //public ICommand CmdValider
+        //{
+        //    get
+        //    {
+        //        if (_cmdValider == null)
+        //            _cmdValider = new RelayCommand(AfficherTaches,Activation);
+        //        return _cmdValider;
+        //    }
+        //}
 
         private ICommand _cmdTriTachProd;
         public ICommand CmdTriTachProd
@@ -101,7 +140,6 @@ namespace JobOverview.ViewModel
                                 tach.DureeRestante = tp.DureeRestante;
                                 tach.NomTache = tp.NomTache;
                                 tach.IdTache = tp.IdTache;
-                                tach.Heures = trP.Heures;
                                 TachesProd.Add(tach);
                                 break;
                             }
@@ -131,7 +169,6 @@ namespace JobOverview.ViewModel
                                     tach.IdTache = ta.IdTache;
                                     tach.CodeActivite = ta.CodeActivite;
                                     tach.Date = trA.Date;
-                                    tach.Heures = trA.Heures;
                                     TachesAnnexe.Add(tach);
                                     break;
                             }

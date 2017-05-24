@@ -107,6 +107,11 @@ namespace JobOverview.ViewModel
             //var listTache = DALTache.RecupererPersonnesTaches(LogicielCourant.CodeLogiciel,
             //    VersionCourante.NumVersion, _userCourant);
             //var listCourante = new List<Personne>();
+            if (PersonnesTaches == null || PersonnesTaches.Count == 0)
+                return;
+            else
+            {
+
             foreach (var b in PersonnesTaches)
             {
 
@@ -130,6 +135,7 @@ namespace JobOverview.ViewModel
             bool? res = dlg.ShowDialog();
 
             #endregion
+            }
         }
         #endregion
 

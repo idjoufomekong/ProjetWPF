@@ -20,9 +20,15 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
         <Style TargetType="ComboBox">
-            <Setter Property="MinWidth" Value="70"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF013BFF"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Width" Value="90"/>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -33,14 +39,16 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="1">
-                <DockPanel VerticalAlignment="Center">
-                    <Button Content="Supp" DockPanel.Dock="Right" Command="{Binding CmdSupprimer}"/>
-                    <Button Content="Ajout" DockPanel.Dock="Right" Command="{Binding CmdAjouter}"/>
-                    <TextBlock Text="Liste des tâches récemment saisies" VerticalAlignment="Center"/>
+                <DockPanel VerticalAlignment="Center" Height="50" Width="250">
+                    <Button Content="+" DockPanel.Dock="Right" Command="{Binding CmdSupprimer}" FontSize="15" FontWeight="Bold"
+                            VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button Content="-" DockPanel.Dock="Right" Command="{Binding CmdAjouter}" FontSize="15" FontWeight="Bold"
+                            VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Label Content="Tâches saisies" VerticalAlignment="Center"/>
                 </DockPanel>
                 <ListView ItemsSource="{Binding TachesProdAjoutees}"
                       IsSynchronizedWithCurrentItem="True">
@@ -72,22 +80,25 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Libellé"/>
-                    <TextBox Text="{Binding Libelle}" IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
+                    <TextBox Text="{Binding Libelle}" IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"
+                             Width="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée prévue"/>
                     <TextBox Text="{Binding DureePrevue}" 
-                             IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
+                             IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"
+                             Width="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Durée restante"/>
                     <TextBox Text="{Binding DureeRestante}"
-                             IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
+                             IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"
+                             Width="150"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1">
-            <Label Content="Description"/>
+            <Label Content="Description" HorizontalAlignment="Left"/>
             <TextBox TextWrapping="Wrap" Text="{Binding NouvelleTache.Description}" 
                      IsReadOnly="{Binding Path=ModeEdit, Converter={StaticResource ConvModeEditLectureSeule}}"/>
         </StackPanel>

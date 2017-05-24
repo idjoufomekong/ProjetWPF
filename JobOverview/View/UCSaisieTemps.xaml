@@ -37,6 +37,12 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF013BFF"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -85,7 +91,7 @@
                 </StackPanel>
                 <DockPanel Grid.Row="2">
                     <!-- Affichage des taches de production de la personne connectée-->
-                    <ListView Name="lv_Prod" ItemsSource="{Binding Path=TachesProd}" IsSynchronizedWithCurrentItem="True">
+                    <ListView Name="lv_Prod" ItemsSource="{Binding Path=TachesProd}" IsSynchronizedWithCurrentItem="True" Margin="0,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="True">
                                 <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>
@@ -106,7 +112,7 @@
                 <!-- Colonne 1 : Liste des tâches annexes -->
                 <Label Grid.Column="1" Content="Annexe" Foreground="Blue"/>
                 <ListView  Name="lv_Annex" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Path=TachesAnnexe}" 
-                                IsSynchronizedWithCurrentItem="True">
+                                IsSynchronizedWithCurrentItem="True" Margin="0,5">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Path=NomTache}"/>

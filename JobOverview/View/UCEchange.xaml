@@ -9,11 +9,17 @@
     <UserControl.Resources>
     <ResourceDictionary>
         <Style TargetType="Button">
-            <Setter Property="Width" Value="60"/>
+            <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
-        </Style>
+                <Setter Property="Background" Value="#FFDDFBF7"/>
+                <Setter Property="BorderBrush" Value="#FFB2DCF0"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+            </Style>
             <Style TargetType="Label">
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="#FF013BFF"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
             </Style>
             <Style TargetType="ListViewItem">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -21,6 +27,7 @@
             <Style TargetType="ComboBox">
                 <Setter Property="Width" Value="80"/>
                 <Setter Property="SelectedIndex" Value="0"/>
+                <Setter Property="Background" Value="#FFD0A8F5"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -31,25 +38,13 @@
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <!--<StackPanel Orientation="Horizontal" 
-                    Height="25" Margin="10,20">
-            <Label Content="Logiciel"/>
-            <ComboBox Name="cbLogiciels" ItemsSource="{Binding Logiciels}" 
-                      DisplayMemberPath="NomLogiciel" SelectedValuePath="CodeLogiciel"
-            IsSynchronizedWithCurrentItem="True"
-                      />
-            <Label Content="Version"/>
-            <ComboBox Name="cbVersions" ItemsSource="{Binding Logiciels/Versions}" 
-                      DisplayMemberPath="NumVersion" SelectedValuePath="NumVersion"
-                      IsSynchronizedWithCurrentItem="True"/>
-        </StackPanel>-->
         <local:UCLogicielVersion/>
         <DockPanel Grid.Row="1" Height="50">
             <Button Content="Aperçu"  DockPanel.Dock="Right"
                 Margin="10" HorizontalAlignment="Right"
                         Command="{Binding CmdCharger}"/>
             <Label Content="Aperçu des données à exporter:"/>
-            <Label Content="Top 20 des tâches les plus récentes"/>
+            <Label Content="(Top 100 des tâches les plus récentes)" FontStyle="Italic"/>
         </DockPanel>
         <Button Content="Exporter"  Grid.Row="3"
                 Margin="10" HorizontalAlignment="Right"
@@ -72,9 +67,7 @@
                     <GridViewColumn Header="Numéro" DisplayMemberBinding="{Binding Path=NumTache   }" />
                     <GridViewColumn Header="Duree Prevue " DisplayMemberBinding="{Binding Path=DureePrevue  }" />
                     <GridViewColumn Header="Duree Restante" DisplayMemberBinding="{Binding Path=DureeRestante   }" />
-                    <GridViewColumn Header="Logiciel" DisplayMemberBinding="{Binding Path=CodeLogiciel   }" />
                     <GridViewColumn Header="Module" DisplayMemberBinding="{Binding Path=CodeModule  }" />
-                    <GridViewColumn Header="Version" DisplayMemberBinding="{Binding Path=CodeVersion    }" />
                     <GridViewColumn Header="Date du traitement" DisplayMemberBinding="{Binding Path=Date}" />
                     <GridViewColumn Header="Durée du traitement" DisplayMemberBinding="{Binding Path=Heures }" />
                     <GridViewColumn Header="Taux de Productivite " DisplayMemberBinding="{Binding Path=TauxProductivite }" />
